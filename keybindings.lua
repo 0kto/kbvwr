@@ -1,0 +1,201 @@
+local awful = require("awful")
+local gears = require("gears")
+local naughty = require("naughty")
+
+local helpers = require("helpers")
+local apps = require("apps")
+local keyboard_layout = require("kbvwr.keyboard_layout")
+local groupcolor = {}
+groupcolor["launcher"] = x.color1
+groupcolor["apps"] = x.color2
+groupcolor["media"] = x.color3
+groupcolor["client"] = x.color4
+groupcolor["layout"] = x.color5
+groupcolor["awesome"] = x.color6
+
+
+local bind    = {}
+bind.keymap   = keyboard_layout.keymap
+bind.colormap = keyboard_layout.colormap
+bind.keydesc  = keyboard_layout.keydesc
+
+-- function to return gears.key-table that can be joind to
+-- keys.globalkeys
+function bind.key(modifiers, key, desc, group, description, fn)
+    awesome_modifiers = {}
+    lvl = 0
+    for ii,mod in ipairs(modifiers) do
+        if mod == "Alt_L" then
+            table.insert(awesome_modifiers, "Mod1")
+            lvl = lvl + 2^0
+        elseif mod == "Alt_R" then
+            lvl = lvl + 2^1
+        elseif mod == "Caps_Lock" then
+            lvl = lvl + 2^2
+        elseif mod == "Control_L" then
+            table.insert(awesome_modifiers, "Control")
+            lvl = lvl + 2^3
+        elseif mod == "Control_R" then
+            lvl = lvl + 2^4
+        elseif mod == "Shift_L" or mod == "Shift_R" or mod == "shift" or mod == "Shift" then
+            table.insert(awesome_modifiers, "Shift")
+            lvl = lvl + 2^5
+        elseif mod == "Super_L" or mod == "Super" then
+            table.insert(awesome_modifiers, "Mod4")
+            lvl = lvl + 2^6
+        end
+    end
+    -- create normal keymapping
+    map = awful.key(awesome_modifiers, key, fn, {description = description, group = group})
+    -- get level from modifiers
+    level = 1
+    if     lvl == 1 then -- Alt_L
+        level = 12
+    elseif lvl == 2 then -- Alt_R
+        level = 4
+    elseif lvl == 4 then -- Caps_Lock
+        level = 2
+    elseif lvl == 8 then -- Control_L
+        level = 3
+    elseif lvl == 16 then -- Control_R
+        level = 11
+    elseif lvl == 32 then -- shift
+        level = 2
+    elseif lvl == 64 then -- Super_L
+        level = 6
+    elseif lvl == 2 + 32 then -- Alt_R + shift
+        level = 5
+    elseif lvl == 64 + 32 then -- Super_L + shift
+        level = 7
+    elseif lvl == 64 + 1 then -- Super_L + Alt_L
+        level = 8
+    elseif lvl == 64 + 8 then -- Super_L + Control_L
+        level = 9
+    elseif lvl == 64 + 8 + 1 then -- Super_L + Control_L + Alt_L
+        level = 10
+    end
+    -- add to kbvwr
+    -- add check if prior keybinding exists and notify!
+    if key:find "XF86" == nil and bind.keymap[key][level] ~= nil then
+        naughty.notify({text = "warning: keybinding \n \'level="..level.." + "..key.."\'\nalready exists!"})
+    elseif key:find "XF86" == nil then
+        bind.keymap[key][level]   = desc
+        bind.colormap[key][level] = groupcolor[group] or "#32302f"
+        -- bind.keydesc[key][level]  = description
+    end
+    return map
+end
+
+bind.keybindings = gears.table.join(
+    -- -- Toggle wibar(s)
+    -- awful.key({ superkey }, "b", function() wibars_toggle() end,
+    --     {description = "show or hide wibar(s)", group = "awesome"}),
+    -- -- Rofi youtube search and playlist selector
+    -- awful.key({ superkey }, "y", apps.youtube,
+    --     {description = "youtube search and play", group = "launcher"}),
+    -- -- Spawn file manager
+    -- awful.key({ superkey, shiftkey }, "f", apps.file_manager,
+    --     {description = "file manager", group = "launcher"}),
+    -- -- Process monitor
+    -- awful.key({ superkey }, "p", apps.process_monitor,
+    --     {description = "process monitor", group = "launcher"}),
+    -- -- -- App drawer
+    -- -- awful.key({ superkey }, "a", function()
+    -- --     app_drawer_show()
+    -- --                              end,
+    -- --     {description = "App drawer", group = "custom"}),
+
+    -- XF86... bindings
+    bind.key( {  }, "XF86AudioMute",         "mute",       "media",    "mute",                       function () helpers.volume_control(0) end),
+    bind.key( {  }, "XF86AudioLowerVolume",  "vol -",      "media",    "decrease volume",            function () helpers.volume_control(-5) end),
+    bind.key( {  }, "XF86AudioRaiseVolume",  "vol +",      "media",    "increase volume",            function () helpers.volume_control(5) end),
+    bind.key( {  }, "XF86AudioMicMute",      "mute mic",   "media",    "mute microphone",
+        function()
+            awful.spawn.with_shell("amixer -D pulse sset Capture toggle &> /dev/null")
+        end),
+    bind.key( {  }, "XF86MonBrightnessDown", "bright -",   "launcher", "decrease laptop brightness", function () awful.spawn.with_shell("light -U 10") end),
+    bind.key( {  }, "XF86MonBrightnessUp",   "bright +",   "launcher", "increase laptop brightness", function () awful.spawn.with_shell("light -A10") end),
+    bind.key( {  }, "XF86Search",            "search",     "launcher", "activate sidebar web search prompt",
+        function () if sidebar_activate_prompt then sidebar_activate_prompt("web_search") end end),
+    bind.key( {  }, "XF86Tools",             "kbvwr",      "awesome",  "show keyboard bindings",     function() keyboard_viewer_show() end),
+    bind.key( {  }, "XF86LaunchA",           "tray",       "awesome",  "toggle tray visibility",     function() tray_toggle() end),
+    bind.key( {  }, "XF86Explorer",          "dashboard",  "awesome",  "toggle dashboard visibility",
+        function() if dashboard_show then dashboard_show() end end),
+
+
+    -- normal keyboard bindings
+    bind.key( { "Super_L"},              "Escape", "quit",          "awesome", "show shutdown menu",          function() exit_screen_show() end),
+    -- bind.key( { "Super_L" },             "F9",     "kbvwr",         "awesome", "show keyboard bindings",      function() keyboard_viewer_show() end),
+    -- bind.key( { "Super_L" },             "F11",    "tray",          "awesome", "toggle tray visibility",      function () tray_toggle() end),
+    bind.key( { "Super_L"},             "grave",   "sidebar",       "awesome", "toggle sidebar visibility",   function() sidebar_toggle() end),
+    bind.key( { "Super_L" },             "-",      "gap -",         "layout",  "decrease gap",                function() kawful.tag.incgap(5, nil) end),
+    bind.key( { "Super_L", "Shift"},     "-",      "gap +",         "layout",  "increase gap",                function() awful.tag.incgap(-5, nil) end),
+    bind.key( { "Super_L" },             "Return", "terminal",      "apps",    "spawn terminal",              function() awful.spawn(user.terminal) end),
+    bind.key( { "Super_L", "Control_L"}, "Return", "wibar",         "launcher","toggle wibar visibility",     function() wibars_toggle() end),
+    bind.key( { "Super_L", "Shift"},     "Return", "floating term", "apps",    "spawn floating terminal",     function() awful.spawn(user.floating_terminal, {floating = true}) end),
+    bind.key( { "Super_L" },             "Tab",    "switcher",      "client",  "window switcher",             function() window_switcher_show(awful.screen.focused()) end),
+    bind.key( { "Super_L"},              "r",      "run",           "launcher","activate sidebar run prompt",
+        function () if sidebar_activate_prompt then sidebar_activate_prompt("run") end end),
+    bind.key( { "Super_L", "Control_L"}, "r",      "restart",       "awesome", "restart awesomeWM",           function() awesome.restart() end),
+    bind.key( { "Super_L" },             "u",      "-> urgent",     "client",  "switch to urgent client",
+        function ()
+            uc = awful.client.urgent.get()
+            -- If there is no urgent client, go back to last tag
+            if uc == nil then awful.tag.history.restore() else awful.client.urgent.jumpto() end
+        end),
+    bind.key( { "Super_L" },             "d",      "rofi",          "launcher","rofi launcher",
+        function()
+            awful.spawn.with_shell("rofi -matching fuzzy -show combi")
+        end),
+
+    -- hkl keys
+    bind.key( { "Super_L" },             "h",      "focus left",    "client",  "focus left",                                      function() awful.client.focus.bydirection("left") end),
+    bind.key( { "Super_L" },             "j",      "focus down",    "client",  "focus down",                                      function() awful.client.focus.bydirection("down") end),
+    bind.key( { "Super_L" },             "k",      "focus up",      "client",  "focus up",                                        function() awful.client.focus.bydirection("up") end),
+    bind.key( { "Super_L" },             "l",      "focus right",   "client",  "focus right",                                     function() awful.client.focus.bydirection("right") end),
+    bind.key( { "Super_L", "Alt_L"},     "h",      "#+ master",     "layout",  "increase number of clients",                      function() awful.tag.incnmaster(1, nil, true) end),
+    bind.key( { "Super_L", "Alt_L"},     "j",      "#- col",        "layout",  "lower number of columns",                         function() awful.tag.incncol(-1, nil, true) end),
+    bind.key( { "Super_L", "Alt_L"},     "k",      "#+ col",        "layout",  "increase number of columns",                      function() awful.tag.incncol(1, nil, true) end),
+    bind.key( { "Super_L", "Alt_L"},     "l",      "#- master",     "layout",  "lower number of clients",                         function() awful.tag.incnmaster(-1, nil, true)  end),
+    bind.key( { "Super_L", "Control_L"}, "h",      "| <",           "layout",  "move border left",                                function() helpers.resize_dwim(client.focus, "left") end),
+    bind.key( { "Super_L", "Control_L"}, "j",      "| v",           "layout",  "move border down",                                function() helpers.resize_dwim(client.focus, "down") end),
+    bind.key( { "Super_L", "Control_L"}, "k",      "| ^",           "layout",  "move border up",                                  function() helpers.resize_dwim(client.focus, "up") end),
+    bind.key( { "Super_L", "Control_L"}, "l",      "| >",           "layout",  "move border left",                                function() awful.client.focus.bydirection("right") end),
+
+    bind.key( { "Super_L", "Shift_L"},   "n",      "restore min",   "layout",  "restore minimized client",
+        function()
+            local c = awful.client.restore()
+            -- Focus restored client
+            if c then client.focus = c end
+        end),
+    bind.key( { "Super_L" },             "space",  "clear",         "awesome", "clear all notifications",   
+        function() 
+            awesome.emit_signal("elemental::dismiss")
+            naughty.destroy_all_notifications()
+        end),
+
+    -- Print
+    bind.key( { },                       "Print", "screenshot",     "tools", "screenshot: full screen", function() apps.screenshot("full")  end),
+    bind.key( { "Super_L", "Alt_L"},     "Print", "browse",         "tools", "browse screenshots",      function() apps.screenshot("browse") end),
+    bind.key( { "Super_L", "Control_L"}, "Print", "screenshot",     "tools", "screenshot: save area",   function() apps.screenshot("selection") end),
+    bind.key( { "Super_L", "Shift_L"},   "Print", "screenshot",     "tools", "screenshot: clip area",   function() apps.screenshot("clipboard") end),
+    bind.key( { "Super_L", "Shift_L"},   "Print", "edit",           "tools", "screenshot: edit",        function() apps.screenshot("gimp") end),
+    
+    -- direction keys
+    bind.key( { "Super_L" },             "Up",     "focus up",      "client",  "focus up",                   function() awful.client.focus.bydirection("up") end),
+    bind.key( { "Super_L" },             "Down",   "focus down",    "client",  "focus down",                 function() awful.client.focus.bydirection("down") end),
+    bind.key( { "Super_L" },             "Left",   "focus left",    "client",  "focus left",                 function() awful.client.focus.bydirection("left") end),
+    bind.key( { "Super_L" },             "Right",  "focus right",   "client",  "focus right",                function() awful.client.focus.bydirection("right") end),
+    bind.key( { "Super_L", "Alt_L"},     "Up",     "#+ master",     "layout",  "increase number of clients", function() awful.tag.incnmaster(1, nil, true) end),
+    bind.key( { "Super_L", "Alt_L"},     "Down",   "#- col",        "layout",  "lower number of columns",    function() awful.tag.incncol(-1, nil, true) end),
+    bind.key( { "Super_L", "Alt_L"},     "Left",   "#+ col",        "layout",  "increase number of columns", function() awful.tag.incncol(1, nil, true) end),
+    bind.key( { "Super_L", "Alt_L"},     "Right",  "#- master",     "layout",  "lower number of clients",    function() awful.tag.incnmaster(-1, nil, true)  end),
+    bind.key( { "Super_L", "Control_L"}, "Up",     "| <",           "layout",  "move border left",           function() helpers.resize_dwim(client.focus, "left") end),
+    bind.key( { "Super_L", "Control_L"}, "Down",   "| v",           "layout",  "move border down",           function() helpers.resize_dwim(client.focus, "down") end),
+    bind.key( { "Super_L", "Control_L"}, "Left",   "| ^",           "layout",  "move border up",             function() helpers.resize_dwim(client.focus, "up") end),
+    bind.key( { "Super_L", "Control_L"}, "Right",  "| >",           "layout",  "move border left",           function() helpers.resize_dwim(client.focus, "right") end)
+
+)
+
+
+return bind

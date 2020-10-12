@@ -2,10 +2,8 @@ local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local naughty = require("naughty")
-local icons = require("icons")
 local helpers = require("helpers")
-local apps = require("apps")
+-- local naughty = require("naughty")
 
 -- Appearance
 local box_radius = beautiful.keyboard_viewer_box_border_radius or dpi(12)
@@ -80,17 +78,21 @@ local function create_boxed_widget(widget_to_be_boxed, width, height, bg_color)
     return boxed_widget
 end
 
--- Keyboard viewer
 local kbvwr = {}
+-- Definition of keybindings
+kbvwr.bind = require("kbvwr.keybindings")
+
+
+-- Keyboard viewer
 kbvwr.keyboard_layout = {}
 kbvwr.keyboard_layout = require("kbvwr.keyboard_layout")
 -- generate all layouts, and select from named table
 kbvwr.layouts = {}
-for ii = 1,10 do
+for ii = 1,12 do
     kbvwr.layouts[ii] = create_boxed_widget(
         kbvwr.keyboard_layout.create(
-            kbvwr.keyboard_layout.keymap,
-            kbvwr.keyboard_layout.colormap,
+            kbvwr.bind.keymap,
+            kbvwr.bind.colormap,
             ii), 
         dpi(1211),
         dpi(491),
@@ -121,25 +123,25 @@ function kbvwr.level_from_modifiers(dict_avtive_modifiers)
     -- current level to be displayed.
     -- keyboard_layout.keymap / keyboard_layout.colormap / keyboard_layout.keydesc
     lvl = 0
-    if dict_avtive_modifiers['Alt_L']     then lvl = lvl + 2^(0) end
-    if dict_avtive_modifiers['Alt_R']     then lvl = lvl + 2^(1) end
-    if dict_avtive_modifiers['Caps_Lock'] then lvl = lvl + 2^(2) end
-    if dict_avtive_modifiers['Control_L'] then lvl = lvl + 2^(3) end
-    if dict_avtive_modifiers['Control_R'] then lvl = lvl + 2^(4) end
-    if dict_avtive_modifiers['shift']     then lvl = lvl + 2^(5) end
-    if dict_avtive_modifiers['Super_L']   then lvl = lvl + 2^(6) end
+    if dict_avtive_modifiers['Alt_L']     then lvl = lvl + 2^0 end
+    if dict_avtive_modifiers['Alt_R']     then lvl = lvl + 2^1 end
+    if dict_avtive_modifiers['Caps_Lock'] then lvl = lvl + 2^2 end
+    if dict_avtive_modifiers['Control_L'] then lvl = lvl + 2^3 end
+    if dict_avtive_modifiers['Control_R'] then lvl = lvl + 2^4 end
+    if dict_avtive_modifiers['shift']     then lvl = lvl + 2^5 end
+    if dict_avtive_modifiers['Super_L']   then lvl = lvl + 2^6 end
 
     kbvwr.level = 1
     if     lvl == 1 then -- Alt_L
-        kbvwr.level = 1
+        kbvwr.level = 12
     elseif lvl == 2 then -- Alt_R
         kbvwr.level = 4
     elseif lvl == 4 then -- Caps_Lock
         kbvwr.level = 2
     elseif lvl == 8 then -- Control_L
-        kbvwr.level = 1
+        kbvwr.level = 3
     elseif lvl == 16 then -- Control_R
-        kbvwr.level = 1
+        kbvwr.level = 11
     elseif lvl == 32 then -- shift
         kbvwr.level = 2
     elseif lvl == 64 then -- Super_L
@@ -155,7 +157,7 @@ function kbvwr.level_from_modifiers(dict_avtive_modifiers)
     elseif lvl == 64 + 8 + 1 then -- Super_L + Control_L + Alt_L
         kbvwr.level = 10
     end
-    naughty.notify({text = "level is " .. kbvwr.level .. "\n lvl is " .. lvl})
+    -- naughty.notify({text = "level is " .. kbvwr.level .. "\n lvl is " .. lvl})
     return kbvwr.level
 end
 
@@ -172,6 +174,29 @@ kbvwr.update_widget = function()
     kbvwr_widget.widget = kbvwr.layouts[kbvwr.level]
 end
 
+local kbvwr_description = wibox.widget {
+    widget = wibox.widget.textbox,
+    text = "Loading your cookie...",
+    font = "Sans Bold 12",
+    align = "center",
+    valign = "center",
+}
+
+local kbvwr_description_widget = wibox.widget {
+    {
+        nil,
+        kbvwr_description,
+        layout = wibox.layout.align.horizontal,
+    },
+    widget = wibox.widget {
+        bg = x.background,
+        forced_height = dpi(65),
+        forced_width  = dpi(1221),
+        shape = helpers.rrect(dpi(4)),
+        widget = wibox.container.background()
+        }
+}
+
 -- Item placement
 keyboard_viewer:setup {
     -- Center boxes vertically
@@ -179,9 +204,15 @@ keyboard_viewer:setup {
     {
         -- Center boxes horizontally
         nil,
-        {
-            kbvwr_widget,
-            layout = wibox.layout.fixed.horizontal
+        {   
+            nil,
+            {
+                -- kbvwr_keycombos,
+                kbvwr_widget,
+                layout = wibox.layout.fixed.horizontal
+            },
+            kbvwr_description_widget,
+            layout = wibox.layout.align.vertical
         },
         nil,
         expand = "none",
@@ -232,3 +263,4 @@ function keyboard_viewer_show()
     end)
     set_visibility(true)
 end
+return kbvwr

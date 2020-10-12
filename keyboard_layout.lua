@@ -44,7 +44,7 @@ function keyboard_layout.create(keymap,colormap,level)
         widget = wibox.widget.textbox(keymap[key][level] or "")
       },
       widget = wibox.widget {
-        bg = colormap[key][level],
+        bg = colormap[key][level] or "#32302f",
         forced_height = dpi(height),
         forced_width  = dpi(width),
         shape = helpers.rrect(dpi(4)),
@@ -54,7 +54,7 @@ function keyboard_layout.create(keymap,colormap,level)
     return key_box
   end
   -- Define keys, so they should be update-able.
-  local key_ESC        = key("ESC",       keymap, colormap, level, fkey_height, Escape_width )
+  local key_Escape     = key("Escape",    keymap, colormap, level, fkey_height, Escape_width )
   local key_F1         = key("F1",        keymap, colormap, level, fkey_height, fkey_width )
   local key_F2         = key("F2",        keymap, colormap, level, fkey_height, fkey_width )
   local key_F3         = key("F3",        keymap, colormap, level, fkey_height, fkey_width )
@@ -72,7 +72,7 @@ function keyboard_layout.create(keymap,colormap,level)
   local key_Insert     = key("Insert",    keymap, colormap, level, fkey_height, fkey_width )
   local key_Delete     = key("Delete",    keymap, colormap, level, fkey_height, Delete_width )
  
-  local key_grave      = key("`",         keymap, colormap, level, key_height, key_width )
+  local key_grave      = key("grave",     keymap, colormap, level, key_height, key_width )
   local key_1          = key("1",         keymap, colormap, level, key_height, key_width )
   local key_2          = key("2",         keymap, colormap, level, key_height, key_width )
   local key_3          = key("3",         keymap, colormap, level, key_height, key_width )
@@ -155,7 +155,7 @@ function keyboard_layout.create(keymap,colormap,level)
       wibox.container {
         layout  = wibox.layout.fixed.horizontal,
         spacing = gap_fkeys,
-        key_ESC, key_F1, key_F2, key_F3, key_F4
+        key_Escape, key_F1, key_F2, key_F3, key_F4
       },
       wibox.container {
         layout  = wibox.layout.fixed.horizontal,
@@ -220,202 +220,228 @@ end
 
 -- Keyboard Viewer
 keyboard_layout.keymap        = {}
--- keyboard_layout.keymap              basic        shift        Fn           Alt_R     Alt_R+shift  Super_L             Super_L+shift      Super_L+Alt_L            Super_L+Control_L  Super_L+Control_L+Alt_L
--- level                                -1-          -2-          -3-          -4-        -5-         -6-                 -7-                -8-                      -9-                -10-
-keyboard_layout.keymap["ESC"]       = {"ESC",       "ESC",       "FnLock",     nil,       nil,       "powermenu",        "quit awesome",     nil,                     nil,               nil,               }
-keyboard_layout.keymap["F1"]        = {"F1",        "F1",        "mute",       nil,       nil,       "dashboard",         nil,               nil,                     nil,               nil,               }
+-- keyboard_layout.keymap              basic        shift 
+-- level                                -1-          -2-  
+-- Fn + F[1-12] Keys need to be defined as well
+keyboard_layout.keymap["XF86AudioMute"]         = {"mute", nil, }
+keyboard_layout.keymap["XF86AudioLowerVolume"]  = {"vol-", nil, }
+keyboard_layout.keymap["XF86AudioRaiseVolume"]  = {"vol+", nil, }
+keyboard_layout.keymap["XF86AudioMicMute"]      = {"mic mute", nil, }
+keyboard_layout.keymap["XF86MonBrightnessDown"] = {"bright-", nil, }
+keyboard_layout.keymap["XF86MonBrightnessUp"]   = {"bright+", nil, }
+keyboard_layout.keymap["XF86Display"]           = {"display", nil, }
+keyboard_layout.keymap["XF86WLAN"]              = {"WLAN", nil, }
+keyboard_layout.keymap["XF86Tools"]             = {"kbvwr", nil, }
+keyboard_layout.keymap["XF86Search"]            = {"search", nil, }
+keyboard_layout.keymap["XF86LaunchA"]           = {"tray", nil, }
+keyboard_layout.keymap["XF86Explorer"]          = {"dashbar", nil, }
+
 -- XF86Switch_VT_1
-keyboard_layout.keymap["F2"]        = {"F2",        "F2",        "vol -",      nil,       nil,       "ranger",            nil,               nil,                     nil,               nil,               }
 -- XF86AudioLowerVolume          
-keyboard_layout.keymap["F3"]        = {"F3",        "F3",        "vol +",      nil,       nil,       "ncmpcpp",           nil,               nil,                     nil,               nil,               }
 -- XF86AudioRaiseVolume          
-keyboard_layout.keymap["F4"]        = {"F4",        "F4",        "mute mic",   nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
 -- XF86AudioMicMute
-keyboard_layout.keymap["F5"]        = {"F5",        "F5",        "screen -",   nil,       nil,       "keyboard layout",   nil,               nil,                     nil,               nil,               }
 -- XF86MonBrightnessDown          
-keyboard_layout.keymap["F6"]        = {"F6",        "F6",        "screen +",   nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
 -- XF86MonBrightnessUp          
-keyboard_layout.keymap["F7"]        = {"F7",        "F7",        "display",    nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
 -- XF86Display
-keyboard_layout.keymap["F8"]        = {"F8",        "F8",        "wireless",   nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
 -- XF86WLAN
-keyboard_layout.keymap["F9"]        = {"F9",        "F9",        "tools",      nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
 -- XF86Tools
-keyboard_layout.keymap["F10"]       = {"F10",       "F10",       "bluetooth",  nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
 -- XF86Bluetooth / XF86Search
-keyboard_layout.keymap["F11"]       = {"F11",       "F11",       "keyboard",   nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["F12"]       = {"F12",       "F12",       "star",       nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["Home"]      = {"Home",      "Home",       nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["End"]       = {"End",       "End",        nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["Insert"]    = {"Ins",       "Ind",        nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["Delete"]    = {"Del",       "Del",        nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
+keyboard_layout.keymap["Escape"]    = {"ESC",  "ESC",      }
+keyboard_layout.keymap["F1"]        = {"F1",   "F1",   "F1",   "F1",   "F1",   "F1",   "F1",   "F1",   "F1",   "F1",   "F1",   "F1",     }
+keyboard_layout.keymap["F2"]        = {"F2",   "F2",   "F2",   "F2",   "F2",   "F2",   "F2",   "F2",   "F2",   "F2",   "F2",   "F2",     }
+keyboard_layout.keymap["F3"]        = {"F3",   "F3",   "F3",   "F3",   "F3",   "F3",   "F3",   "F3",   "F3",   "F3",   "F3",   "F3",     }
+keyboard_layout.keymap["F4"]        = {"F4",   "F4",   "F4",   "F4",   "F4",   "F4",   "F4",   "F4",   "F4",   "F4",   "F4",   "F4",     }
+keyboard_layout.keymap["F5"]        = {"F5",   "F5",   "F5",   "F5",   "F5",   "F5",   "F5",   "F5",   "F5",   "F5",   "F5",   "F5",     }
+keyboard_layout.keymap["F6"]        = {"F6",   "F6",   "F6",   "F6",   "F6",   "F6",   "F6",   "F6",   "F6",   "F6",   "F6",   "F6",     }
+keyboard_layout.keymap["F7"]        = {"F7",   "F7",   "F7",   "F7",   "F7",   "F7",   "F7",   "F7",   "F7",   "F7",   "F7",   "F7",     }
+keyboard_layout.keymap["F8"]        = {"F8",   "F8",   "F8",   "F8",   "F8",   "F8",   "F8",   "F8",   "F8",   "F8",   "F8",   "F8",     }
+keyboard_layout.keymap["F9"]        = {"F9",   "F9",   "F9",   "F9",   "F9",   "F9",   "F9",   "F9",   "F9",   "F9",   "F9",   "F9",     }
+keyboard_layout.keymap["F10"]       = {"F10",  "F10",  "F10",  "F10",  "F10",  "F10",  "F10",  "F10",  "F10",  "F10",  "F10",  "F10",    }
+keyboard_layout.keymap["F11"]       = {"F11",  "F11",  "F11",  "F11",  "F11",  "F11",  "F11",  "F11",  "F11",  "F11",  "F11",  "F11",    }
+keyboard_layout.keymap["F12"]       = {"F12",  "F12",  "F12",  "F12",  "F12",  "F12",  "F12",  "F12",  "F12",  "F12",  "F12",  "F12",    }
+keyboard_layout.keymap["Home"]      = {"Home", "Home", "Home", "Home", "Home", "Home", "Home", "Home", "Home", "Home", "Home", "Home",   }
+keyboard_layout.keymap["End"]       = {"End",  "End",  "End",  "End",  "End",  "End",  "End",  "End",  "End",  "End",  "End",  "End",    }
+keyboard_layout.keymap["Insert"]    = {"Ins",  "Ind",  "Ind",  "Ind",  "Ind",  "Ind",  "Ind",  "Ind",  "Ind",  "Ind",  "Ind",  "Ind",    }
+keyboard_layout.keymap["Delete"]    = {"Del",  "Del",  "Del",  "Del",  "Del",  "Del",  "Del",  "Del",  "Del",  "Del",  "Del",  "Del",    }
 -- row     2          
-keyboard_layout.keymap["`"]         = {"`",         "~",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["1"]         = {"1",         "!",          nil,         nil,       nil,       "switch $1",        "move to $1",      "move & switch to $1",   "toggle $1",       "add client to $1", }
-keyboard_layout.keymap["2"]         = {"2",         "@",          nil,         nil,       nil,       "switch $2",        "move to $2",      "move & switch to $2",   "toggle $2",       "add client to $2", }
-keyboard_layout.keymap["3"]         = {"3",         "#",          nil,         nil,       nil,       "switch $3",        "move to $3",      "move & switch to $3",   "toggle $3",       "add client to $3", }
-keyboard_layout.keymap["4"]         = {"4",         "$",          nil,         nil,       nil,       "switch $4",        "move to $4",      "move & switch to $4",   "toggle $4",       "add client to $4", }
-keyboard_layout.keymap["5"]         = {"5",         "%",          nil,         nil,       nil,       "switch $5",        "move to $5",      "move & switch to $5",   "toggle $5",       "add client to $5", }
-keyboard_layout.keymap["6"]         = {"6",         "^",          nil,         nil,       nil,       "switch $6",        "move to $6",      "move & switch to $6",   "toggle $6",       "add client to $6", }
-keyboard_layout.keymap["7"]         = {"7",         "&",          nil,         nil,       nil,       "switch $7",        "move to $7",      "move & switch to $7",   "toggle $7",       "add client to $7", }
-keyboard_layout.keymap["8"]         = {"8",         "*",          nil,         nil,       nil,       "switch $8",        "move to $8",      "move & switch to $8",   "toggle $8",       "add client to $8", }
-keyboard_layout.keymap["9"]         = {"9",         "(",          nil,         nil,       nil,       "switch $9",        "move to $9",      "move & switch to $9",   "toggle $9",       "add client to $9", }
-keyboard_layout.keymap["0"]         = {"0",         ")",          nil,         nil,       nil,       "switch $0",        "move to $0",      "move & switch to $0",   "toggle $0",       "add client to $0", }
-keyboard_layout.keymap["-"]         = {"-",         "_",          nil,         nil,       nil,       "gaps -",           "gaps +",           nil,                     nil,               nil,               }
-keyboard_layout.keymap["="]         = {"=",         "+",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["BackSpace"] = {"BackSpace", "BackSpace",  nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
+keyboard_layout.keymap["grave"]     = {"`",         "~",        }
+keyboard_layout.keymap["1"]         = {"1",         "!",        }
+keyboard_layout.keymap["2"]         = {"2",         "@",        }
+keyboard_layout.keymap["3"]         = {"3",         "#",        }
+keyboard_layout.keymap["4"]         = {"4",         "$",        }
+keyboard_layout.keymap["5"]         = {"5",         "%",        }
+keyboard_layout.keymap["6"]         = {"6",         "^",        }
+keyboard_layout.keymap["7"]         = {"7",         "&",        }
+keyboard_layout.keymap["8"]         = {"8",         "*",        }
+keyboard_layout.keymap["9"]         = {"9",         "(",        }
+keyboard_layout.keymap["0"]         = {"0",         ")",        }
+keyboard_layout.keymap["-"]         = {"-",         "_",        }
+keyboard_layout.keymap["="]         = {"=",         "+",        }
+keyboard_layout.keymap["BackSpace"] = {"BackSpace", "BackSpace", "BackSpace", "BackSpace", "BackSpace", "BackSpace", "BackSpace", "BackSpace", "BackSpace", "BackSpace","BackSpace","BackSpace",}
 -- row     3          
-keyboard_layout.keymap["Tab"]       = {"Tab",       "Tab",        nil,         nil,       nil,       "window switcher",   nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["q"]         = {"q",         "Q",          nil,         nil,       nil,        nil,                nil,              "kill all",               nil,               nil,               }
-keyboard_layout.keymap["w"]         = {"w",         "W",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["e"]         = {"e",         "E",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["r"]         = {"r",         "R",          nil,         nil,       nil,       "run",              "restart awesome",  nil,                     nil,               nil,               }
-keyboard_layout.keymap["t"]         = {"t",         "T",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["y"]         = {"y",         "Y",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["u"]         = {"u",         "U",          nil,        "ü",       "Ü",        "switch urgent",     nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["i"]         = {"i",         "I",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["o"]         = {"o",         "O",          nil,        "ö",       "Ö",         nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["p"]         = {"p",         "P",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["["]         = {"[",         "{",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["]"]         = {"]",         "}",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["Return"]    = {"Return",    "Return",     nil,         nil,       nil,       "terminal",         "terminal (float)", nil,                     nil,               nil,               }
+keyboard_layout.keymap["Tab"]       = {"Tab",       "Tab",      }
+keyboard_layout.keymap["q"]         = {"q",         "Q",        }
+keyboard_layout.keymap["w"]         = {"w",         "W",        }
+keyboard_layout.keymap["e"]         = {"e",         "E",        }
+keyboard_layout.keymap["r"]         = {"r",         "R",        }
+keyboard_layout.keymap["t"]         = {"t",         "T",        }
+keyboard_layout.keymap["y"]         = {"y",         "Y",        }
+keyboard_layout.keymap["u"]         = {"u",         "U",        }
+keyboard_layout.keymap["i"]         = {"i",         "I",        }
+keyboard_layout.keymap["o"]         = {"o",         "O",        }
+keyboard_layout.keymap["p"]         = {"p",         "P",        }
+keyboard_layout.keymap["["]         = {"[",         "{",        }
+keyboard_layout.keymap["]"]         = {"]",         "}",        }
+keyboard_layout.keymap["Return"]    = {"Return",    "Return",   }
 -- row 4          
-keyboard_layout.keymap["Caps_Lock"] = {"Caps_Lock", "Caps_Lock",  nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["a"]         = {"a",         "A",          nil,        "ä",       "Ä",         nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["s"]         = {"s",         "S",          nil,        "ß",        nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["d"]         = {"d",         "D",          nil,         nil,       nil,       "rofi",              nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["f"]         = {"f",         "F",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["g"]         = {"g",         "G",          nil,         nil,       nil,       "web search",        nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["h"]         = {"h",         "H",          nil,         nil,       nil,       "focus left",        nil,              "#master +",             "resize left",      nil,               }
-keyboard_layout.keymap["j"]         = {"j",         "J",          nil,         nil,       nil,       "focus down",        nil,              "#col -",                "resize down",      nil,               }
-keyboard_layout.keymap["k"]         = {"k",         "K",          nil,         nil,       nil,       "focus up",          nil,              "#col +",                "resize up",        nil,               }
-keyboard_layout.keymap["l"]         = {"l",         "L",          nil,         nil,       nil,       "focus right",       nil,              "#master -",             "resize right",     nil,               }
-keyboard_layout.keymap[";"]         = {";",         ":",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["'"]         = {"'",         "\"",         nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["\\"]        = {"\\",        "|",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
--- keyboard_layout.keymap["Return"] = {"Return",    "Return",     nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
+keyboard_layout.keymap["Caps_Lock"] = {"Caps_Lock", "Caps_Lock", "Caps_Lock", "Caps_Lock", "Caps_Lock", "Caps_Lock", "Caps_Lock", "Caps_Lock", "Caps_Lock", "Caps_Lock","Caps_Lock","Caps_Lock",}
+keyboard_layout.keymap["a"]         = {"a",         "A",        }
+keyboard_layout.keymap["s"]         = {"s",         "S",        }
+keyboard_layout.keymap["d"]         = {"d",         "D",        }
+keyboard_layout.keymap["f"]         = {"f",         "F",        }
+keyboard_layout.keymap["g"]         = {"g",         "G",        }
+keyboard_layout.keymap["h"]         = {"h",         "H",        }
+keyboard_layout.keymap["j"]         = {"j",         "J",        }
+keyboard_layout.keymap["k"]         = {"k",         "K",        }
+keyboard_layout.keymap["l"]         = {"l",         "L",        }
+keyboard_layout.keymap[";"]         = {";",         ":",        }
+keyboard_layout.keymap["'"]         = {"'",         "\"",       }
+keyboard_layout.keymap["\\"]        = {"\\",        "|",        }
+-- keyboard_layout.keymap["Return"] = {"Return",    "Return",   }
 -- row 5              
-keyboard_layout.keymap["Shift_L"]   = {"shift",     "shift",      nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["<"]         = {"<",         ">",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["z"]         = {"z",         "Z",          nil,         nil,       nil,       "next tab",         "prior tab",        nil,                     nil,               nil,               }
-keyboard_layout.keymap["x"]         = {"x",         "X",          nil,         nil,       nil,       "go back",          "quit awesome",     nil,                     nil,               nil,               }
-keyboard_layout.keymap["c"]         = {"c",         "C",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["v"]         = {"v",         "V",          nil,         nil,       nil,       "mute mic",         "mic overlay",      nil,                     nil,               nil,               }
-keyboard_layout.keymap["b"]         = {"b",         "B",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["n"]         = {"n",         "N",          nil,         nil,       nil,       "minimize",         "un-minimize",      nil,                     nil,               nil,               }
-keyboard_layout.keymap["m"]         = {"m",         "M",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap[","]         = {",",         "<",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["."]         = {".",         ">",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["/"]         = {"/",         "?",          nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["Shift_R"]   = {"shift",     "shift",     "shift",     "shift",   "shift",    "shift",             nil,               nil,                     nil,               nil,               }
+keyboard_layout.keymap["Shift_L"]   = {"shift",     "shift",     "shift",     "shift",     "shift",     "shift",     "shift",     "shift",     "shift",     "shift",    "shift",    "shift",    }
+keyboard_layout.keymap["<"]         = {"<",         ">",        }
+keyboard_layout.keymap["z"]         = {"z",         "Z",        }
+keyboard_layout.keymap["x"]         = {"x",         "X",        }
+keyboard_layout.keymap["c"]         = {"c",         "C",        }
+keyboard_layout.keymap["v"]         = {"v",         "V",        }
+keyboard_layout.keymap["b"]         = {"b",         "B",        }
+keyboard_layout.keymap["n"]         = {"n",         "N",        }
+keyboard_layout.keymap["m"]         = {"m",         "M",        }
+keyboard_layout.keymap[","]         = {",",         "<",        }
+keyboard_layout.keymap["."]         = {".",         ">",        }
+keyboard_layout.keymap["/"]         = {"/",         "?",        }
+keyboard_layout.keymap["Shift_R"]   = {"shift",     "shift",     "shift",     "shift",     "shift",     "shift",     "shift",     "shift",     "shift",     "shift",    "shift",    "shift",    }
 -- row 6              
-keyboard_layout.keymap["Fn"]        = {"Fn",        "Fn",        "Fn",        "Fn",      "Fn",       "Fn",                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["Control_L"] = {"control",   "control",   "control",   "control", "control",  "control",           nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["Super_L"]   = {"mod4",      "mod4",      "mod4",      "mod4",    "mod4",     "mod4",              nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["Alt_L"]     = {"mod1",      "mod1",      "mod1",      "mod1",    "mod1",     "mod1",              nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["space"]     = {"[ ]",       "[ ]",       "[ ]",       "[ ]",     "[ ]",      "[ ]",               nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["Alt_R"]     = { nil,         nil,         nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["Print"]     = {"screenshot", nil,         nil,         nil,       nil,        nil,               "browse shots",    "area shot",             "area to clip",     nil,               }
-keyboard_layout.keymap["Control_R"] = { nil,         nil,         nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["Prior"]     = {"Prior",     "Prior",      nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
-keyboard_layout.keymap["Up"]        = {"Up",        "Up",         nil,         nil,       nil,       "focus up",          nil,               "#col +",                "resize up",       nil,               }
-keyboard_layout.keymap["Next"]      = {"Next",      "Next",       nil,         nil,       nil,        nil,                nil,               nil,                     nil,               nil,               }
+keyboard_layout.keymap["Fn"]        = {"Fn",        "Fn",        "Fn",        "Fn",        "Fn",        "Fn",        "Fn",        "Fn",        "Fn",        "Fn",       "Fn",       "Fn",       }
+keyboard_layout.keymap["Control_L"] = {"Crtl L",    "Crtl L",    "Crtl L",    "Crtl L",    "Crtl L",    "Crtl L",    "Crtl L",    "Crtl L",    "Crtl L",    "Crtl L",   "Crtl L",   "Crtl L",   }
+keyboard_layout.keymap["Super_L"]   = {"mod4",      "mod4",      "mod4",      "mod4",      "mod4",      "mod4",      "mod4",      "mod4",      "mod4",      "mod4",     "mod4",     "mod4",     }
+keyboard_layout.keymap["Alt_L"]     = {"mod1",      "mod1",      "mod1",      "mod1",      "mod1",      "mod1",      "mod1",      "mod1",      "mod1",      "mod1",     "mod1",     "mod1",     }
+keyboard_layout.keymap["space"]     = {"[ ]",       "[ ]",      }
+keyboard_layout.keymap["Alt_R"]     = {"Alt R",     "Alt R",     "Alt R",     "Alt R",     "Alt R",     "Alt R",     "Alt R",     "Alt R",     "Alt R",     "Alt R",    "Alt R",    "Alt R",    }
+keyboard_layout.keymap["Print"]     = { nil,         nil,       }
+keyboard_layout.keymap["Control_R"] = {"Ctrl R",    "Ctrl R",    "Ctrl R",    "Ctrl R",    "Ctrl R",    "Ctrl R",    "Ctrl R",    "Ctrl R",    "Ctrl R",    "Ctrl R",   "Ctrl R",   "Ctrl R",   }
+keyboard_layout.keymap["Prior"]     = {"Prior",     "Prior",    }
+keyboard_layout.keymap["Up"]        = {"Up",        "Up",       }
+keyboard_layout.keymap["Next"]      = {"Next",      "Next",     }
 -- row 7              
-keyboard_layout.keymap["Left"]      = {"Left",      "Left",       nil,         nil,       nil,       "focus left",        nil,              "#master +",             "resize left",      nil,               }
-keyboard_layout.keymap["Down"]      = {"Down",      "Down",       nil,         nil,       nil,       "focus down",        nil,              "#col -",                "resize down",      nil,               }
-keyboard_layout.keymap["Right"]     = {"Right",     "Right",      nil,         nil,       nil,       "focus right",       nil,              "#master -",             "resize right",     nil,               }
+keyboard_layout.keymap["Left"]      = {"Left",      "Left",     }
+keyboard_layout.keymap["Down"]      = {"Down",      "Down",     }
+keyboard_layout.keymap["Right"]     = {"Right",     "Right",    }
 
 -- long form description shoult go to
--- keyboard_layout.keydesc = {}
+keyboard_layout.keydesc = {}
 
 
 keyboard_layout.colormap = {}
--- keymap                                basic       shift     Fn         Alt_L       Alt_L+shift Super_L  Super_L+shift  Super_L+Alt_L  Super_L+Control_L  Super_L+Control_L+Alt_L
--- level                                  -1-         -2-       -3-        -4-        -5-        -6-        -7-        -8-        -9-        -10-
-keyboard_layout.colormap["ESC"]       = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["F1"]        = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["F2"]        = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["F3"]        = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["F4"]        = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["F5"]        = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["F6"]        = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["F7"]        = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["F8"]        = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["F9"]        = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["F10"]       = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["F11"]       = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["F12"]       = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["Home"]      = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["End"]       = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["Insert"]    = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["Delete"]    = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["`"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["1"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["2"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["3"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["4"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["5"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["6"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["7"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["8"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["9"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["0"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["-"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["="]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["BackSpace"] = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["Tab"]       = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["q"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["w"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["e"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["r"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["t"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["y"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["u"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["i"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["o"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["p"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["["]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["]"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["Return"]    = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["Caps_Lock"] = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["a"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["s"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["d"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["f"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["g"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["h"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["j"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["k"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["l"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap[";"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["'"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["\\"]        = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["Shift_L"]   = {"#7c5f64", x.color4,  "#7c5f64", "#7c5f64", x.color4,  "#7c5f64", x.color4,  "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["<"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["z"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["x"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["c"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["v"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["b"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["n"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["m"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap[","]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["."]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["/"]         = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["Shift_R"]   = {"#7c5f64", x.color4,  "#7c5f64", "#7c5f64", x.color4,  "#7c5f64", x.color4,  "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["Fn"]        = {"#7c5f64", "#7c5f64", x.color4,  "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["Control_L"] = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", x.color4,  x.color4,  }
-keyboard_layout.colormap["Super_L"]   = {x.color6,  x.color6,  x.color6,  x.color6,  x.color6,  x.color14, x.color14, x.color14, x.color14, x.color14, }
-keyboard_layout.colormap["Alt_L"]     = {"#7c5f64", "#7c5f64", "#7c5f64", x.color4,  x.color4,  "#7c5f64", "#7c5f64", x.color4,  "#7c5f64", x.color4,  }
-keyboard_layout.colormap["space"]     = {"#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", "#32302f", }
-keyboard_layout.colormap["Alt_R"]     = {x.color5,  x.color5,  x.color5,  x.color5,  x.color5,  x.color5,  x.color5,  x.color5,  x.color5,  x.color5,  }
-keyboard_layout.colormap["Print"]     = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["Control_R"] = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["Prior"]     = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["Up"]        = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["Next"]      = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["Left"]      = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["Down"]      = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
-keyboard_layout.colormap["Right"]     = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
+-- keymap  basic  shift Control_L  Alt_L  Alt_L+shift  Super_L  Super_L+shift  Super_L+Alt_L  Super_L+Control_L  Super_L+Control_L+Alt_L  Control_R
+-- level   -1-     -2-   -3-        -4-    -5-          -6-      -7-            -8-            -9-                -10-                     -11-
+keyboard_layout.colormap["XF86AudioMute"]         = {}
+keyboard_layout.colormap["XF86AudioLowerVolume"]  = {}
+keyboard_layout.colormap["XF86AudioRaiseVolume"]  = {}
+keyboard_layout.colormap["XF86AudioMicMute"]      = {}
+keyboard_layout.colormap["XF86MonBrightnessDown"] = {}
+keyboard_layout.colormap["XF86MonBrightnessUp"]   = {}
+keyboard_layout.colormap["XF86Display"]           = {}
+keyboard_layout.colormap["XF86WLAN"]              = {}
+keyboard_layout.colormap["XF86Tools"]             = {}
+keyboard_layout.colormap["XF86Search"]            = {}
+keyboard_layout.colormap["XF86LaunchA"]           = {}
+keyboard_layout.colormap["XF86Explorer"]          = {}
+keyboard_layout.colormap["Escape"]    = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["F1"]        = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["F2"]        = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["F3"]        = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["F4"]        = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["F5"]        = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["F6"]        = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["F7"]        = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["F8"]        = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["F9"]        = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["F10"]       = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["F11"]       = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["F12"]       = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Home"]      = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["End"]       = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Insert"]    = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Delete"]    = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["grave"]     = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["1"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["2"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["3"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["4"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["5"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["6"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["7"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["8"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["9"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["0"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["-"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["="]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["BackSpace"] = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Tab"]       = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["q"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["w"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["e"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["r"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["t"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["y"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["u"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["i"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["o"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["p"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["["]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["]"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Return"]    = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Caps_Lock"] = {"#7c5f64", x.color4,  "#7c5f64", "#7c5f64", x.color4, "#7c5f64",  x.color4,  "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
+keyboard_layout.colormap["a"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["s"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["d"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["f"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["g"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["h"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["j"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["k"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["l"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap[";"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["'"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["\\"]        = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Shift_L"]   = {"#7c5f64", x.color4,  "#7c5f64", "#7c5f64", x.color4,  "#7c5f64", x.color4,  "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
+keyboard_layout.colormap["<"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["z"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["x"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["c"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["v"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["b"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["n"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["m"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap[","]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["."]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["/"]         = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Shift_R"]   = {"#7c5f64", x.color4,  "#7c5f64", "#7c5f64", x.color4,  "#7c5f64", x.color4,  "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
+keyboard_layout.colormap["Fn"]        = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
+keyboard_layout.colormap["Control_L"] = {"#7c5f64", "#7c5f64", x.color4,  "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", x.color4,  x.color4,  "#7c5f64", "#7c5f64", }
+keyboard_layout.colormap["Super_L"]   = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", x.color4,  x.color4,  x.color4,  "#7c5f64", x.color4,  "#7c5f64", "#7c5f64", }
+keyboard_layout.colormap["Alt_L"]     = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", x.color4,  x.color4,  x.color4,  "#7c5f64", x.color4,  }
+keyboard_layout.colormap["space"]     = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Alt_R"]     = {"#7c5f64", "#7c5f64", "#7c5f64", x.color4,  x.color4,  "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", }
+keyboard_layout.colormap["Print"]     = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Control_R"] = {"#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", "#7c5f64", x.color4,  "#7c5f64",  }
+keyboard_layout.colormap["Prior"]     = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Up"]        = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Next"]      = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Left"]      = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Down"]      = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
+keyboard_layout.colormap["Right"]     = { nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,       nil,      }
 
 return keyboard_layout
