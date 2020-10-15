@@ -22,30 +22,28 @@ function kbvwr.bind.key(modifiers, key, desc, group, description, fn)
     for ii,mod in ipairs(modifiers) do
         if mod == "Alt_L" then
             table.insert(awesome_modifiers, "Mod1")
-            lvl = lvl + 2^0
+            lvl = lvl + kbvwr.config.lvl['Alt_L']
         elseif mod == "Alt_R" then
-            lvl = lvl + 2^1
+            lvl = lvl + kbvwr.config.lvl['Alt_R']
         elseif mod == "Caps_Lock" then
-            lvl = lvl + 2^2
+            lvl = lvl + kbvwr.config.lvl['Caps_Lock']
         elseif mod == "Control_L" then
             table.insert(awesome_modifiers, "Control")
-            lvl = lvl + 2^3
+            lvl = lvl + kbvwr.config.lvl['Control_L']
         elseif mod == "Control_R" then
-            lvl = lvl + 2^4
+            lvl = lvl + kbvwr.config.lvl['Control_R']
         elseif mod == "Shift_L" or mod == "Shift_R" or mod == "shift" or mod == "Shift" then
             table.insert(awesome_modifiers, "Shift")
-            lvl = lvl + 2^5
+            lvl = lvl + kbvwr.config.lvl['shift']
         elseif mod == "Super_L" or mod == "Super" then
             table.insert(awesome_modifiers, "Mod4")
-            lvl = lvl + 2^6
+            lvl = lvl + kbvwr.config.lvl['Super_L']
         end
     end
     -- create normal keymapping
     map = awful.key(awesome_modifiers, key, fn, {description = description, group = group})
     -- get level from modifiers
-    level = kbvwr.fn.level_from_lvl(lvl)
-    -- add to kbvwr
-    -- add check if prior keybinding exists and notify!
+    level = kbvwr.config.level[lvl]
     if key:find "XF86" == nil and kbvwr.layout.keymap[key][level] ~= nil then
         naughty.notify({text = "warning: keybinding \n \'level="..level.." + "..key.."\'\nalready exists!"})
     elseif key:find "XF86" == nil then
@@ -87,7 +85,7 @@ kbvwr.bind.globalkeys = gears.table.join(
     kbvwr.bind.key( {  }, "XF86MonBrightnessUp",   "bright +",   "launcher", "increase laptop brightness", function () awful.spawn.with_shell("light -A10") end),
     kbvwr.bind.key( {  }, "XF86Display",           "aRandr",     "tools",    "configure display layout",   function () awful.spawn("arandr") end),
     kbvwr.bind.key( {  }, "XF86Search",            "search",     "launcher", "activate sidebar web search prompt",
-        function () if sidebar_activate_prompt then sidebar_activate_prompt("web_search") end end),
+        function() if sidebar_activate_prompt then sidebar_activate_prompt("web_search") end end),
     kbvwr.bind.key( {  }, "XF86Tools",             "kbvwr",      "awesome",  "show keyboard bindings",     function() keyboard_viewer_show() end),
     kbvwr.bind.key( {  }, "XF86LaunchA",           "tray",       "awesome",  "toggle tray visibility",     function() tray_toggle() end),
     kbvwr.bind.key( {  }, "XF86Explorer",          "dashboard",  "awesome",  "toggle dashboard visibility",
@@ -150,7 +148,7 @@ kbvwr.bind.globalkeys = gears.table.join(
     kbvwr.bind.key( { "Super_L", "Alt_L"},     "Print", "browse",         "tools", "browse screenshots",      function() apps.screenshot("browse") end),
     kbvwr.bind.key( { "Super_L", "Control_L"}, "Print", "screenshot",     "tools", "screenshot: save area",   function() apps.screenshot("selection") end),
     kbvwr.bind.key( { "Super_L", "Shift_L"},   "Print", "screenshot",     "tools", "screenshot: clip area",   function() apps.screenshot("clipboard") end),
-    kbvwr.bind.key( { "Super_L", "Alt_L", "Shift_L"}, "Print", "edit",    "tools", "screenshot: edit",        function() apps.screenshot("gimp") end),
+    -- kbvwr.bind.key( { "Super_L", "Alt_L", "Shift_L"}, "Print", "edit",    "tools", "screenshot: edit",        function() apps.screenshot("gimp") end),
     
     -- direction keys
     kbvwr.bind.key( { "Super_L" },             "Up",     "focus up",      "client",  "focus up",                   function() awful.client.focus.bydirection("up") end),

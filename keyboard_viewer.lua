@@ -46,26 +46,29 @@ keyboard_viewer:buttons(gears.table.join(
 -- ============================================================================
 -- generate all layouts, and select from named table
 kbvwr.layouts = {}
-for ii = 1,12 do
+for ii = 1,15 do
+-- for ii = 1,#kbvwr.config.level do
     kbvwr.layouts[ii] = kbvwr.fn.create_boxed_widget(
         kbvwr.fn.create_layout(
             kbvwr.bind.keymap,
             kbvwr.bind.colormap,
             ii), 
-        dpi(1211),
-        dpi(491),
-        x.background
+        kbvwr.config.kb_width,
+        kbvwr.config.kb_height,
+        kbvwr.config.bg
+        -- x.background
         )
 end
 -- init modifier_active list and add hack in oder to recognize 'Shift'
 -- w/o distinguishing btw. L and R.
 kbvwr.modifiers_active = {}
 for key,val in pairs(kbvwr.config.modifier_list) do
-    kbvwr.modifiers_active[key] = false
+    if key == 'Shift_L' or key == 'Shift_R' then
+        -- nil
+    else
+        kbvwr.modifiers_active[key] = false
+    end
 end
-kbvwr.config.modifier_list['Shift_L'] = true -- these are not actually used, but are needed 
-kbvwr.config.modifier_list['Shift_R'] = true -- to detect shift
-
 -- wibox creation
 -- ============================================================================
 -- create the initial widget
@@ -74,13 +77,14 @@ kbvwr.widget.kblayout = kbvwr.fn.create_boxed_widget(
         kbvwr.bind.keymap,
         kbvwr.bind.colormap,
         1), 
-    dpi(1221),
-    dpi(491),
-    x.background
+    kbvwr.config.kb_width,
+    kbvwr.config.kb_height,
+    kbvwr.config.bg
+    -- x.background
 )
 
-kbvwr.fn.update_layout = function()
-    kbvwr.widget.kblayout.widget = kbvwr.layouts[kbvwr.level]
+function kbvwr.fn.update_layout(level)
+    kbvwr.widget.kblayout.widget = kbvwr.layouts[level]
 end
 
 kbvwr.widget.description_content = wibox.widget {
@@ -98,7 +102,7 @@ kbvwr.widget.description = kbvwr.fn.create_boxed_widget(
     x.background
 )
 
-kbvwr.fn.update_description = function(text)
+function kbvwr.fn.update_description(text)
     kbvwr.widget.description_content.markup = text
 end
 
@@ -151,6 +155,7 @@ function keyboard_viewer_show()
         -- only look at keys that are in the kbvwr.config.modifier_list and have 
         -- the value 'true'.
         elseif kbvwr.config.modifier_list[key] then
+            -- the only case the level can change
             if key == "Shift_L" or key == "Shift_R" then
                 -- do not distinguish btw left/right shift key
                 key = "shift"
@@ -160,15 +165,29 @@ function keyboard_viewer_show()
             elseif event == "release" then
                 kbvwr.modifiers_active[key] = false
             end
-            kbvwr.level = kbvwr.fn.level_from_modifiers(kbvwr.modifiers_active)
-            kbvwr.fn.update_layout()
+
+            local lvl = 0
+            for key,val in pairs(kbvwr.modifiers_active) do
+                -- for all active modifiers, add the according lvl value
+                if val then
+                    lvl = lvl + kbvwr.config.lvl[key]
+                end
+            end
+            -- return the level using a lookup table for known levels
+            kbvwr.level = kbvwr.config.level[lvl]
+            -- trigger layer update
+            kbvwr.fn.update_layout(kbvwr.level)
         else
             if event == "press" then
-                if kbvwr.layout.keydesc[key] ~= nil then
-                    kbvwr.widget.description_content.markup = kbvwr.layout.keydesc[key][kbvwr.level] or ""
+                if kbvwr.bind.keydesc[key] ~= nil then
+                    kbvwr.fn.update_description(
+                        kbvwr.bind.keydesc[key][kbvwr.level] or ""
+                        )
+                else
+                    kbvwr.fn.update_description("")
                 end
             elseif event == "release" then
-                kbvwr.widget.description_content.markup = ""
+                kbvwr.fn.update_description("")
             end
 
         end

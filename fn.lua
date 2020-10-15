@@ -1,61 +1,23 @@
 local awful     = require("awful")
 local helpers   = require("helpers")
 local wibox     = require("wibox")
+local naughty   = require("naughty")
 
 local kbvwr  = {}
 kbvwr.config = require("kbvwr.config")
 kbvwr.fn     = {}
 
 
-
--- function to determine level from dict of active modifiers
-function kbvwr.fn.level_from_modifiers(dict_avtive_modifiers)
-    -- this function looks at the 'dict_avtive_modifiers' dictionary to determine the
-    -- current level to be displayed.
-    -- keyboard_layout.keymap / keyboard_layout.colormap / keyboard_layout.keydesc
-    lvl = 0
-    if dict_avtive_modifiers['Alt_L']     then lvl = lvl + 2^0 end
-    if dict_avtive_modifiers['Alt_R']     then lvl = lvl + 2^1 end
-    if dict_avtive_modifiers['Caps_Lock'] then lvl = lvl + 2^2 end
-    if dict_avtive_modifiers['Control_L'] then lvl = lvl + 2^3 end
-    if dict_avtive_modifiers['Control_R'] then lvl = lvl + 2^4 end
-    if dict_avtive_modifiers['shift']     then lvl = lvl + 2^5 end
-    if dict_avtive_modifiers['Super_L']   then lvl = lvl + 2^6 end
-
-    return kbvwr.fn.level_from_lvl(lvl)
-end
-
--- function to translate lvl=sum_i (a_i*2^i) to level
-function kbvwr.fn.level_from_lvl(lvl)
-    local level = 1
-    if     lvl == 1 then -- Alt_L
-        level = 12
-    elseif lvl == 2 then -- Alt_R
-        level = 4
-    elseif lvl == 4 then -- Caps_Lock
-        level = 2
-    elseif lvl == 8 then -- Control_L
-        level = 3
-    elseif lvl == 16 then -- Control_R
-        level = 11
-    elseif lvl == 32 then -- shift
-        level = 2
-    elseif lvl == 64 then -- Super_L
-        level = 6
-    elseif lvl == 2 + 32 then -- Alt_R + shift
-        level = 5
-    elseif lvl == 64 + 32 then -- Super_L + shift
-        level = 7
-    elseif lvl == 64 + 1 then -- Super_L + Alt_L
-        level = 8
-    elseif lvl == 64 + 8 then -- Super_L + Control_L
-        level = 9
-    elseif lvl == 64 + 8 + 1 then -- Super_L + Control_L + Alt_L
-        level = 10
+function kbvwr.fn.has_key(tab, key)
+    for index, value in pairs(tab) do
+      
+        if index == key then
+            return true
+        end
     end
-    -- naughty.notify({text = "level is " .. level .. "\n lvl is " .. lvl})
-    return level
+    return false
 end
+
 
 -- Helper function that puts a widget inside a box with a specified background color
 -- Invisible margins are added so that the boxes created with this function are evenly separated
@@ -66,8 +28,6 @@ function kbvwr.fn.create_boxed_widget(widget_to_be_boxed, width, height, bg_colo
     box_container.forced_height = height
     box_container.forced_width = width
     box_container.shape = helpers.rrect(kbvwr.config.box_radius)
-    -- box_container.shape = helpers.prrect(20, true, true, true, true)
-    -- box_container.shape = helpers.prrect(30, true, true, false, true)
 
     local boxed_widget = wibox.widget {
         -- Add margins
@@ -99,23 +59,23 @@ end
 
 -- Function to draw a nice key.
 function kbvwr.fn.create_key(key,keymap,colormap,level,height,width)
-local key_box = wibox.widget {
-  {
-    name = key,
-    font = "Sans Bold 11",
-    align = "center",
-    valign = "center",
-    widget = wibox.widget.textbox(keymap[key][level] or "")
-  },
-  widget = wibox.widget {
-    bg = colormap[key][level] or "#32302f",
-    forced_height = dpi(height),
-    forced_width  = dpi(width),
-    shape = helpers.rrect(dpi(4)),
-    widget = wibox.container.background()
+  local key_box = wibox.widget {
+    {
+      name = key,
+      font = "Sans Bold 11",
+      align = "center",
+      valign = "center",
+      widget = wibox.widget.textbox(keymap[key][level] or "")
+    },
+    widget = wibox.widget {
+      bg = colormap[key][level] or bvwr.config.default_key_color,
+      forced_height = dpi(height),
+      forced_width  = dpi(width),
+      shape = helpers.rrect(dpi(4)),
+      widget = wibox.container.background()
+    }
   }
-}
-return key_box
+  return key_box
 end
 
 -- Function to create the keyboard layout for each level.
