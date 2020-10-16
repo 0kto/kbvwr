@@ -7,18 +7,6 @@ local kbvwr  = {}
 kbvwr.config = require("kbvwr.config")
 kbvwr.fn     = {}
 
-
-function kbvwr.fn.has_key(tab, key)
-    for index, value in pairs(tab) do
-      
-        if index == key then
-            return true
-        end
-    end
-    return false
-end
-
-
 -- Helper function that puts a widget inside a box with a specified background color
 -- Invisible margins are added so that the boxes created with this function are evenly separated
 -- The widget_to_be_boxed is vertically and horizontally centered inside the box
@@ -68,7 +56,7 @@ function kbvwr.fn.create_key(key,keymap,colormap,level,height,width)
       widget = wibox.widget.textbox(keymap[key][level] or "")
     },
     widget = wibox.widget {
-      bg = colormap[key][level] or bvwr.config.default_key_color,
+      bg = colormap[key][level] or kbvwr.config.default_key_color,
       forced_height = dpi(height),
       forced_width  = dpi(width),
       shape = helpers.rrect(dpi(4)),

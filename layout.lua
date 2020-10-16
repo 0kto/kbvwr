@@ -15,6 +15,15 @@ local function expanded_array(value, iterations)
 	return output
 end
 
+local function has_key(tab, key)
+    for _,value in ipairs(tab) do
+        if value == key then
+            return true
+        end
+    end
+    return false
+end
+
 kbvwr.layout.keymap = {}
 -- Fn + F[1-12] Keys need to be defined as well
 kbvwr.layout.keymap['XF86AudioMute']         = {}
@@ -111,21 +120,21 @@ kbvwr.layout.keymap['Shift_R']   = expanded_array('shift',  #(kbvwr.config.level
 -- row 6              
 kbvwr.layout.keymap['Fn']        = expanded_array('Fn',     #(kbvwr.config.level_modifier_combo))
 kbvwr.layout.keymap['Control_L'] = expanded_array('Crtl L', #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Super_L']   = expanded_array('',   #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Super_L']   = expanded_array('',      #(kbvwr.config.level_modifier_combo))
 kbvwr.layout.keymap['Alt_L']     = expanded_array('mod1',   #(kbvwr.config.level_modifier_combo))
 kbvwr.layout.keymap['space']     = expanded_array('[ ]',    #(kbvwr.config.level_modifier_combo))
 kbvwr.layout.keymap['Alt_R']     = expanded_array('Alt R',  #(kbvwr.config.level_modifier_combo))
 kbvwr.layout.keymap['Print']     = expanded_array('Print',  #(kbvwr.config.level_modifier_combo))
 kbvwr.layout.keymap['Control_R'] = expanded_array('Ctrl R', #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Prior']     = expanded_array('',  #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Up']        = expanded_array('ﰵ',     #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Next']      = expanded_array('',   #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Prior']     = expanded_array('',      #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Up']        = expanded_array('ﰵ',      #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Next']      = expanded_array('',      #(kbvwr.config.level_modifier_combo))
 -- row 7              
-kbvwr.layout.keymap['Left']      = expanded_array('ﰯ',   #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Down']      = expanded_array('ﰬ',   #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Right']     = expanded_array('ﰲ',  #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Left']      = expanded_array('ﰯ',      #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Down']      = expanded_array('ﰬ',      #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Right']     = expanded_array('ﰲ',      #(kbvwr.config.level_modifier_combo))
 
--- long form description shoult go to
+-- long form description should go to
 kbvwr.layout.keydesc = {}
 for key,val in pairs(kbvwr.layout.keymap) do
   kbvwr.layout.keydesc[key] = {}
@@ -136,18 +145,6 @@ for key,val in pairs(kbvwr.layout.keymap) do
   kbvwr.layout.colormap[key] = {}
 end
 -- set colormap for modifiers
-
-
-local function has_key(tab, key)
-    for _, value in ipairs(tab) do
-      
-        if value == key then
-            return true
-        end
-    end
-    return false
-end
-
 for level,combo in pairs(kbvwr.config.level_modifier_combo) do
 	for mod,_ in pairs(kbvwr.config.modifier_list) do
 		if has_key(combo, mod) then
