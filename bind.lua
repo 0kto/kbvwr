@@ -128,13 +128,15 @@ kbvwr.bind.globalkeys = gears.table.join(
     kbvwr.bind.key( { "Super_L", "Alt_L", "Control_L" }, "k", "icon: ",  "layout", "move border up",             function() helpers.resize_dwim(client.focus, "up") end),
     kbvwr.bind.key( { "Super_L", "Alt_L", "Control_L" }, "l", "icon: ",  "layout", "move border left",           function() awful.client.focus.bydirection("right") end),
 
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "n",      "restore min",   "layout",  "restore minimized client",
+    kbvwr.bind.key( { "Super_L", "Control_L"}, "n",     "restore min",   "layout",  "restore minimized client",
         function()
             local c = awful.client.restore()
             -- Focus restored client
             if c then client.focus = c end
         end),
-    kbvwr.bind.key( { "Super_L" },             "space",  "clear",         "awesome", "clear all notifications",   
+    kbvwr.bind.key( { "Super_L" },             "space", "layout +", "layout", "switch to next layout", function () awful.layout.inc( 1) end),
+    kbvwr.bind.key( { "Super_L", "shift" },    "space", "layout -", "layout", "switch to previous layout", function () awful.layout.inc(-1) end),
+    kbvwr.bind.key( { "Super_L", "Control_L"}, "space", "clear",         "awesome", "clear all notifications",   
         function() 
             awesome.emit_signal("elemental::dismiss")
             naughty.destroy_all_notifications()
@@ -161,6 +163,61 @@ kbvwr.bind.globalkeys = gears.table.join(
     kbvwr.bind.key(  { "Super_L", "Alt_L", "Control_L" }, "Left",  "icon: ",  "layout", "move border up",             function() helpers.resize_dwim(client.focus, "up") end),
     kbvwr.bind.key(  { "Super_L", "Alt_L", "Control_L" }, "Right", "icon: ",  "layout", "move border left",           function() helpers.resize_dwim(client.focus, "right") end)
 )
+-- standard global keys
+--[[
+
+    awful.key({ modkey }, "x",
+              function ()
+                  awful.prompt.run {
+                    prompt       = "Run Lua code: ",
+                    textbox      = awful.screen.focused().mypromptbox.widget,
+                    exe_callback = awful.util.eval,
+                    history_path = awful.util.get_cache_dir() .. "/history_eval"
+                  }
+              end,
+              {description = "lua execute prompt", group = "awesome"}),
 
 
+
+-- Tags related keybindings
+awful.keyboard.append_global_keybindings({
+    awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
+              {description = "view previous", group = "tag"}),
+    awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
+              {description = "view next", group = "tag"}),
+    awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
+              {description = "go back", group = "tag"}),
+})
+
+
+--]]
+
+kbvwr.bind.clientkeys = gears.table.join(
+    kbvwr.bind.key(  { "Super_L" }, "t", "top",     "client", "toggle keep on top", function (c) c.ontop = not c.ontop end),
+    kbvwr.bind.key(  { "Super_L" }, "o", "mv:scrn", "client", "move client to screen", function (c) c:move_to_screen() end),
+    kbvwr.bind.key(  { "Super_L", "Alt_L" }, "[", "opacity -",  "client", "decrease client opacity", 
+        function (c)
+            c.opacity = c.opacity - 0.05
+        end),
+    kbvwr.bind.key(  { "Super_L", "Alt_L" }, "]", "opacity +",  "client", "increase client opacity", 
+        function (c)
+            c.opacity = c.opacity + 0.05
+        end),
+    kbvwr.bind.key(  { "Super_L" }, "p", "sticky",  "client", "toggle sticky", function (c) c.sticky = not c.sticky end),
+    kbvwr.bind.key(  { "Super_L", "Control_L" }, "Return", "mk master","client", "promote client to master", function (c) c:swap(awful.client.getmaster()) end),
+    kbvwr.bind.key(  { "Super_L" }, "f", "float",   "client", "toggle floating", function () awful.client.floating.toggle() end),
+    kbvwr.bind.key(  { "Super_L", "shift"}, "c", "close",  "client", "close client", function (c) c:kill() end),
+    kbvwr.bind.key(  { "Super_L" }, "f", "max",     "client", "maximize client",
+        function (c)
+            c.fullscreen = not c.fullscreen
+            c:raise()
+        end ),
+    kbvwr.bind.key(  { "Super_L" }, "n", "min",    "client", "minimize client",
+        function (c)
+            -- The client currently has the input focus, so it cannot be
+            -- minimized, since minimized clients can't have the focus.
+            c.minimized = true
+        end )
+
+)
 return kbvwr.bind
