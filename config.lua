@@ -3,6 +3,10 @@ local beautiful = require("beautiful")
 local kbvwr  = {}
 kbvwr.config = {}
 
+kbvwr.config.font             = "Cousine Nerd Font"
+kbvwr.config.fontsize         = "12"
+kbvwr.config.fontsize_symbols = "16"
+
 kbvwr.config.groupcolors = {}
 kbvwr.config.groupcolors["launcher"] = x.color2
 kbvwr.config.groupcolors["apps"]     = x.color3

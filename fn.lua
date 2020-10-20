@@ -47,16 +47,33 @@ end
 
 -- Function to draw a nice key.
 function kbvwr.fn.create_key(key,keymap,colormap,level,height,width)
+
+  local text = keymap[key][level] or ""
+  local  font = kbvwr.config.font.." ".. kbvwr.config.fontsize
+  if text ~= "" and text:find "icon:" ~= nil then
+    font = kbvwr.config.font.." ".. kbvwr.config.fontsize_symbols
+    text = text:gsub("icon:", "")
+  end
+  
+  -- set font color if bg is the default key color
+  local bg = colormap[key][level] or kbvwr.config.default_key_color
+  if bg ~= kbvwr.config.default_key_color then
+    fg = kbvwr.config.default_key_color
+  else
+    fg = kbvwr.config.fg
+  end
+
   local key_box = wibox.widget {
     {
-      name = key,
-      font = "Sans Bold 11",
+      id = key,
+      font = font,
       align = "center",
       valign = "center",
-      widget = wibox.widget.textbox(keymap[key][level] or "")
+      widget = wibox.widget.textbox(text, true)
     },
     widget = wibox.widget {
-      bg = colormap[key][level] or kbvwr.config.default_key_color,
+      bg = bg,
+      fg = fg,
       forced_height = dpi(height),
       forced_width  = dpi(width),
       shape = helpers.rrect(dpi(4)),

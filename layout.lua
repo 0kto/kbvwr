@@ -72,9 +72,9 @@ kbvwr.layout.keymap['9']         = {'9',         '(',        }
 kbvwr.layout.keymap['0']         = {'0',         ')',        }
 kbvwr.layout.keymap['-']         = {'-',         '_',        }
 kbvwr.layout.keymap['=']         = {'=',         '+',        }
-kbvwr.layout.keymap['BackSpace'] = expanded_array('BackSpace',  #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['BackSpace'] = expanded_array('icon:',  #(kbvwr.config.level_modifier_combo))
 -- row     3          
-kbvwr.layout.keymap['Tab']       = {'Tab',       'Tab',      }
+kbvwr.layout.keymap['Tab']       = expanded_array('icon:',  #(kbvwr.config.level_modifier_combo))
 kbvwr.layout.keymap['q']         = {'q',         'Q',        }
 kbvwr.layout.keymap['w']         = {'w',         'W',        }
 kbvwr.layout.keymap['e']         = {'e',         'E',        }
@@ -87,9 +87,9 @@ kbvwr.layout.keymap['o']         = {'o',         'O',        }
 kbvwr.layout.keymap['p']         = {'p',         'P',        }
 kbvwr.layout.keymap['[']         = {'[',         '{',        }
 kbvwr.layout.keymap[']']         = {']',         '}',        }
-kbvwr.layout.keymap['Return']    = {'Return',    'Return',   }
+kbvwr.layout.keymap['Return']    = expanded_array('icon:',  #(kbvwr.config.level_modifier_combo))
 -- row 4          
-kbvwr.layout.keymap['Caps_Lock'] = expanded_array('Caps Lock',  #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Caps_Lock'] = expanded_array('icon:',  #(kbvwr.config.level_modifier_combo))
 kbvwr.layout.keymap['a']         = {'a',         'A',        }
 kbvwr.layout.keymap['s']         = {'s',         'S',        }
 kbvwr.layout.keymap['d']         = {'d',         'D',        }
@@ -104,7 +104,7 @@ kbvwr.layout.keymap["'"]         = {"'",         "\"",       }
 kbvwr.layout.keymap['\\']        = {'\\',        '|',        }
 -- kbvwr.layout.keymap['Return'] = {'Return',    'Return',   }
 -- row 5              
-kbvwr.layout.keymap['Shift_L']   = expanded_array('shift', #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Shift_L']   = expanded_array('icon:', #(kbvwr.config.level_modifier_combo))
 kbvwr.layout.keymap['<']         = {'<',         '>',        }
 kbvwr.layout.keymap['z']         = {'z',         'Z',        }
 kbvwr.layout.keymap['x']         = {'x',         'X',        }
@@ -116,23 +116,23 @@ kbvwr.layout.keymap['m']         = {'m',         'M',        }
 kbvwr.layout.keymap[',']         = {',',         '<',        }
 kbvwr.layout.keymap['.']         = {'.',         '>',        }
 kbvwr.layout.keymap['/']         = {'/',         '?',        }
-kbvwr.layout.keymap['Shift_R']   = expanded_array('shift',  #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Shift_R']   = expanded_array('icon:',  #(kbvwr.config.level_modifier_combo))
 -- row 6              
 kbvwr.layout.keymap['Fn']        = expanded_array('Fn',     #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Control_L'] = expanded_array('Crtl L', #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Super_L']   = expanded_array('',      #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Alt_L']     = expanded_array('mod1',   #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['space']     = expanded_array('[ ]',    #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Alt_R']     = expanded_array('Alt R',  #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Print']     = expanded_array('Print',  #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Control_R'] = expanded_array('Ctrl R', #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Prior']     = expanded_array('',      #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Up']        = expanded_array('ﰵ',      #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Next']      = expanded_array('',      #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Control_L'] = expanded_array('icon:', #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Super_L']   = expanded_array('icon:',      #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Alt_L']     = expanded_array('icon:',   #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['space']     = expanded_array('icon:',    #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Alt_R']     = expanded_array('icon:',  #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Print']     = expanded_array('icon:',  #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Control_R'] = expanded_array('icon:', #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Prior']     = expanded_array('icon:',      #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Up']        = expanded_array('icon:',      #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Next']      = expanded_array('icon:',      #(kbvwr.config.level_modifier_combo))
 -- row 7              
-kbvwr.layout.keymap['Left']      = expanded_array('ﰯ',      #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Down']      = expanded_array('ﰬ',      #(kbvwr.config.level_modifier_combo))
-kbvwr.layout.keymap['Right']     = expanded_array('ﰲ',      #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Left']      = expanded_array('icon:',      #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Down']      = expanded_array('icon:',      #(kbvwr.config.level_modifier_combo))
+kbvwr.layout.keymap['Right']     = expanded_array('icon:',      #(kbvwr.config.level_modifier_combo))
 
 -- long form description should go to
 kbvwr.layout.keydesc = {}

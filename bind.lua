@@ -69,68 +69,66 @@ kbvwr.bind.globalkeys = gears.table.join(
     -- --     {description = "App drawer", group = "custom"}),
 
     -- XF86... bindings
-    kbvwr.bind.key( {  }, "XF86AudioMute",         "mute",       "media",    "mute",                       function () helpers.volume_control(0) end),
-    kbvwr.bind.key( {  }, "XF86AudioLowerVolume",  "vol -",      "media",    "decrease volume",            function () helpers.volume_control(-5) end),
-    kbvwr.bind.key( {  }, "XF86AudioRaiseVolume",  "vol +",      "media",    "increase volume",            function () helpers.volume_control(5) end),
-    kbvwr.bind.key( {  }, "XF86AudioMicMute",      "mute mic",   "media",    "mute microphone",
+    kbvwr.bind.key( {  }, "XF86AudioMute",        "icon:ﱝ", "media", "mute",            function () helpers.volume_control(0) end),
+    kbvwr.bind.key( {  }, "XF86AudioLowerVolume", "icon:ﱜ", "media", "decrease volume", function () helpers.volume_control(-5) end),
+    kbvwr.bind.key( {  }, "XF86AudioRaiseVolume", "icon:ﱛ", "media", "increase volume", function () helpers.volume_control(5) end),
+    kbvwr.bind.key( {  }, "XF86AudioMicMute",     "icon:", "media", "mute microphone",
         function()
             awful.spawn.with_shell("amixer -D pulse sset Capture toggle &> /dev/null")
         end),
-    kbvwr.bind.key( {  }, "XF86MonBrightnessDown", "bright -",   "launcher", "decrease laptop brightness", function () awful.spawn.with_shell("light -U 10") end),
-    kbvwr.bind.key( {  }, "XF86MonBrightnessUp",   "bright +",   "launcher", "increase laptop brightness", function () awful.spawn.with_shell("light -A10") end),
-    kbvwr.bind.key( {  }, "XF86Display",           "aRandr",     "tools",    "configure display layout",   function () awful.spawn("arandr") end),
-    kbvwr.bind.key( {  }, "XF86Search",            "search",     "launcher", "activate sidebar web search prompt",
+    kbvwr.bind.key( {  }, "XF86MonBrightnessDown", "icon:", "launcher", "decrease laptop brightness", function () awful.spawn.with_shell("light -U 10") end),
+    kbvwr.bind.key( {  }, "XF86MonBrightnessUp",   "icon:", "launcher", "increase laptop brightness", function () awful.spawn.with_shell("light -A10") end),
+    kbvwr.bind.key( {  }, "XF86Display",           "icon:", "tools",    "configure display layout",   function () awful.spawn("arandr") end),
+    kbvwr.bind.key( {  }, "XF86Search",            "icon:ﰍ", "launcher", "activate sidebar web search prompt",
         function() if sidebar_activate_prompt then sidebar_activate_prompt("web_search") end end),
-    kbvwr.bind.key( {  }, "XF86Tools",             "kbvwr",      "awesome",  "show keyboard bindings",     function() keyboard_viewer_show() end),
-    kbvwr.bind.key( {  }, "XF86LaunchA",           "tray",       "awesome",  "toggle tray visibility",     function() tray_toggle() end),
-    kbvwr.bind.key( {  }, "XF86Explorer",          "dashboard",  "awesome",  "toggle dashboard visibility",
+    kbvwr.bind.key( {  }, "XF86Tools",             "icon:", "awesome",  "show keyboard bindings",     function() keyboard_viewer_show() end),
+    kbvwr.bind.key( {  }, "XF86LaunchA",           "tray",   "awesome",  "toggle tray visibility",     function() tray_toggle() end),
+    kbvwr.bind.key( {  }, "XF86Explorer",          "icon:﵁", "awesome",  "toggle dashboard visibility",
         function() if dashboard_show then dashboard_show() end end),
 
 
     -- normal keyboard bindings
-    kbvwr.bind.key( { "Super_L"},              "Escape", "quit",          "awesome", "show shutdown menu",          function() exit_screen_show() end),
-    -- kbvwr.bind.key( { "Super_L" },             "F9",     "kbvwr",         "awesome", "show keyboard bindings",      function() keyboard_viewer_show() end),
-    -- kbvwr.bind.key( { "Super_L" },             "F11",    "tray",          "awesome", "toggle tray visibility",      function () tray_toggle() end),
-    kbvwr.bind.key( { "Super_L"},             "grave",   "sidebar",       "awesome", "toggle sidebar visibility",   function() sidebar_toggle() end),
-    kbvwr.bind.key( { "Super_L" },             "-",      "gap -",         "layout",  "decrease gap",                function() kawful.tag.incgap(5, nil) end),
-    kbvwr.bind.key( { "Super_L", "Shift"},     "-",      "gap +",         "layout",  "increase gap",                function() awful.tag.incgap(-5, nil) end),
-    kbvwr.bind.key( { "Control_L", "Alt_L"},   "Delete", "#!-top",        "tools",   "show bashtop",                function() apps.process_monitor() end),
-    kbvwr.bind.key( { "Super_L" },             "Return", "terminal",      "apps",    "spawn terminal",              function() awful.spawn(user.terminal) end),
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "Return", "wibar",         "launcher","toggle wibar visibility",     function() wibars_toggle() end),
-    kbvwr.bind.key( { "Super_L", "Shift"},     "Return", "floating term", "apps",    "spawn floating terminal",     function() awful.spawn(user.floating_terminal, {floating = true}) end),
-    kbvwr.bind.key( { "Super_L" },             "Tab",    "switcher",      "client",  "window switcher",             function() window_switcher_show(awful.screen.focused()) end),
-    kbvwr.bind.key( { "Super_L" },             "e",      "ranger",        "tools",   "open ranger",                 function() apps.file_manager() end),
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "e",      "pcmanfm",       "tools",   "open pcmanfm",                function() awful.spawn("pcmanfm") end),
-    kbvwr.bind.key( { "Super_L"},              "r",      "run",           "launcher","activate sidebar run prompt",
+    kbvwr.bind.key( { "Super_L"},              "Escape", "quit",     "awesome",  "show shutdown menu",          function() exit_screen_show() end),
+    kbvwr.bind.key( { "Super_L" },             "grave",  "sidebar",  "awesome",  "toggle sidebar visibility",   function() sidebar_toggle() end),
+    kbvwr.bind.key( { "Super_L", "Control_L"}, "-",      "gap -",    "layout",   "decrease gap",                function() kawful.tag.incgap(5, nil) end),
+    kbvwr.bind.key( { "Super_L", "Control_L"}, "=",      "gap +",    "layout",   "increase gap",                function() awful.tag.incgap(-5, nil) end),
+    kbvwr.bind.key( { "Control_L", "Alt_L"},   "Delete", "#!-top",   "tools",    "show bashtop",                function() apps.process_monitor() end),
+    kbvwr.bind.key( { "Super_L" },             "Return", "icon:",   "apps",     "spawn terminal",              function() awful.spawn(user.terminal) end),
+    kbvwr.bind.key( { "Super_L", "Control_L"}, "Return", "wibar",    "launcher", "toggle wibar visibility",     function() wibars_toggle() end),
+    kbvwr.bind.key( { "Super_L", "Shift"},     "Return", "icon:",  "apps",     "spawn floating terminal",     function() awful.spawn(user.floating_terminal, {floating = true}) end),
+    kbvwr.bind.key( { "Super_L" },             "Tab",    "icon:",   "client",   "window switcher",             function() window_switcher_show(awful.screen.focused()) end),
+    kbvwr.bind.key( { "Super_L" },             "e",      "icon:",  "tools",    "open ranger",                 function() apps.file_manager() end),
+    kbvwr.bind.key( { "Super_L", "Control_L"}, "e",      "icon:",   "tools",    "open pcmanfm",                function() awful.spawn("pcmanfm") end),
+    kbvwr.bind.key( { "Super_L"},              "r",      "run",      "launcher", "activate sidebar run prompt",
         function () if sidebar_activate_prompt then sidebar_activate_prompt("run") end end),
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "r",      "restart",       "awesome", "restart awesomeWM",           function() awesome.restart() end),
-    kbvwr.bind.key( { "Super_L" },             "u",      "-> urgent",     "client",  "switch to urgent client",
+    kbvwr.bind.key( { "Super_L", "Control_L"}, "r",      "restart",  "awesome",  "restart awesomeWM",           function() awesome.restart() end),
+    kbvwr.bind.key( { "Super_L" },             "u",      "icon: ", "client",   "switch to urgent client",
         function ()
             uc = awful.client.urgent.get()
             -- If there is no urgent client, go back to last tag
             if uc == nil then awful.tag.history.restore() else awful.client.urgent.jumpto() end
         end),
-    kbvwr.bind.key( { "Super_L" },             "p",      "pass",          "tools",  "pass via dmenu",               function () awful.spawn("passdmenu") end),
+    kbvwr.bind.key( { "Super_L" },             "p",      "icon:",        "tools",  "pass via dmenu",               function () awful.spawn("passdmenu") end),
     kbvwr.bind.key( { "Super_L" },             "d",      "rofi",          "launcher","rofi launcher",
         function()
             awful.spawn.with_shell("rofi -matching fuzzy -show combi")
         end),
 
     -- hkl keys
-    kbvwr.bind.key( { "Super_L" },             "h",      "focus left",    "client",  "focus left",                 function() awful.client.focus.bydirection("left") end),
-    kbvwr.bind.key( { "Super_L" },             "j",      "focus down",    "client",  "focus down",                 function() awful.client.focus.bydirection("down") end),
-    kbvwr.bind.key( { "Super_L" },             "k",      "focus up",      "client",  "focus up",                   function() awful.client.focus.bydirection("up") end),
-    kbvwr.bind.key( { "Super_L" },             "l",      "focus right",   "client",  "focus right",                function() awful.client.focus.bydirection("right") end),
-    kbvwr.bind.key( { "Super_L", "Alt_L"},     "h",      "#+ master",     "layout",  "increase number of clients", function() awful.tag.incnmaster(1, nil, true) end),
-    kbvwr.bind.key( { "Super_L", "Alt_L"},     "j",      "#- col",        "layout",  "lower number of columns",    function() awful.tag.incncol(-1, nil, true) end),
-    kbvwr.bind.key( { "Super_L", "Alt_L"},     "k",      "#+ col",        "layout",  "increase number of columns", function() awful.tag.incncol(1, nil, true) end),
-    kbvwr.bind.key( { "Super_L", "Alt_L"},     "l",      "#- master",     "layout",  "lower number of clients",    function() awful.tag.incnmaster(-1, nil, true)  end),
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "h",      "| <",           "layout",  "move border left",           function() helpers.resize_dwim(client.focus, "left") end),
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "j",      "| v",           "layout",  "move border down",           function() helpers.resize_dwim(client.focus, "down") end),
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "k",      "| ^",           "layout",  "move border up",             function() helpers.resize_dwim(client.focus, "up") end),
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "l",      "| >",           "layout",  "move border left",           function() awful.client.focus.bydirection("right") end),
+    kbvwr.bind.key( { "Super_L" },                       "h", "icon:\r", "client", "focus left",                 function() awful.client.focus.bydirection("left") end),
+    kbvwr.bind.key( { "Super_L" },                       "j", "icon:\r", "client", "focus down",                 function() awful.client.focus.bydirection("down") end),
+    kbvwr.bind.key( { "Super_L" },                       "k", "icon: ",  "client", "focus up",                   function() awful.client.focus.bydirection("up") end),
+    kbvwr.bind.key( { "Super_L" },                       "l", "icon: ",  "client", "focus right",                function() awful.client.focus.bydirection("right") end),
+    kbvwr.bind.key( { "Super_L", "Alt_L" },              "h", "icon:ﰂ",    "layout", "increase number of clients", function() awful.tag.incnmaster(1, nil, true) end),
+    kbvwr.bind.key( { "Super_L", "Alt_L" },              "j", "icon:吝",    "layout", "lower number of columns",    function() awful.tag.incncol(-1, nil, true) end),
+    kbvwr.bind.key( { "Super_L", "Alt_L" },              "k", "icon:溺",    "layout", "increase number of columns", function() awful.tag.incncol(1, nil, true) end),
+    kbvwr.bind.key( { "Super_L", "Alt_L" },              "l", "icon:ﯰ",    "layout", "lower number of clients",    function() awful.tag.incnmaster(-1, nil, true)  end),
+    kbvwr.bind.key( { "Super_L", "Alt_L", "Control_L" }, "h", "icon:\r", "layout", "move border left",           function() helpers.resize_dwim(client.focus, "left") end),
+    kbvwr.bind.key( { "Super_L", "Alt_L", "Control_L" }, "j", "icon:\r", "layout", "move border down",           function() helpers.resize_dwim(client.focus, "down") end),
+    kbvwr.bind.key( { "Super_L", "Alt_L", "Control_L" }, "k", "icon: ",  "layout", "move border up",             function() helpers.resize_dwim(client.focus, "up") end),
+    kbvwr.bind.key( { "Super_L", "Alt_L", "Control_L" }, "l", "icon: ",  "layout", "move border left",           function() awful.client.focus.bydirection("right") end),
 
-    kbvwr.bind.key( { "Super_L", "Shift_L"},   "n",      "restore min",   "layout",  "restore minimized client",
+    kbvwr.bind.key( { "Super_L", "Control_L"}, "n",      "restore min",   "layout",  "restore minimized client",
         function()
             local c = awful.client.restore()
             -- Focus restored client
@@ -143,26 +141,25 @@ kbvwr.bind.globalkeys = gears.table.join(
         end),
 
     -- Print
-    kbvwr.bind.key( { },                       "Print", "screenshot",     "tools", "screenshot: full screen",      function() apps.screenshot("full")  end),
-    kbvwr.bind.key( { "Super_L", "Alt_L"},     "Print", "browse",         "tools", "browse screenshots",           function() apps.screenshot("browse") end),
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "Print", "screenshot",     "tools", "screenshot: save area",        function() apps.screenshot("selection") end),
-    kbvwr.bind.key( { "Super_L", "Shift_L"},   "Print", "screenshot",     "tools", "screenshot: clip area",        function() apps.screenshot("clipboard") end),
+    kbvwr.bind.key( { },                       "Print", "icon:", "tools", "screenshot: full screen", function() apps.screenshot("full")  end),
+    kbvwr.bind.key( { "Super_L", "Alt_L"},     "Print", "browse", "tools", "browse screenshots",      function() apps.screenshot("browse") end),
+    kbvwr.bind.key( { "Super_L", "Control_L"}, "Print", "icon:", "tools", "screenshot: save area",   function() apps.screenshot("selection") end),
+    kbvwr.bind.key( { "Super_L", "Shift_L"},   "Print", "icon:", "tools", "screenshot: clip area",   function() apps.screenshot("clipboard") end),
     -- kbvwr.bind.key( { "Super_L", "Alt_L", "Shift_L"}, "Print", "edit",    "tools", "screenshot: edit",             function() apps.screenshot("gimp") end),
     
     -- direction keys
-    kbvwr.bind.key( { "Super_L" },             "Up",     "focus up",      "client",  "focus up",                   function() awful.client.focus.bydirection("up") end),
-    kbvwr.bind.key( { "Super_L" },             "Down",   "focus down",    "client",  "focus down",                 function() awful.client.focus.bydirection("down") end),
-    kbvwr.bind.key( { "Super_L" },             "Left",   "focus left",    "client",  "focus left",                 function() awful.client.focus.bydirection("left") end),
-    kbvwr.bind.key( { "Super_L" },             "Right",  "focus right",   "client",  "focus right",                function() awful.client.focus.bydirection("right") end),
-    kbvwr.bind.key( { "Super_L", "Alt_L"},     "Up",     "#+ master",     "layout",  "increase number of clients", function() awful.tag.incnmaster(1, nil, true) end),
-    kbvwr.bind.key( { "Super_L", "Alt_L"},     "Down",   "#- col",        "layout",  "lower number of columns",    function() awful.tag.incncol(-1, nil, true) end),
-    kbvwr.bind.key( { "Super_L", "Alt_L"},     "Left",   "#+ col",        "layout",  "increase number of columns", function() awful.tag.incncol(1, nil, true) end),
-    kbvwr.bind.key( { "Super_L", "Alt_L"},     "Right",  "#- master",     "layout",  "lower number of clients",    function() awful.tag.incnmaster(-1, nil, true)  end),
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "Up",     "| <",           "layout",  "move border left",           function() helpers.resize_dwim(client.focus, "left") end),
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "Down",   "| v",           "layout",  "move border down",           function() helpers.resize_dwim(client.focus, "down") end),
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "Left",   "| ^",           "layout",  "move border up",             function() helpers.resize_dwim(client.focus, "up") end),
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "Right",  "| >",           "layout",  "move border left",           function() helpers.resize_dwim(client.focus, "right") end)
-
+    kbvwr.bind.key(  { "Super_L" },                       "Up",    "icon:\r", "client", "focus up",                   function() awful.client.focus.bydirection("up") end),
+    kbvwr.bind.key(  { "Super_L" },                       "Down",  "icon:\r", "client", "focus down",                 function() awful.client.focus.bydirection("down") end),
+    kbvwr.bind.key(  { "Super_L" },                       "Left",  "icon: ",  "client", "focus left",                 function() awful.client.focus.bydirection("left") end),
+    kbvwr.bind.key(  { "Super_L" },                       "Right", "icon: ",  "client", "focus right",                function() awful.client.focus.bydirection("right") end),
+    kbvwr.bind.key(  { "Super_L", "Alt_L" },              "Up",    "icon:ﰂ",    "layout", "increase number of clients", function() awful.tag.incnmaster(1, nil, true) end),
+    kbvwr.bind.key(  { "Super_L", "Alt_L" },              "Down",  "icon:吝",    "layout", "lower number of columns",    function() awful.tag.incncol(-1, nil, true) end),
+    kbvwr.bind.key(  { "Super_L", "Alt_L" },              "Left",  "icon:溺",    "layout", "increase number of columns", function() awful.tag.incncol(1, nil, true) end),
+    kbvwr.bind.key(  { "Super_L", "Alt_L" },              "Right", "icon:ﯰ",    "layout", "lower number of clients",    function() awful.tag.incnmaster(-1, nil, true)  end),
+    kbvwr.bind.key(  { "Super_L", "Alt_L", "Control_L" }, "Up",    "icon:\r", "layout", "move border left",           function() helpers.resize_dwim(client.focus, "left") end),
+    kbvwr.bind.key(  { "Super_L", "Alt_L", "Control_L" }, "Down",  "icon:\r", "layout", "move border down",           function() helpers.resize_dwim(client.focus, "down") end),
+    kbvwr.bind.key(  { "Super_L", "Alt_L", "Control_L" }, "Left",  "icon: ",  "layout", "move border up",             function() helpers.resize_dwim(client.focus, "up") end),
+    kbvwr.bind.key(  { "Super_L", "Alt_L", "Control_L" }, "Right", "icon: ",  "layout", "move border left",           function() helpers.resize_dwim(client.focus, "right") end)
 )
 
 
