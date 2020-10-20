@@ -83,6 +83,19 @@ function kbvwr.fn.create_key(key,keymap,colormap,level,height,width)
   return key_box
 end
 
+-- -- Function to update key color (in layout)
+-- function kbvwr.fn.mark_key_active(kbvwr, pressed_key, color)
+--   local key_widget = kbvwr.widget:get_children_by_id(pressed_key)
+--   -- local element = kbvwr.widget.kblayout.widget.widget
+--   naughty.notify({
+--     text = key_widget.text
+--   })
+--   -- element.bg = color
+--   -- element.text = "color"
+--   -- kbvwr.widget.kblayout.widget.widget
+--   -- layouts[level].widget = color 
+-- end
+
 -- Function to create the keyboard layout for each level.
 function kbvwr.fn.create_layout(keymap,colormap,level)
   -- Key geometry is defined here.
@@ -210,60 +223,60 @@ function kbvwr.fn.create_layout(keymap,colormap,level)
     layout  = wibox.layout.fixed.vertical,
     spacing = gap_keys,
     -- row 1
-    wibox.container {
+    {
       layout  = wibox.layout.fixed.horizontal,
       spacing = gap_keys,
-      wibox.container {
+      {
         layout  = wibox.layout.fixed.horizontal,
         spacing = gap_fkeys,
         key_Escape, key_F1, key_F2, key_F3, key_F4
       },
-      wibox.container {
+      {
         layout  = wibox.layout.fixed.horizontal,
         spacing = gap_fkeys,
         key_F5, key_F6, key_F7, key_F8, 
       },
-       wibox.container {
+       {
         layout  = wibox.layout.fixed.horizontal,
         spacing = gap_fkeys,
         key_F9, key_F10, key_F11, key_F12,
       },
-       wibox.container {
+       {
         layout  = wibox.layout.fixed.horizontal,
         spacing = gap_fkeys,
         key_Home, key_End, key_Insert, key_Delete, 
       },
     },
     -- row 2
-    wibox.container {
+    {
       layout  = wibox.layout.fixed.horizontal,
       spacing = gap_keys,
       key_grave, key_1, key_2, key_3, key_4, key_5, key_6, key_7, key_8, key_9,
       key_0, key_minus, key_equal, key_BackSpace, 
    },
     -- row 3
-    wibox.container {
+    {
       layout  = wibox.layout.fixed.horizontal,
       spacing = gap_keys,
       key_Tab, key_q, key_w, key_e, key_r, key_t, key_y, key_u, key_i, key_o,
       key_p, key_bracket_o, key_bracket_c, key_Return1, 
     },
     -- row 4
-    wibox.container {
+    {
       layout  = wibox.layout.fixed.horizontal,
       spacing = gap_keys,
       key_Caps_Lock, key_a, key_s, key_d, key_f, key_g, key_h, key_j, key_k,
       key_l, key_semicolon, key_apostrophe, key_backslash, key_Return2, 
     },
     -- row 5
-    wibox.container {
+    {
       layout  = wibox.layout.fixed.horizontal,
       spacing = gap_keys,
       key_Shift_L, key_less, key_z, key_x, key_c, key_v, key_b, key_n, key_m,
       key_comma, key_dot, key_slash, key_Shift_R, 
     },
     -- row 6
-    wibox.container {
+    {
       layout  = wibox.layout.fixed.horizontal,
       spacing = gap_keys,
       key_Fn, key_Control_L, key_Super_L, key_Alt_L, key_space, key_Alt_R,

@@ -48,16 +48,10 @@ keyboard_viewer:buttons(gears.table.join(
 kbvwr.layouts = {}
 for ii = 1,15 do
 -- for ii = 1,#kbvwr.config.level do
-    kbvwr.layouts[ii] = kbvwr.fn.create_boxed_widget(
-        kbvwr.fn.create_layout(
+    kbvwr.layouts[ii] = kbvwr.fn.create_layout(
             kbvwr.bind.keymap,
             kbvwr.bind.colormap,
-            ii), 
-        kbvwr.config.kb_width,
-        kbvwr.config.kb_height,
-        kbvwr.config.bg
-        -- x.background
-        )
+            ii)
 end
 -- init modifier_active list and add hack in oder to recognize 'Shift'
 -- w/o distinguishing btw. L and R.
@@ -72,22 +66,16 @@ end
 -- wibox creation
 -- ============================================================================
 -- create the initial widget
-kbvwr.widget.kblayout = kbvwr.fn.create_boxed_widget(
-    kbvwr.fn.create_layout(
+kbvwr.widget.kblayout = kbvwr.fn.create_layout(
         kbvwr.bind.keymap,
         kbvwr.bind.colormap,
-        1), 
-    kbvwr.config.kb_width,
-    kbvwr.config.kb_height,
-    kbvwr.config.bg
-    -- x.background
-)
+        1)
 
 function kbvwr.fn.update_layout(level)
-    kbvwr.widget.kblayout.widget = kbvwr.layouts[level]
+    kbvwr.widget.kblayout = kbvwr.layouts[level]
 end
 
-kbvwr.widget.description_content = wibox.widget {
+kbvwr.widget.description = wibox.widget {
     widget = wibox.widget.textbox,
     text = "",
     font = "Sans Bold 12",
@@ -95,41 +83,62 @@ kbvwr.widget.description_content = wibox.widget {
     valign = "center",
 }
 
-kbvwr.widget.description = kbvwr.fn.create_boxed_widget(
-    kbvwr.widget.description_content, 
-    dpi(1200),
-    dpi(65),
-    x.background
-)
 
 function kbvwr.fn.update_description(text)
-    kbvwr.widget.description_content.markup = text
+    kbvwr.widget.description.markup = text
 end
 
 -- Item placement
 keyboard_viewer:setup {
     -- Center boxes vertically
+    id     = "outer_v",
+    expand = "none",
+    layout = wibox.layout.align.vertical,
     nil,
     {
         -- Center boxes horizontally
+        id     = "outer_h",
+        expand = "none",
+        layout = wibox.layout.align.horizontal,
         nil,
         {   
-            nil,
-            -- {
-                -- kbvwr_keycombos,
-            kbvwr.widget.kblayout,
-            kbvwr.widget.description,
-            layout = wibox.layout.align.vertical
+            -- Placement of elements
+            id      = "elements",
+            layout  = wibox.layout.fixed.vertical,
+            spacing = dpi(20),
+            {
+                -- background kblayout
+                widget = wibox.container.background(),
+                bg = kbvwr.config.bg,
+                shape = helpers.rrect(dpi(4)),
+                {
+                    layout = wibox.layout.align.vertical,
+                    expand = "none",
+                    kbvwr.widget.kblayout,
+                },
+            },
+            {   
+                id     = "description_box",
+                widget = wibox.widget {
+                    bg = kbvwr.config.bg,
+                    forced_height = dpi(65),
+                    shape = helpers.rrect(dpi(4)),
+                    widget = wibox.container.background()
+                },
+                {
+                    id = "description",
+                    widget = wibox.widget.textbox("test", true),
+                    align = "center",
+                    valign = "center",
+                },
+            },
         },
         nil,
-        expand = "none",
-        layout = wibox.layout.align.horizontal
 
     },
     nil,
-    expand = "none",
-    layout = wibox.layout.align.vertical
 }
+
 -- keyboard_viewer show and hide functions, keygrabber
 local keyboard_viewer_grabber
 
@@ -147,7 +156,7 @@ function keyboard_viewer_show()
         w.cursor = original_cursor
     end
     -- naughty.notify({text = "starting the keygrabber"})
-    keyboard_viewer_grabber = awful.keygrabber.run(function(_, key, event)
+    keyboard_viewer_hide_grabber = awful.keygrabber.run(function(_, key, event)
         -- if event == "release" then return end
         -- Press Escape or q or F1 to hide it
         if event == "press" and (key == 'Escape' or key == 'q' or key == 'F5') then
@@ -156,9 +165,9 @@ function keyboard_viewer_show()
         -- the value 'true'.
         elseif kbvwr.config.modifier_list[key] then
             -- the only case the level can change
-            if key == "Shift_L" or key == "Shift_R" then
+            if key == 'Shift_L' or key == 'Shift_R' then
                 -- do not distinguish btw left/right shift key
-                key = "shift"
+                key = 'shift'
             end
             if event == "press" then
                 kbvwr.modifiers_active[key] = true
@@ -179,15 +188,23 @@ function keyboard_viewer_show()
             kbvwr.fn.update_layout(kbvwr.level)
         else
             if event == "press" then
-                if kbvwr.bind.keydesc[key] ~= nil then
-                    kbvwr.fn.update_description(
-                        kbvwr.bind.keydesc[key][kbvwr.level] or ""
-                        )
-                else
-                    kbvwr.fn.update_description("")
-                end
+                local children = keyboard_viewer:get_all_children()[1]
+                -- naughty.notify({text = children[1]})
+                -- -- change description
+                -- if kbvwr.bind.keydesc[key] ~= nil then
+                --     kbvwr.fn.update_description(
+                --         kbvwr.bind.keydesc[key][kbvwr.level] or ""
+                --         )
+                -- else
+                --     kbvwr.fn.update_description("")
+                -- end
+                -- change key color
+                -- kbvwr.fn.key_color_change(kbvwr, key)
             elseif event == "release" then
-                kbvwr.fn.update_description("")
+                -- revert description
+                -- kbvwr.fn.update_description("")
+                -- revert key color
+                -- kbvwr.fn.key_color_reset(kbvwr, key)
             end
 
         end
