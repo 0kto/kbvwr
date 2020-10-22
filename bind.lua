@@ -77,7 +77,7 @@ kbvwr.bind.globalkeys = gears.table.join(
             awful.spawn.with_shell("amixer -D pulse sset Capture toggle &> /dev/null")
         end),
     kbvwr.bind.key( {  }, "XF86MonBrightnessDown", "icon:", "launcher", "decrease laptop brightness", function () awful.spawn.with_shell("light -U 10") end),
-    kbvwr.bind.key( {  }, "XF86MonBrightnessUp",   "icon:", "launcher", "increase laptop brightness", function () awful.spawn.with_shell("light -A10") end),
+    kbvwr.bind.key( {  }, "XF86MonBrightnessUp",   "icon:", "launcher", "increase laptop brightness", function () awful.spawn.with_shell("light -A 10") end),
     kbvwr.bind.key( {  }, "XF86Display",           "icon:", "tools",    "configure display layout",   function () awful.spawn("arandr") end),
     kbvwr.bind.key( {  }, "XF86Search",            "icon:ﰍ", "launcher", "activate sidebar web search prompt",
         function() if sidebar_activate_prompt then sidebar_activate_prompt("web_search") end end),
@@ -128,7 +128,7 @@ kbvwr.bind.globalkeys = gears.table.join(
     kbvwr.bind.key( { "Super_L", "Alt_L", "Control_L" }, "k", "icon: ",  "layout", "move border up",             function() helpers.resize_dwim(client.focus, "up") end),
     kbvwr.bind.key( { "Super_L", "Alt_L", "Control_L" }, "l", "icon: ",  "layout", "move border left",           function() awful.client.focus.bydirection("right") end),
 
-    kbvwr.bind.key( { "Super_L", "Control_L"}, "n",     "restore min",   "layout",  "restore minimized client",
+    kbvwr.bind.key( { "Super_L", "Control_L"}, "n",      "restore min",   "layout",  "restore minimized client",
         function()
             local c = awful.client.restore()
             -- Focus restored client
@@ -195,11 +195,11 @@ awful.keyboard.append_global_keybindings({
 kbvwr.bind.clientkeys = gears.table.join(
     kbvwr.bind.key(  { "Super_L" }, "t", "top",     "client", "toggle keep on top", function (c) c.ontop = not c.ontop end),
     kbvwr.bind.key(  { "Super_L" }, "o", "mv:scrn", "client", "move client to screen", function (c) c:move_to_screen() end),
-    kbvwr.bind.key(  { "Super_L", "Alt_L" }, "[", "opacity -",  "client", "decrease client opacity", 
+    kbvwr.bind.key(  { "Super_L", "Alt_L" }, "[", "opacity -",  "client", "decrease client opacity",
         function (c)
             c.opacity = c.opacity - 0.05
         end),
-    kbvwr.bind.key(  { "Super_L", "Alt_L" }, "]", "opacity +",  "client", "increase client opacity", 
+    kbvwr.bind.key(  { "Super_L", "Alt_L" }, "]", "opacity +",  "client", "increase client opacity",
         function (c)
             c.opacity = c.opacity + 0.05
         end),
