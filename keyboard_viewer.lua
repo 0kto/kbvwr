@@ -1,17 +1,18 @@
+-- awesomeWM lua packages =============================================
 local awful     = require("awful")
 local gears     = require("gears")
 local wibox     = require("wibox")
 local beautiful = require("beautiful")
-local helpers   = require("helpers")
 local naughty   = require("naughty")
-
-
-local kbvwr = {}
-kbvwr.bind   = require("kbvwr.bind")
-kbvwr.config = require("kbvwr.config")
-kbvwr.fn     = require("kbvwr.fn")
-kbvwr.layout = require("kbvwr.layout")
-kbvwr.widget = {}
+-- elenapan-awesome (to be eliminated) ================================
+local helpers = require("helpers")
+-- needed kbvwr stuff =================================================
+local kbvwr   = {}
+kbvwr.config  = require("kbvwr.config")
+kbvwr.fn      = {}
+kbvwr.fn.keys = require("kbvwr.fn.keys")
+kbvwr.keys    = require("kbvwr.keys")
+kbvwr.bind    = require("kbvwr.bind")
 
 -- Create and configure the widget
 -- ====================================================================
@@ -41,84 +42,98 @@ keyboard_viewer:buttons(gears.table.join(
         keyboard_viewer_hide()
     end)
 ))
-
--- Preparation
--- ============================================================================
--- generate all layouts, and select from named table
-kbvwr.layouts = {}
-for ii = 1,15 do
--- for ii = 1,#kbvwr.config.level do
-    kbvwr.layouts[ii] = kbvwr.fn.create_layout(
-            kbvwr.bind.keymap,
-            kbvwr.bind.colormap,
-            ii)
-end
--- init modifier_active list and add hack in oder to recognize 'Shift'
--- w/o distinguishing btw. L and R.
-kbvwr.modifiers_active = {}
-for key,val in pairs(kbvwr.config.modifier_list) do
-    if key == 'Shift_L' or key == 'Shift_R' then
-        -- nil
-    else
-        kbvwr.modifiers_active[key] = false
-    end
-end
--- wibox creation
--- ============================================================================
--- create the initial widget
-kbvwr.widget.kblayout = kbvwr.fn.create_layout(
-        kbvwr.bind.keymap,
-        kbvwr.bind.colormap,
-        1)
-
-function kbvwr.fn.update_layout(level)
-    kbvwr.widget.kblayout = kbvwr.layouts[level]
-end
-
-kbvwr.widget.description = wibox.widget {
-    widget = wibox.widget.textbox,
-    text = "",
-    font = "Sans Bold 12",
-    align = "center",
-    valign = "center",
-}
-
-
-function kbvwr.fn.update_description(text)
-    kbvwr.widget.description.markup = text
-end
-
 -- Item placement
 keyboard_viewer:setup {
     -- Center boxes vertically
-    id     = "outer_v",
-    expand = "none",
     layout = wibox.layout.align.vertical,
+    expand = "none",
     nil,
     {
         -- Center boxes horizontally
-        id     = "outer_h",
-        expand = "none",
         layout = wibox.layout.align.horizontal,
+        expand = "none",
         nil,
         {   
             -- Placement of elements
-            id      = "elements",
             layout  = wibox.layout.fixed.vertical,
             spacing = dpi(20),
             {
-                -- background kblayout
+                -- background keyboard
                 widget = wibox.container.background(),
                 bg = kbvwr.config.bg,
                 shape = helpers.rrect(dpi(4)),
                 {
-                    layout = wibox.layout.align.vertical,
-                    expand = "none",
-                    kbvwr.widget.kblayout,
+                    -- keyboard
+                    layout = wibox.layout.fixed.vertical,
+                    spacing = kbvwr.config.box_gap,
+                    {
+                        -- row 1
+                        layout = wibox.layout.fixed.horizontal,
+                        spacing = kbvwr.config.keys.gap["default"],
+                        {
+                            -- Fx keys are grouped
+                            layout = wibox.layout.fixed.horizontal,
+                            spacing = kbvwr.config.keys.gap["Fx"],
+                            kbvwr.keys["Escape"].w,
+                            kbvwr.keys["F1"].w, kbvwr.keys["F2"].w, kbvwr.keys["F3"].w, kbvwr.keys["F4"].w
+                        },
+                        {
+                            -- Fx keys are grouped
+                            layout = wibox.layout.fixed.horizontal,
+                            spacing = kbvwr.config.keys.gap["Fx"],
+                            kbvwr.keys["F5"].w, kbvwr.keys["F6"].w, kbvwr.keys["F7"].w, kbvwr.keys["F8"].w
+                        },
+                        {
+                            -- Fx keys are grouped
+                            layout = wibox.layout.fixed.horizontal,
+                            spacing = kbvwr.config.keys.gap["Fx"],
+                            kbvwr.keys["F9"].w, kbvwr.keys["F10"].w, kbvwr.keys["F11"].w, kbvwr.keys["F12"].w
+                        },
+                        {
+                            -- Fx keys are grouped
+                            layout = wibox.layout.fixed.horizontal,
+                            spacing = kbvwr.config.keys.gap["Fx"],
+                            kbvwr.keys["Home"].w, kbvwr.keys["End"].w, kbvwr.keys["Insert"].w, kbvwr.keys["Delete"].w,
+                        },
+                    },
+                    {
+                    -- row 2
+                      layout  = wibox.layout.fixed.horizontal,
+                      spacing = kbvwr.config.keys.gap["default"],
+                      kbvwr.keys['grave'].w, kbvwr.keys['1'].w, kbvwr.keys['2'].w, kbvwr.keys['3'].w, kbvwr.keys['4'].w, kbvwr.keys['5'].w, kbvwr.keys['6'].w, kbvwr.keys['7'].w, kbvwr.keys['8'].w, kbvwr.keys['9'].w,
+                      kbvwr.keys['0'].w, kbvwr.keys['-'].w, kbvwr.keys['='].w, kbvwr.keys['BackSpace'].w, 
+                   },
+                    {
+                    -- row 3
+                      layout  = wibox.layout.fixed.horizontal,
+                      spacing = kbvwr.config.keys.gap["default"],
+                      kbvwr.keys['Tab'].w, kbvwr.keys['q'].w, kbvwr.keys['w'].w, kbvwr.keys['e'].w, kbvwr.keys['r'].w, kbvwr.keys['t'].w, kbvwr.keys['y'].w, kbvwr.keys['u'].w, kbvwr.keys['i'].w, kbvwr.keys['o'].w,
+                      kbvwr.keys['p'].w, kbvwr.keys['['].w, kbvwr.keys[']'].w, kbvwr.keys['Return1'].w, 
+                    },
+                    {
+                    -- row 4
+                      layout  = wibox.layout.fixed.horizontal,
+                      spacing = kbvwr.config.keys.gap["default"],
+                      kbvwr.keys['Caps_Lock'].w, kbvwr.keys['a'].w, kbvwr.keys['s'].w, kbvwr.keys['d'].w, kbvwr.keys['f'].w, kbvwr.keys['g'].w, kbvwr.keys['h'].w, kbvwr.keys['j'].w, kbvwr.keys['k'].w,
+                      kbvwr.keys['l'].w, kbvwr.keys[';'].w, kbvwr.keys['\''].w, kbvwr.keys['\\'].w, kbvwr.keys['Return2'].w, 
+                    },
+                    {
+                    -- row 5
+                      layout  = wibox.layout.fixed.horizontal,
+                      spacing = kbvwr.config.keys.gap["default"],
+                      kbvwr.keys['Shift_L'].w, kbvwr.keys['<'].w, kbvwr.keys['z'].w, kbvwr.keys['x'].w, kbvwr.keys['c'].w, kbvwr.keys['v'].w, kbvwr.keys['b'].w, kbvwr.keys['n'].w, kbvwr.keys['m'].w,
+                      kbvwr.keys[','].w, kbvwr.keys['.'].w, kbvwr.keys['/'].w, kbvwr.keys['Shift_R'].w, 
+                    },
+                    {
+                    -- row 6
+                      layout  = wibox.layout.fixed.horizontal,
+                      spacing = kbvwr.config.keys.gap["default"],
+                      kbvwr.keys['Fn'].w, kbvwr.keys['Control_L'].w, kbvwr.keys['Super_L'].w, kbvwr.keys['Alt_L'].w, kbvwr.keys['space'].w, kbvwr.keys['Alt_R'].w,
+                      kbvwr.keys['Print'].w, kbvwr.keys['Control_R'].w, kbvwr.keys['Prior'].w, kbvwr.keys['Up'].w, kbvwr.keys['Next'].w, 
+                    },
                 },
             },
             {   
-                id     = "description_box",
                 widget = wibox.widget {
                     bg = kbvwr.config.bg,
                     forced_height = dpi(65),
@@ -126,7 +141,7 @@ keyboard_viewer:setup {
                     widget = wibox.container.background()
                 },
                 {
-                    id = "description",
+                    id = "description_textbox",
                     widget = wibox.widget.textbox("test", true),
                     align = "center",
                     valign = "center",
@@ -159,53 +174,57 @@ function keyboard_viewer_show()
     keyboard_viewer_hide_grabber = awful.keygrabber.run(function(_, key, event)
         -- if event == "release" then return end
         -- Press Escape or q or F1 to hide it
-        if event == "press" and (key == 'Escape' or key == 'q' or key == 'F5') then
+        if event == "press" and (key == 'Escape' or key == 'q' or key == 'XF86Tools') then
             keyboard_viewer_hide()
         -- only look at keys that are in the kbvwr.config.modifier_list and have 
         -- the value 'true'.
-        elseif kbvwr.config.modifier_list[key] then
-            -- the only case the level can change
-            if key == 'Shift_L' or key == 'Shift_R' then
-                -- do not distinguish btw left/right shift key
-                key = 'shift'
-            end
-            if event == "press" then
-                kbvwr.modifiers_active[key] = true
-            elseif event == "release" then
-                kbvwr.modifiers_active[key] = false
-            end
+        -- elseif kbvwr.config.modifier_list[key] then
+            -- -- the only case the level can change
+            -- if key == 'Shift_L' or key == 'Shift_R' then
+            --     -- do not distinguish btw left/right shift key
+            --     key = 'shift'
+            -- end
+            -- if event == "press" then
+            --     kbvwr.modifiers_active[key] = true
+            -- elseif event == "release" then
+            --     kbvwr.modifiers_active[key] = false
+            -- end
 
-            local lvl = 0
-            for key,val in pairs(kbvwr.modifiers_active) do
-                -- for all active modifiers, add the according lvl value
-                if val then
-                    lvl = lvl + kbvwr.config.lvl[key]
-                end
-            end
-            -- return the level using a lookup table for known levels
-            kbvwr.level = kbvwr.config.level[lvl]
-            -- trigger layer update
-            kbvwr.fn.update_layout(kbvwr.level)
-        else
-            if event == "press" then
-                local children = keyboard_viewer:get_all_children()[1]
-                -- naughty.notify({text = children[1]})
-                -- -- change description
-                -- if kbvwr.bind.keydesc[key] ~= nil then
-                --     kbvwr.fn.update_description(
-                --         kbvwr.bind.keydesc[key][kbvwr.level] or ""
-                --         )
-                -- else
-                --     kbvwr.fn.update_description("")
-                -- end
-                -- change key color
-                -- kbvwr.fn.key_color_change(kbvwr, key)
-            elseif event == "release" then
-                -- revert description
-                -- kbvwr.fn.update_description("")
-                -- revert key color
-                -- kbvwr.fn.key_color_reset(kbvwr, key)
-            end
+            -- local lvl = 0
+            -- for key,val in pairs(kbvwr.modifiers_active) do
+            --     -- for all active modifiers, add the according lvl value
+            --     if val then
+            --         lvl = lvl + kbvwr.config.lvl[key]
+            --     end
+            -- end
+            -- -- return the level using a lookup table for known levels
+            -- kbvwr.level = kbvwr.config.level[lvl]
+            -- -- trigger layer update
+            -- kbvwr.fn.update_layout(kbvwr.level)
+        -- else
+            -- desc_widget = keyboard_viewer:get_children_by_id("description")[1] or nil
+            -- key_widget  = kbvwr.widget.kblayout:get_children_by_id(key .. "_0")[1]
+            -- if event == "press" then
+            --     -- change description
+            --     desc_widget.text = kbvwr.bind.keydesc[key][kbvwr.level] or ""
+            --     naughty.notify({text = key_widget.bg})
+            --     -- if kbvwr.bind.keydesc[key] ~= nil then
+            --     --     kbvwr.fn.update_description(
+            --     --         kbvwr.bind.keydesc[key][kbvwr.level] or ""
+            --     --         )
+            --     -- else
+            --     --     kbvwr.fn.update_description("")
+            --     -- end
+            --     -- change key color
+            --     -- kbvwr.fn.key_color_change(kbvwr, key)
+            -- elseif event == "release" then
+            --     -- revert description
+            --     desc_widget.text = ""
+
+            --     -- kbvwr.fn.update_description("")
+            --     -- revert key color
+            --     -- kbvwr.fn.key_color_reset(kbvwr, key)
+            -- end
 
         end
     end)

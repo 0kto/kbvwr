@@ -1,7 +1,11 @@
+-- awesomeWM lua packages =============================================
 local beautiful = require("beautiful")
 
+-- needed kbvwr stuff =================================================
 local kbvwr  = {}
+-- package config =====================================================
 kbvwr.config = {}
+
 
 kbvwr.config.font             = "Cousine Nerd Font"
 kbvwr.config.fontsize         = "12"
@@ -29,56 +33,34 @@ kbvwr.config.kb_height  = dpi( 491)
 kbvwr.config.box_radius = dpi(  12)
 kbvwr.config.box_gap    = dpi(   6)
 
--- select which modifiers are recognized by kbvwr.
-kbvwr.config.modifier_list = {
-    ['Alt_L']     = true,
-    ['Alt_R']     = true,
-    ['Caps_Lock'] = true,
-    ['Control_L'] = true,
-    ['Control_R'] = true,
-    ['shift']     = true,
-    ['Super_L']   = true,
-	['Shift_L']   = true, -- these are not actually used, but are needed 
-	['Shift_R']   = true, -- to detect shift
-}
-
--- define levels for modifier combinations.
-kbvwr.config.level_modifier_combo     = {}
-kbvwr.config.level_modifier_combo[1]  = {}
-kbvwr.config.level_modifier_combo[2]  = { 'shift' }
-kbvwr.config.level_modifier_combo[3]  = { 'Alt_R'}
-kbvwr.config.level_modifier_combo[4]  = { 'Alt_R',      'shift'}
-kbvwr.config.level_modifier_combo[5]  = { 'Alt_L'}
-kbvwr.config.level_modifier_combo[6]  = { 'Alt_L',      'shift'}
-kbvwr.config.level_modifier_combo[7]  = { 'Alt_L',      'Control_L'}
-kbvwr.config.level_modifier_combo[8]  = { 'Caps_Lock'}
-kbvwr.config.level_modifier_combo[9]  = { 'Control_L'}
-kbvwr.config.level_modifier_combo[10] = { 'Control_R'}
-kbvwr.config.level_modifier_combo[11] = { 'Super_L' }
-kbvwr.config.level_modifier_combo[12] = { 'Super_L',    'shift' }
-kbvwr.config.level_modifier_combo[13] = { 'Super_L',    'Alt_L' }
-kbvwr.config.level_modifier_combo[14] = { 'Super_L',    'Control_L' }
-kbvwr.config.level_modifier_combo[15] = { 'Super_L',    'Control_L',   'Alt_L' }
-
--- translate binary indicator to powers of 2.
-kbvwr.config.lvl  = {
-	['Alt_L']     = 2^0,
-	['Alt_R']     = 2^1,
-	['Caps_Lock'] = 2^2,
-	['Control_L'] = 2^3,
-	['Control_R'] = 2^4,
-	['shift']     = 2^5,
-	['Super_L']   = 2^6
-}
-
--- define mapping between level and lvl.
-kbvwr.config.level     = {}
-for level,combo in pairs(kbvwr.config.level_modifier_combo) do
-	local lvl = 0
-	for ii = 1,#combo, 1 do
-		lvl = lvl + kbvwr.config.lvl[ combo[ii] ]
-	end
-	kbvwr.config.level[ lvl ] = level
-end
+-- Key geometry is defined here.
+kbvwr.config.keys        = {}
+kbvwr.config.keys.gap    = {}
+kbvwr.config.keys.gap["default"]     = 6
+kbvwr.config.keys.gap["Fx"]          = kbvwr.config.keys.gap["default"] / 2
+kbvwr.config.keys.height = {} 
+kbvwr.config.keys.height["default"]  = 65
+kbvwr.config.keys.height["Fx"]       = kbvwr.config.keys.height["default"] * 0.75
+kbvwr.config.keys.width  = {} 
+kbvwr.config.keys.width["default"]   = 65
+kbvwr.config.keys.width["Escape"]    = kbvwr.config.keys.width["default"] * 1.3
+kbvwr.config.keys.width["Delete"]    = kbvwr.config.keys.width["Escape"]
+kbvwr.config.keys.width["Fx"]        = kbvwr.config.keys.width["default"] * 0.85
+kbvwr.config.keys.width["BackSpace"] = kbvwr.config.keys.width["default"] * 2
+kbvwr.config.keys.width["Tab"]       = kbvwr.config.keys.width["default"] * 1.5
+kbvwr.config.keys.width["Return1"]   = kbvwr.config.keys.width["default"] * 1.5
+kbvwr.config.keys.width["Caps_Lock"] = kbvwr.config.keys.width["default"] * 1.8
+kbvwr.config.keys.width["Return2"]   = kbvwr.config.keys.width["default"] * 1.2
+kbvwr.config.keys.width["Shift_L"]   = kbvwr.config.keys.width["default"] * 1.25
+kbvwr.config.keys.width["Shift_R"]   = kbvwr.config.keys.width["default"] * 2.85
+kbvwr.config.keys.width["Fn"]        = kbvwr.config.keys.width["default"]
+kbvwr.config.keys.width["Control_L"] = kbvwr.config.keys.width["default"] * 1.25
+kbvwr.config.keys.width["Super_L"]   = kbvwr.config.keys.width["default"]
+kbvwr.config.keys.width["Alt_L"]     = kbvwr.config.keys.width["default"]
+kbvwr.config.keys.width["space"]     = kbvwr.config.keys.width["default"] * 5 + kbvwr.config.keys.gap["default"] * 4
+kbvwr.config.keys.width["Alt_R"]     = kbvwr.config.keys.width["default"]
+kbvwr.config.keys.width["Print"]     = kbvwr.config.keys.width["default"]
+kbvwr.config.keys.width["Control_R"] = kbvwr.config.keys.width["default"]
+kbvwr.config.keys.width["Arrow"]     = (kbvwr.config.keys.width["Shift_R"] - 2 * kbvwr.config.keys.gap["default"]) / 3
 
 return kbvwr.config
