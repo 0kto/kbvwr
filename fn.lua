@@ -87,6 +87,18 @@ function kbvwr.fn.create_key(key,keymap,colormap,level,height,width)
   return key_box
 end
 
+function kbvwr.fn.formatIcon(input)
+  if input ~= nil and input ~= "" and input:find "icon:" ~= nil then
+    output = "<span font='".. kbvwr.config.fontsize_symbols .."'>".. input:gsub("icon:", "") .."</span>"
+    return output
+  else
+    return input
+  end
+end
+
+
+
+
 -- -- Function to update key color (in layout)
 -- function kbvwr.fn.mark_key_active(kbvwr, pressed_key, color)
 --   local key_widget = kbvwr.widget:get_children_by_id(pressed_key)

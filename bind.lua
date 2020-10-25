@@ -34,19 +34,19 @@ end
          : Alt_L             : Alt_R
 --]]
 -- globalkeybindings ==================================================
-bindkey( none, 'XF86AudioMute',         "icon:ﱝ ", "media", "mute sound",      global, function () helpers.volume_control(0) end)
-bindkey( none, 'XF86AudioLowerVolume',  "icon:ﱜ ", "media", "decrease volume", global, function () helpers.volume_control(-5) end)
-bindkey( none, 'XF86AudioRaiseVolume',  "icon:ﱛ ", "media", "increase volume", global, function () helpers.volume_control(5) end)
-bindkey( none, 'XF86AudioMicMute',      "icon: ", "media", "mute microphone", global,
+bindkey( none, 'XF86AudioMute',         " icon:ﱝ ", "media", "mute sound",      global, function () helpers.volume_control(0) end)
+bindkey( none, 'XF86AudioLowerVolume',  " icon:ﱜ ", "media", "decrease volume", global, function () helpers.volume_control(-5) end)
+bindkey( none, 'XF86AudioRaiseVolume',  " icon:ﱛ ", "media", "increase volume", global, function () helpers.volume_control(5) end)
+bindkey( none, 'XF86AudioMicMute',      " icon: ", "media", "mute microphone", global,
         function() awful.spawn.with_shell("amixer -D pulse sset Capture toggle &> /dev/null") end)
-bindkey( none, 'XF86MonBrightnessDown', "icon: ", "launcher", "decrease laptop brightness", global, function () awful.spawn.with_shell("light -U 10") end)
-bindkey( none, 'XF86MonBrightnessUp',   "icon: ", "launcher", "increase laptop brightness", global, function () awful.spawn.with_shell("light -A 10") end)
-bindkey( none, 'XF86Display',           "icon: ", "tools", "configure display layout", global, function () awful.spawn("arandr") end)
-bindkey( none, 'XF86Search',            "icon:ﰍ ", "launcher", "activate sidebar web search prompt", global, 
+bindkey( none, 'XF86MonBrightnessDown', " icon: ", "launcher", "decrease laptop brightness", global, function () awful.spawn.with_shell("light -U 10") end)
+bindkey( none, 'XF86MonBrightnessUp',   " icon: ", "launcher", "increase laptop brightness", global, function () awful.spawn.with_shell("light -A 10") end)
+bindkey( none, 'XF86Display',           " icon: ", "tools", "configure display layout", global, function () awful.spawn("arandr") end)
+bindkey( none, 'XF86Search',            " icon:ﰍ ", "launcher", "activate sidebar web search prompt", global, 
         function() if sidebar_activate_prompt then sidebar_activate_prompt("web_search") end end)
-bindkey( none, 'XF86Tools',             "icon: ", "awesome", "show keyboard bindings", global, function() keyboard_viewer_show() end)
+bindkey( none, 'XF86Tools',             " icon: ", "awesome", "show keyboard bindings", global, function() keyboard_viewer_show() end)
 bindkey( none, 'XF86LaunchA',           "tray",    "awesome", "toggle tray visibility", global, function() tray_toggle() end)
-bindkey( none, 'XF86Explorer',          "icon:﵁ ", "awesome",  "toggle dashboard visibility", global, 
+bindkey( none, 'XF86Explorer',          " icon:﵁ ", "awesome",  "toggle dashboard visibility", global, 
 function() if dashboard_show then dashboard_show() end end)
 
 bindkey( { " " },       'Escape',  "quit",      "awesome", "show shutdown menu", global, function() exit_screen_show() end)
@@ -57,43 +57,43 @@ bindkey( { " ", " " }, '=',       "gap +",     "layout", "increase gap", g
 bindkey( { " ", " " }, 'Delete',  "#!-top",   "tools",  "show bashtop", global, function() apps.process_monitor() end)
 -- TODO:
 -- Return is made up by two keys, which must be mapped seperately
-bindkey( { " " },             'Return1', "icon: ",   "apps",   "spawn terminal", global, function() awful.spawn(user.terminal) end)
-bindkey( { " " },             'Return2', "icon: ",   "apps",   "spawn terminal", global, function() awful.spawn(user.terminal) end)
-bindkey( { " ", " " },       'Return1', "icon:  ", "apps",   "spawn floating terminal", global, function() awful.spawn(user.floating_terminal, {floating = true}) end)
-bindkey( { " ", " " },       'Return2', "icon:  ", "apps",   "spawn floating terminal", global, function() awful.spawn(user.floating_terminal, {floating = true}) end)
+bindkey( { " " },             'Return1', " icon: ",   "apps",   "spawn terminal", global, function() awful.spawn(user.terminal) end)
+bindkey( { " " },             'Return2', " icon: ",   "apps",   "spawn terminal", global, function() awful.spawn(user.terminal) end)
+bindkey( { " ", " " },       'Return1', " icon: icon: ", "apps",   "spawn floating terminal", global, function() awful.spawn(user.floating_terminal, {floating = true}) end)
+bindkey( { " ", " " },       'Return2', " icon: icon: ", "apps",   "spawn floating terminal", global, function() awful.spawn(user.floating_terminal, {floating = true}) end)
 bindkey( { " ", " " },       'Return1', "wibar",     "launch", "toggle wibar visibility", global, function() wibars_toggle() end)
 bindkey( { " ", " " },       'Return2', "wibar",     "launch", "toggle wibar visibility", global, function() wibars_toggle() end)
-bindkey( { " " },             'Tab',     "icon: ",   "client", "window switcher", global, function() window_switcher_show(awful.screen.focused()) end)
-bindkey( { " " },             'e',       "icon: ",  "apps",   "open ranger", global, function() apps.file_manager() end)
-bindkey( { " ", " " },       'e',       "icon: ",   "apps",   "open pcmanfm", global, function() awful.spawn("pcmanfm") end)
+bindkey( { " " },             'Tab',     " icon: ",   "client", "window switcher", global, function() window_switcher_show(awful.screen.focused()) end)
+bindkey( { " " },             'e',       " icon: icon: ",  "apps",   "open ranger", global, function() apps.file_manager() end)
+bindkey( { " ", " " },       'e',       " icon: ",   "apps",   "open pcmanfm", global, function() awful.spawn("pcmanfm") end)
 bindkey( { " " },             'r',       "run",       "launch", "activate sidebar run prompt", global,
         function ()
             if sidebar_activate_prompt then sidebar_activate_prompt("run") end
         end)
-bindkey( { " " },             'u',       "icon:  ", "client", "switch to urgent client", global,
+bindkey( { " " },             'u',       " icon: icon: ", "client", "switch to urgent client", global,
         function ()
             uc = awful.client.urgent.get()
             -- If there is no urgent client, go back to last tag
             if uc == nil then awful.tag.history.restore() else awful.client.urgent.jumpto() end
         end)
-bindkey( { " " },             'p',       "icon: ",    "tools",  "pass via dmenu", global, function () awful.spawn("passdmenu") end)
+bindkey( { " " },             'p',       " icon: ",    "tools",  "pass via dmenu", global, function () awful.spawn("passdmenu") end)
 bindkey( { " " },             'd',       "rofi",      "launcher","rofi launcher", global,
         function()
             awful.spawn.with_shell("rofi -matching fuzzy -show combi")
         end)
 -- --     -- hkl keys
-bindkey( { " " },             'h',       "icon: \r ", "client", "focus left", global, function() awful.client.focus.bydirection("left") end)
-bindkey( { " " },             'j',       "icon: \r ", "client", "focus down", global, function() awful.client.focus.bydirection("down") end)
-bindkey( { " " },             'k',       "icon:  ",   "client", "focus up", global, function() awful.client.focus.bydirection("up") end)
-bindkey( { " " },             'l',       "icon:  ",   "client", "focus right", global, function() awful.client.focus.bydirection("right") end)
-bindkey( { " ", " " },       'h',       "icon:ﰂ ",     "layout", "increase number of clients", global, function() awful.tag.incnmaster(1, nil, true) end)
-bindkey( { " ", " " },       'j',       "icon:吝 ",     "layout", "lower number of columns", global, function() awful.tag.incncol(-1, nil, true) end)
-bindkey( { " ", " " },       'k',       "icon:溺 ",     "layout", "increase number of columns", global, function() awful.tag.incncol(1, nil, true) end)
-bindkey( { " ", " " },       'l',       "icon:ﯰ ",     "layout", "lower number of clients", global, function() awful.tag.incnmaster(-1, nil, true)  end)
-bindkey( { " ", " ", " " }, 'h',       "icon: \r ", "layout", "move border left", global, function() helpers.resize_dwim(client.focus, "left") end)
-bindkey( { " ", " ", " " }, 'j',       "icon: \r ", "layout", "move border down", global, function() helpers.resize_dwim(client.focus, "down") end)
-bindkey( { " ", " ", " " }, 'k',       "icon:  ",   "layout", "move border up", global, function() helpers.resize_dwim(client.focus, "up") end)
-bindkey( { " ", " ", " " }, 'l',       "icon:  ",   "layout", "move border left", global, function() awful.client.focus.bydirection("right") end)
+bindkey( { " " },             'h',       " icon: \r icon: ", "client", "focus left", global, function() awful.client.focus.bydirection("left") end)
+bindkey( { " " },             'j',       " icon: \r icon: ", "client", "focus down", global, function() awful.client.focus.bydirection("down") end)
+bindkey( { " " },             'k',       " icon:  icon: ",   "client", "focus up", global, function() awful.client.focus.bydirection("up") end)
+bindkey( { " " },             'l',       " icon: icon: ",    "client", "focus right", global, function() awful.client.focus.bydirection("right") end)
+bindkey( { " ", " " },       'h',       " icon:ﰂ ",           "layout", "increase number of clients", global, function() awful.tag.incnmaster(1, nil, true) end)
+bindkey( { " ", " " },       'j',       " icon:吝 ",           "layout", "lower number of columns", global, function() awful.tag.incncol(-1, nil, true) end)
+bindkey( { " ", " " },       'k',       " icon:溺 ",           "layout", "increase number of columns", global, function() awful.tag.incncol(1, nil, true) end)
+bindkey( { " ", " " },       'l',       " icon:ﯰ ",           "layout", "lower number of clients", global, function() awful.tag.incnmaster(-1, nil, true)  end)
+bindkey( { " ", " ", " " }, 'h',       " icon: \r icon: ", "layout", "move border left", global, function() helpers.resize_dwim(client.focus, "left") end)
+bindkey( { " ", " ", " " }, 'j',       " icon: \r icon: ", "layout", "move border down", global, function() helpers.resize_dwim(client.focus, "down") end)
+bindkey( { " ", " ", " " }, 'k',       " icon:  icon: ",   "layout", "move border up", global, function() helpers.resize_dwim(client.focus, "up") end)
+bindkey( { " ", " ", " " }, 'l',       " icon:  icon: ",   "layout", "move border left", global, function() awful.client.focus.bydirection("right") end)
 
 bindkey( { " ", " " },       'n',       "restore min", "layout",  "restore minimized client",   global,
         function()
@@ -109,25 +109,25 @@ bindkey( { " ", " " },       'space',   "clear",       "awesome", "clear a
             naughty.destroy_all_notifications()
         end)
 --     -- Print
-bindkey( { },                  'Print',   "icon: ",     "tools", "screenshot: full screen", global, function() apps.screenshot("full")  end)
+bindkey( { },                  'Print',   " icon: ",     "tools", "screenshot: full screen", global, function() apps.screenshot("full")  end)
 bindkey( { " ", " "},        'Print',   "browse",      "tools", "browse screenshots", global, function() apps.screenshot("browse") end)
-bindkey( { " ", " "},        'Print',   "icon: ",     "tools", "screenshot: save area", global, function() apps.screenshot("selection") end)
-bindkey( { " ", " "},        'Print',   "icon: ",     "tools", "screenshot: clip area", global, function() apps.screenshot("clipboard") end)
+bindkey( { " ", " "},        'Print',   " icon: ",     "tools", "screenshot: save area", global, function() apps.screenshot("selection") end)
+bindkey( { " ", " "},        'Print',   " icon: ",     "tools", "screenshot: clip area", global, function() apps.screenshot("clipboard") end)
 --   bindkey( { " ", " ", " "}, "Print", "edit",      "tools", "screenshot: edit", global, function() apps.screenshot("gimp") end)
 
 --     -- direction keys
-bindkey( { " " },             'Up',      "icon:\r",   "client", "focus up", global, function() awful.client.focus.bydirection("up") end)
-bindkey( { " " },             'Down',    "icon:\r",   "client", "focus down", global, function() awful.client.focus.bydirection("down") end)
-bindkey( { " " },             'Left',    "icon: ",    "client", "focus left", global, function() awful.client.focus.bydirection("left") end)
-bindkey( { " " },             'Right',   "icon: ",    "client", "focus right", global, function() awful.client.focus.bydirection("right") end)
-bindkey( { " ", " " },       'Up',      "icon:ﰂ",      "layout", "increase number of clients", global, function() awful.tag.incnmaster(1, nil, true) end)
-bindkey( { " ", " " },       'Down',    "icon:吝",      "layout", "lower number of columns", global, function() awful.tag.incncol(-1, nil, true) end)
-bindkey( { " ", " " },       'Left',    "icon:溺",      "layout", "increase number of columns", global, function() awful.tag.incncol(1, nil, true) end)
-bindkey( { " ", " " },       'Right',   "icon:ﯰ",      "layout", "lower number of clients", global, function() awful.tag.incnmaster(-1, nil, true)  end)
-bindkey( { " ", " ", " " }, 'Up',      "icon:\r",   "layout", "move border left", global, function() helpers.resize_dwim(client.focus, "left") end)
-bindkey( { " ", " ", " " }, 'Down',    "icon:\r",   "layout", "move border down", global, function() helpers.resize_dwim(client.focus, "down") end)
-bindkey( { " ", " ", " " }, 'Left',    "icon: ",    "layout", "move border up", global, function() helpers.resize_dwim(client.focus, "up") end)
-bindkey( { " ", " ", " " }, 'Right',   "icon: ",    "layout", "move border left", global, function() helpers.resize_dwim(client.focus, "right") end)
+bindkey( { " " },             'Up',      " icon: \r icon: ", "client", "focus up", global, function() awful.client.focus.bydirection("up") end)
+bindkey( { " " },             'Down',    " icon: \r icon: ", "client", "focus down", global, function() awful.client.focus.bydirection("down") end)
+bindkey( { " " },             'Left',    " icon:  icon: ",   "client", "focus left", global, function() awful.client.focus.bydirection("left") end)
+bindkey( { " " },             'Right',   " icon: icon: ",    "client", "focus right", global, function() awful.client.focus.bydirection("right") end)
+bindkey( { " ", " " },       'Up',      " icon:ﰂ ",           "layout", "increase number of clients", global, function() awful.tag.incnmaster(1, nil, true) end)
+bindkey( { " ", " " },       'Down',    " icon:吝 ",           "layout", "lower number of columns", global, function() awful.tag.incncol(-1, nil, true) end)
+bindkey( { " ", " " },       'Left',    " icon:溺 ",           "layout", "increase number of columns", global, function() awful.tag.incncol(1, nil, true) end)
+bindkey( { " ", " " },       'Right',   " icon:ﯰ ",           "layout", "lower number of clients", global, function() awful.tag.incnmaster(-1, nil, true)  end)
+bindkey( { " ", " ", " " }, 'Up',      " icon: \r icon: ", "layout", "move border left", global, function() helpers.resize_dwim(client.focus, "left") end)
+bindkey( { " ", " ", " " }, 'Down',    " icon: \r icon: ", "layout", "move border down", global, function() helpers.resize_dwim(client.focus, "down") end)
+bindkey( { " ", " ", " " }, 'Left',    " icon:  icon: ",   "layout", "move border up", global, function() helpers.resize_dwim(client.focus, "up") end)
+bindkey( { " ", " ", " " }, 'Right',   " icon:  icon: ",   "layout", "move border left", global, function() helpers.resize_dwim(client.focus, "right") end)
 
 -- clientkeybindings ==================================================
 bindkey( { " " },             't',       "top",         "client", "toggle keep on top", client, function (c) c.ontop = not c.ontop end)
