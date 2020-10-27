@@ -7,13 +7,19 @@ local naughty   = require("naughty")
 -- elenapan-awesome (to be eliminated) ================================
 local helpers = require("helpers")
 -- needed kbvwr stuff =================================================
-local kbvwr   = {}
-kbvwr.config  = require("kbvwr.config")
-kbvwr.fn      = {}
-kbvwr.fn.keys = require("kbvwr.fn.keys")
-kbvwr.keys    = require("kbvwr.keys")
-kbvwr.bind    = require("kbvwr.bind")
-
+local kbvwr       = {}
+kbvwr.config      = require("kbvwr.config")
+kbvwr.fn          = require("kbvwr.fn")
+kbvwr.fn.keys     = require("kbvwr.fn.keys")
+kbvwr.keys        = require("kbvwr.keys")
+kbvwr.bind        = require("kbvwr.bind")
+-- kbvwr variables ====================================================
+kbvwr.description      = "" -- description welcome text
+kbvwr.lvl              = 0
+kbvwr.active_modifiers = {}
+for key,val in pairs(kbvwr.bind.octal) do
+    kbvwr.active_modifiers[key] = false
+end
 -- Create and configure the widget
 -- ====================================================================
 keyboard_viewer = wibox({visible = false, ontop = true, type = "dock", screen = screen.primary})
@@ -100,7 +106,7 @@ keyboard_viewer:setup {
                     -- row 2
                       layout  = wibox.layout.fixed.horizontal,
                       spacing = kbvwr.config.keys.gap["default"],
-                      kbvwr.keys['grave'].w, kbvwr.keys['1'].w, kbvwr.keys['2'].w, kbvwr.keys['3'].w, kbvwr.keys['4'].w, kbvwr.keys['5'].w, kbvwr.keys['6'].w, kbvwr.keys['7'].w, kbvwr.keys['8'].w, kbvwr.keys['9'].w,
+                      kbvwr.keys['`'].w, kbvwr.keys['1'].w, kbvwr.keys['2'].w, kbvwr.keys['3'].w, kbvwr.keys['4'].w, kbvwr.keys['5'].w, kbvwr.keys['6'].w, kbvwr.keys['7'].w, kbvwr.keys['8'].w, kbvwr.keys['9'].w,
                       kbvwr.keys['0'].w, kbvwr.keys['-'].w, kbvwr.keys['='].w, kbvwr.keys['BackSpace'].w, 
                    },
                     {
@@ -108,14 +114,15 @@ keyboard_viewer:setup {
                       layout  = wibox.layout.fixed.horizontal,
                       spacing = kbvwr.config.keys.gap["default"],
                       kbvwr.keys['Tab'].w, kbvwr.keys['q'].w, kbvwr.keys['w'].w, kbvwr.keys['e'].w, kbvwr.keys['r'].w, kbvwr.keys['t'].w, kbvwr.keys['y'].w, kbvwr.keys['u'].w, kbvwr.keys['i'].w, kbvwr.keys['o'].w,
-                      kbvwr.keys['p'].w, kbvwr.keys['['].w, kbvwr.keys[']'].w, kbvwr.keys['Return1'].w, 
+                      kbvwr.keys['p'].w, kbvwr.keys['['].w, kbvwr.keys[']'].w, 
+                      -- kbvwr.keys['Return1'].w, 
                     },
                     {
                     -- row 4
                       layout  = wibox.layout.fixed.horizontal,
                       spacing = kbvwr.config.keys.gap["default"],
                       kbvwr.keys['Caps_Lock'].w, kbvwr.keys['a'].w, kbvwr.keys['s'].w, kbvwr.keys['d'].w, kbvwr.keys['f'].w, kbvwr.keys['g'].w, kbvwr.keys['h'].w, kbvwr.keys['j'].w, kbvwr.keys['k'].w,
-                      kbvwr.keys['l'].w, kbvwr.keys[';'].w, kbvwr.keys['\''].w, kbvwr.keys['\\'].w, kbvwr.keys['Return2'].w, 
+                      kbvwr.keys['l'].w, kbvwr.keys[';'].w, kbvwr.keys['\''].w, kbvwr.keys['\\'].w, kbvwr.keys['Return'].w, 
                     },
                     {
                     -- row 5
@@ -128,7 +135,7 @@ keyboard_viewer:setup {
                     -- row 6
                       layout  = wibox.layout.fixed.horizontal,
                       spacing = kbvwr.config.keys.gap["default"],
-                      kbvwr.keys['Fn'].w, kbvwr.keys['Control_L'].w, kbvwr.keys['Super_L'].w, kbvwr.keys['Alt_L'].w, kbvwr.keys['space'].w, kbvwr.keys['Alt_R'].w,
+                      kbvwr.keys['Fn'].w, kbvwr.keys['Control_L'].w, kbvwr.keys['Super_L'].w, kbvwr.keys['Alt_L'].w, kbvwr.keys[' '].w, kbvwr.keys['Alt_R'].w,
                       kbvwr.keys['Print'].w, kbvwr.keys['Control_R'].w, kbvwr.keys['Prior'].w, kbvwr.keys['Up'].w, kbvwr.keys['Next'].w, 
                     },
                 },
@@ -142,7 +149,8 @@ keyboard_viewer:setup {
                 },
                 {
                     id = "description_textbox",
-                    widget = wibox.widget.textbox("test", true),
+                    widget = wibox.widget.textbox(),
+                    text = kbvwr.description,
                     align = "center",
                     valign = "center",
                 },
@@ -162,7 +170,6 @@ function keyboard_viewer_hide()
     set_visibility(false)
 end
 
-local original_cursor = "left_ptr"
 function keyboard_viewer_show()
     -- Fix cursor sometimes turning into "hand1" right after showing the keyboard_viewer
     -- Sigh... This fix does not always work
@@ -171,63 +178,71 @@ function keyboard_viewer_show()
         w.cursor = original_cursor
     end
     -- naughty.notify({text = "starting the keygrabber"})
-    keyboard_viewer_hide_grabber = awful.keygrabber.run(function(_, key, event)
-        -- if event == "release" then return end
-        -- Press Escape or q or F1 to hide it
-        if event == "press" and (key == 'Escape' or key == 'q' or key == 'XF86Tools') then
-            keyboard_viewer_hide()
-        -- only look at keys that are in the kbvwr.config.modifier_list and have 
-        -- the value 'true'.
-        -- elseif kbvwr.config.modifier_list[key] then
-            -- -- the only case the level can change
-            -- if key == 'Shift_L' or key == 'Shift_R' then
-            --     -- do not distinguish btw left/right shift key
-            --     key = 'shift'
-            -- end
-            -- if event == "press" then
-            --     kbvwr.modifiers_active[key] = true
-            -- elseif event == "release" then
-            --     kbvwr.modifiers_active[key] = false
-            -- end
-
-            -- local lvl = 0
-            -- for key,val in pairs(kbvwr.modifiers_active) do
-            --     -- for all active modifiers, add the according lvl value
-            --     if val then
-            --         lvl = lvl + kbvwr.config.lvl[key]
-            --     end
-            -- end
-            -- -- return the level using a lookup table for known levels
-            -- kbvwr.level = kbvwr.config.level[lvl]
-            -- -- trigger layer update
-            -- kbvwr.fn.update_layout(kbvwr.level)
-        -- else
-            -- desc_widget = keyboard_viewer:get_children_by_id("description")[1] or nil
-            -- key_widget  = kbvwr.widget.kblayout:get_children_by_id(key .. "_0")[1]
-            -- if event == "press" then
-            --     -- change description
-            --     desc_widget.text = kbvwr.bind.keydesc[key][kbvwr.level] or ""
-            --     naughty.notify({text = key_widget.bg})
-            --     -- if kbvwr.bind.keydesc[key] ~= nil then
-            --     --     kbvwr.fn.update_description(
-            --     --         kbvwr.bind.keydesc[key][kbvwr.level] or ""
-            --     --         )
-            --     -- else
-            --     --     kbvwr.fn.update_description("")
-            --     -- end
-            --     -- change key color
-            --     -- kbvwr.fn.key_color_change(kbvwr, key)
-            -- elseif event == "release" then
-            --     -- revert description
-            --     desc_widget.text = ""
-
-            --     -- kbvwr.fn.update_description("")
-            --     -- revert key color
-            --     -- kbvwr.fn.key_color_reset(kbvwr, key)
-            -- end
+    keyboard_viewer_hide_grabber = awful.keygrabber.run(
+        function(mod, key, event)
+            if kbvwr.keys[key] == nil then
+                naughty.notify({title = "kbvwr: missing key!", text = "'"..key.."' is not defined!"})
+                --[[ currently missing: TODO
+                * Scrol(l)_Lock
+                * ISO_Level3_Shift
+                * XF86WLAN
+                * Capitalized letters (why?)
+                --]]
+            end
+            if event == "press" and key == 'XF86Tools' then
+                keyboard_viewer_hide()
+            elseif kbvwr.keys[key].isModifier == true then
+                if event == "press" then
+                    -- change key color
+                    kbvwr.keys[key].w.bg = kbvwr.config.active_key_bg
+                    kbvwr.keys[key].w.fg = kbvwr.config.active_key_fg
+                    -- set modifier active
+                    kbvwr.active_modifiers[key] = true
+                    -- calculate current lvl
+                    kbvwr.lvl = kbvwr.fn.keys.lvl_dict(kbvwr.active_modifiers, kbvwr.bind.octal)
+                    naughty.notify({text = "current lvl is: "..kbvwr.lvl})
+                    -- update description
+                    keyboard_viewer:get_children_by_id("description_textbox")[1].markup = kbvwr.keys[key].description[kbvwr.lvl] or ""
+                    -- update symbol and key color for all normal keys
+                    for key,val in pairs(kbvwr.keys) do
+                        if val.isModifier == false then
+                            kbvwr.keys[key].w.text.markup = kbvwr.fn.formatIcon(kbvwr.keys[key].symbol[kbvwr.lvl]) or ""
+                            kbvwr.keys[key].w.bg = kbvwr.config.groupcolors[val.group[kbvwr.lvl]] or kbvwr.config.default_key_bg
+                            -- kbvwr.keys[key].w.fg = kbvwr.config.active_key_fg
+                        end
+                    end
+                elseif event == "release" then
+                    -- change key color
+                    kbvwr.keys[key].w.bg = kbvwr.config.modifier_key_bg
+                    kbvwr.keys[key].w.fg = kbvwr.config.modifier_key_fg
+                    -- set modifier in-active
+                    kbvwr.active_modifiers[key] = false
+                    -- calculate current lvl
+                    kbvwr.lvl = kbvwr.fn.keys.lvl_dict(kbvwr.active_modifiers, kbvwr.bind.octal)
+                    -- update description
+                    keyboard_viewer:get_children_by_id("description_textbox")[1].markup = kbvwr.keys[key].description[kbvwr.lvl] or ""
+                    -- update symbol and key color for all normal keys
+                    for key,val in pairs(kbvwr.keys) do
+                        if val.isModifier == false then
+                            kbvwr.keys[key].w.text.markup = kbvwr.fn.formatIcon(kbvwr.keys[key].symbol[kbvwr.lvl]) or ""
+                            kbvwr.keys[key].w.bg = kbvwr.config.groupcolors[val.group[kbvwr.lvl]] or kbvwr.config.default_key_bg
+                        end
+                    end
+                end
+            elseif kbvwr.keys[key].isModifier == false then
+                if event == "press" then
+                    kbvwr.keys[key].w.bg = kbvwr.config.active_key_bg
+                    kbvwr.keys[key].w.fg = kbvwr.config.active_key_fg
+                    keyboard_viewer:get_children_by_id("description_textbox")[1].markup = kbvwr.keys[key].description[kbvwr.lvl] or ""
+                elseif event == "release" then
+                    kbvwr.keys[key].w.bg = kbvwr.config.default_key_bg
+                    kbvwr.keys[key].w.fg = kbvwr.config.default_key_fg
+                    keyboard_viewer:get_children_by_id("description_textbox")[1].markup = ""
+                end
+            end
 
         end
-    end)
+    )
     set_visibility(true)
 end
 return kbvwr

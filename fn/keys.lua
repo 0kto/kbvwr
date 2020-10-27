@@ -23,6 +23,8 @@ function kbvwr.fn.keys.genOctalList(keys)
     -- test if key is a Modifier
     -- use ID as this is is the same for "Enter1"/"Enter2"
     -- or "Shift_L" and "Shift_R"
+    -- if key ~= "Shift_L" or key ~= "Shift_R" then
+      -- nothing ("Shift" is already taken care of)
     if val.isModifier and gears.table.hasitem(octal, val.id) == nil then
       ii = ii + 1
       octal[key] = 2^ii
@@ -31,9 +33,7 @@ function kbvwr.fn.keys.genOctalList(keys)
   return octal
 end
 
-
 -- maybe this function is not neeeded at all. =========================
-
 function kbvwr.fn.keys.getAwesomeModifiers(modifiers)
   awesome_modifiers = {}
   for ii,mod in ipairs(modifiers) do
@@ -57,7 +57,8 @@ function kbvwr.fn.keys.getAwesomeModifiers(modifiers)
 end
 
 -- public function to get lvl from array of keys ======================
-function kbvwr.fn.keys.lvl(modifiers, octal)
+function kbvwr.fn.keys.lvl_array(modifiers, octal)
+  -- naughty.notify({text = type(modifiers)})
   -- return lvl from modifiers
   local lvl = 1
   for ii,mod in ipairs(modifiers) do
@@ -82,19 +83,49 @@ function kbvwr.fn.keys.lvl(modifiers, octal)
   return lvl
 end
 
+-- public function to get lvl from array of keys ======================
+function kbvwr.fn.keys.lvl_dict(modifiers, octal)
+  -- naughty.notify({text = type(modifiers)})
+  -- return lvl from modifiers
+  local lvl = 1
+  for mod,active in pairs(modifiers) do
+    if active then
+      if mod == "Shift" or mod == "Shift_L" or mod == "Shift_R" or mod == "" or mod == " " then
+        lvl = lvl + octal["Shift"]
+      elseif mod == "Super_L" or mod == "Super" or mod == "Mod4" or mod == "" or mod == " " then
+        lvl = lvl + octal["Super_L"]
+      elseif mod == "Alt_L" or mod == "Mod1" or mod == "" or mod == " " then
+        lvl = lvl + octal["Alt_L"]
+      elseif mod == "Control_L" or mod == "Control" or mod == "" or mod == " " then
+        lvl = lvl + octal["Control_L"]
+      elseif mod == "Alt_R" or mod == "" or mod == " " then
+        lvl = lvl + octal["Alt_R"]
+      elseif mod == "Control_R" or mod == "" or mod == " " then
+        lvl = lvl + octal["Control_R"]
+      elseif mod == "Caps_Lock" or mod == "" or mod == " " then
+        lvl = lvl + octal["Caps_Lock"]
+      else 
+        lvl = lvl + octal[mod]
+      end
+    end
+  end
+  return lvl
+end
+
 -- public function to generate keybindings and update the respective key
-function kbvwr.fn.keys.bind(kbvwr, modifiers, key, group, symbol, description, isGlobalkey, fn)
+function kbvwr.fn.keys.bind(kbvwr, modifiers, key, symbol, group, description, isGlobalkey, fn)
   -- check if key is available and notify if otherwise
   if gears.table.hasitem(kbvwr.keys, key) == false then
     naughty.notify({text = "'"..key.."' could not be bound, key is not defined."})
   end
   -- register symbol and description in key.symbol and key.description
-  local lvl = kbvwr.fn.keys.lvl(modifiers, kbvwr.bind.octal)
+  local lvl = kbvwr.fn.keys.lvl_array(modifiers, kbvwr.bind.octal)
   if kbvwr.keys[key].symbol[lvl] ~= nil then
     naughty.notify({text = "lvl "..lvl.." + "..key.." is already defined"})
   end
   kbvwr.keys[key].symbol[lvl]      = symbol
   kbvwr.keys[key].description[lvl] = description
+  kbvwr.keys[key].group[lvl]       = group
   -- create and append element to keys.globalkeys or connect to client signal
   keybind = awful.key( kbvwr.fn.keys.getAwesomeModifiers(modifiers), key, fn, {description = description, group = group})
   if isGlobalKey then

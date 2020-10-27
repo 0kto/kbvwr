@@ -12,7 +12,7 @@ kbvwr.config.fontsize         = "12"
 kbvwr.config.fontsize_symbols = "20"
 
 kbvwr.config.groupcolors = {}
-kbvwr.config.groupcolors["launcher"] = x.color2
+kbvwr.config.groupcolors["launch"]   = x.color2
 kbvwr.config.groupcolors["apps"]     = x.color3
 kbvwr.config.groupcolors["media"]    = x.color4
 kbvwr.config.groupcolors["client"]   = x.color5
@@ -60,7 +60,7 @@ kbvwr.config.keys.width["Fn"]        = kbvwr.config.keys.width["default"]
 kbvwr.config.keys.width["Control_L"] = kbvwr.config.keys.width["default"] * 1.25
 kbvwr.config.keys.width["Super_L"]   = kbvwr.config.keys.width["default"]
 kbvwr.config.keys.width["Alt_L"]     = kbvwr.config.keys.width["default"]
-kbvwr.config.keys.width["space"]     = kbvwr.config.keys.width["default"] * 5 + kbvwr.config.keys.gap["default"] * 4
+kbvwr.config.keys.width["Space"]     = kbvwr.config.keys.width["default"] * 5 + kbvwr.config.keys.gap["default"] * 4
 kbvwr.config.keys.width["Alt_R"]     = kbvwr.config.keys.width["default"]
 kbvwr.config.keys.width["Print"]     = kbvwr.config.keys.width["default"]
 kbvwr.config.keys.width["Control_R"] = kbvwr.config.keys.width["default"]

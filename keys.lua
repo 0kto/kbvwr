@@ -15,6 +15,10 @@ local function genkey(id, symbol, isModifier, description, geometry)
   key = {}
   key.id           = id
   key.symbol       = symbol
+  key.group        = {}
+  if key.symbol[1] == nil then
+    symbol[1] = ""
+  end
   key.isModifier   = isModifier
   key.description  = description
   if isModifier then
@@ -83,7 +87,7 @@ kbvwr.keys['Home']      = genkey('Home',      {"Home"},    false, { }, {w["Fx"],
 kbvwr.keys['End']       = genkey('End',       {"End"},     false, { }, {w["Fx"],h["Fx"]}     )
 kbvwr.keys['Insert']    = genkey('Insert',    {"Ins"},     false, { }, {w["Fx"],h["Fx"]}     )
 kbvwr.keys['Delete']    = genkey('Delete',    {"Del"},     false, { }, {w["Delete"],h["Fx"]} )
-kbvwr.keys['grave']     = genkey('grave',     {"`", "`"},            false, { }, {wd, hd} )
+kbvwr.keys['`']         = genkey('grave',     {"`", "`"},            false, { }, {wd, hd} )
 kbvwr.keys['1']         = genkey('1',         {"1", "1"},            false, { }, {wd, hd} )
 kbvwr.keys['2']         = genkey('2',         {"2", "2"},            false, { }, {wd, hd} )
 kbvwr.keys['3']         = genkey('3',         {"3", "3"},            false, { }, {wd, hd} )
@@ -110,7 +114,7 @@ kbvwr.keys['o']         = genkey('o',         {"o", "o"},            false, { },
 kbvwr.keys['p']         = genkey('p',         {"p", "p"},            false, { }, {wd, hd} )
 kbvwr.keys['[']         = genkey('[',         {"[", "["},            false, { }, {wd, hd} )
 kbvwr.keys[']']         = genkey(']',         {"]", "]"},            false, { }, {wd, hd} )
-kbvwr.keys['Return1']   = genkey('Return',    {" icon: "}, false, { }, {w["Return1"], hd} )
+-- kbvwr.keys['Return']    = genkey('Return',    {" icon: "}, false, { }, {w["Return1"], hd} )
 kbvwr.keys['Caps_Lock'] = genkey('Caps_Lock', {" icon: "}, true , { "not assigned" },       {w["Caps_Lock"], hd} )
 kbvwr.keys['a']         = genkey('a',         {"a", "a"},            false, { }, {wd, hd} )
 kbvwr.keys['s']         = genkey('s',         {"s", "s"},            false, { }, {wd, hd} )
@@ -124,7 +128,7 @@ kbvwr.keys['l']         = genkey('l',         {"l", "l"},            false, { },
 kbvwr.keys[';']         = genkey(';',         {";", ";"},            false, { }, {wd, hd} )
 kbvwr.keys['\'']        = genkey('\'',        {"'", "'"},            false, { }, {wd, hd} )
 kbvwr.keys['\\']        = genkey('\\',        {"\\", "\\"},          false, { }, {wd, hd} )
-kbvwr.keys['Return2']   = genkey('Return',    {" icon: "}, false, { }, {w["Return2"], hd} )
+kbvwr.keys['Return']    = genkey('Return',    {" icon: "}, false, { }, {w["Return2"], hd} )
 kbvwr.keys['Shift_L']   = genkey('Shift',     {" icon: "}, true , { }, {w["Shift_L"], hd} )
 kbvwr.keys['<']         = genkey('<',         {"<", "<"},            false, { }, {wd, hd} )
 kbvwr.keys['z']         = genkey('z',         {"z", "z"},            false, { }, {wd, hd} )
@@ -142,7 +146,7 @@ kbvwr.keys['Fn']        = genkey('Fn',        {"Fn"},      true , { }, {w["Fn"],
 kbvwr.keys['Control_L'] = genkey('Control_L', {" icon: "}, true , { "CTRL left" },          {w["Control_L"], hd} )
 kbvwr.keys['Super_L']   = genkey('Super_L',   {" icon: "}, true , { "AwesomeWM commands" }, {w["Super_L"], hd} )
 kbvwr.keys['Alt_L']     = genkey('Alt_L',     {" icon: "}, true , { "Alt" },                {w["Alt_L"], hd} )
-kbvwr.keys['space']     = genkey('Space',     {" icon: "}, false, { }, {w["space"], hd} )
+kbvwr.keys[' ']         = genkey('Space',     {" icon: "}, false, { }, {w["Space"], hd} )
 kbvwr.keys['Alt_R']     = genkey('Alt_R',     {" icon: "}, true , { "Alt Gr" },             {w["Alt_R"], hd} )
 kbvwr.keys['Print']     = genkey('Print',     {" icon: "}, false, { }, {w["Print"], hd} )
 kbvwr.keys['Control_R'] = genkey('Control_R', {" icon: "}, true , { "CTRL right" },         {w["Control_R"], hd} )
@@ -154,17 +158,17 @@ kbvwr.keys['Down']      = genkey('Down',      {" icon: "}, false, { }, {w["Ar
 kbvwr.keys['Right']     = genkey('Right',     {" icon: "}, false, { }, {w["Arrow"], hd} )
 
 -- special keys
-kbvwr.keys['XF86AudioMute']         = genkey('XF86AudioMute',         {""}, false, { }, {w["Fx"], h["Fx"]} )
-kbvwr.keys['XF86AudioLowerVolume']  = genkey('XF86AudioLowerVolume',  {""}, false, { }, {w["Fx"], h["Fx"]} )
-kbvwr.keys['XF86AudioRaiseVolume']  = genkey('XF86AudioRaiseVolume',  {""}, false, { }, {w["Fx"], h["Fx"]} )
-kbvwr.keys['XF86AudioMicMute']      = genkey('XF86AudioMicMute',      {""}, false, { }, {w["Fx"], h["Fx"]} )
-kbvwr.keys['XF86MonBrightnessDown'] = genkey('XF86MonBrightnessDown', {""}, false, { }, {w["Fx"], h["Fx"]} )
-kbvwr.keys['XF86MonBrightnessUp']   = genkey('XF86MonBrightnessUp',   {""}, false, { }, {w["Fx"], h["Fx"]} )
-kbvwr.keys['XF86Display']           = genkey('XF86Display',           {""}, false, { }, {w["Fx"], h["Fx"]} )
-kbvwr.keys['XF86Search']            = genkey('XF86Search',            {""}, false, { }, {w["Fx"], h["Fx"]} )
-kbvwr.keys['XF86Tools']             = genkey('XF86Tools',             {""}, false, { }, {w["Fx"], h["Fx"]} )
-kbvwr.keys['XF86LaunchA']           = genkey('XF86LaunchA',           {""}, false, { }, {w["Fx"], h["Fx"]} )
-kbvwr.keys['XF86Explorer']          = genkey('XF86Explorer',          {""}, false, { }, {w["Fx"], h["Fx"]} )
+kbvwr.keys['XF86AudioMute']         = genkey('XF86AudioMute',         { }, false, { }, {w["Fx"], h["Fx"]} )
+kbvwr.keys['XF86AudioLowerVolume']  = genkey('XF86AudioLowerVolume',  { }, false, { }, {w["Fx"], h["Fx"]} )
+kbvwr.keys['XF86AudioRaiseVolume']  = genkey('XF86AudioRaiseVolume',  { }, false, { }, {w["Fx"], h["Fx"]} )
+kbvwr.keys['XF86AudioMicMute']      = genkey('XF86AudioMicMute',      { }, false, { }, {w["Fx"], h["Fx"]} )
+kbvwr.keys['XF86MonBrightnessDown'] = genkey('XF86MonBrightnessDown', { }, false, { }, {w["Fx"], h["Fx"]} )
+kbvwr.keys['XF86MonBrightnessUp']   = genkey('XF86MonBrightnessUp',   { }, false, { }, {w["Fx"], h["Fx"]} )
+kbvwr.keys['XF86Display']           = genkey('XF86Display',           { }, false, { }, {w["Fx"], h["Fx"]} )
+kbvwr.keys['XF86Search']            = genkey('XF86Search',            { }, false, { }, {w["Fx"], h["Fx"]} )
+kbvwr.keys['XF86Tools']             = genkey('XF86Tools',             { }, false, { }, {w["Fx"], h["Fx"]} )
+kbvwr.keys['XF86LaunchA']           = genkey('XF86LaunchA',           { }, false, { }, {w["Fx"], h["Fx"]} )
+kbvwr.keys['XF86Explorer']          = genkey('XF86Explorer',          { }, false, { }, {w["Fx"], h["Fx"]} )
 
 return kbvwr.keys
 
