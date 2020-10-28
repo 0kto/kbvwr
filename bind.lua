@@ -5,7 +5,7 @@ local awful = require("awful")
 local naughty = require("naughty")
 -- elenepan stuff =====================================================
 local apps    = require("apps")
--- local helpers = require("helpers")
+local helpers = require("helpers")
 -- needed kbvwr stuff =================================================
 local kbvwr   = {}
 kbvwr.config  = require("kbvwr.config")
