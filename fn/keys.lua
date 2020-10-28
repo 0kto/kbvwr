@@ -141,12 +141,4 @@ function kbvwr.fn.keys.bind(kbvwr, modifiers, key, symbol, group, description, i
   end
 end
 
--- public functions to update keys ====================================
-function kbvwr.fn.keys.set_bg(name, bg)
-  kbvwr.keys[name].w:get_children_by_id("background")[1].bg = bg
-end
-function kbvwr.fn.keys.set_text(name, text)
-  kbvwr.keys[name].w:get_children_by_id("text")[1].text = text
-end
-
 return kbvwr.fn.keys
