@@ -20,6 +20,7 @@ kbvwr.active_modifiers = {}
 for key,val in pairs(kbvwr.bind.octal) do
     kbvwr.active_modifiers[key] = false
 end
+
 -- Create and configure the widget
 -- ====================================================================
 keyboard_viewer = wibox({visible = false, ontop = true, type = "dock", screen = screen.primary})
@@ -180,11 +181,11 @@ function keyboard_viewer_show()
     -- naughty.notify({text = "starting the keygrabber"})
     keyboard_viewer_hide_grabber = awful.keygrabber.run(
         function(mod, key, event)
+            if key ==  "ISO_Level3_Shift" then key = "Alt_R" end
             if kbvwr.keys[key] == nil then
                 naughty.notify({title = "kbvwr: missing key!", text = "'"..key.."' is not defined!"})
                 --[[ currently missing: TODO
                 * Scrol(l)_Lock
-                * ISO_Level3_Shift
                 * XF86WLAN
                 * Capitalized letters (why?)
                 --]]

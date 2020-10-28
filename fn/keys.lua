@@ -47,7 +47,7 @@ function kbvwr.fn.keys.getAwesomeModifiers(modifiers)
       table.insert(awesome_modifiers, "Mod1")
     elseif mod == "Control_L" or mod == "Control" or mod == "" or mod == " " then
       table.insert(awesome_modifiers, "Control")
-    elseif mod == "Alt_R" or mod == "" or mod == " " then
+    elseif mod == "Alt_R" or mod == "ISO_Level3_Shift" or mod == "" or mod == " " then
       table.insert(awesome_modifiers, "Alt_R")
     elseif mod == "Control_R" or mod == "" or mod == " " then
       table.insert(awesome_modifiers, "Control_R")
@@ -72,7 +72,7 @@ function kbvwr.fn.keys.lvl_array(modifiers, octal)
       lvl = lvl + octal["Alt_L"]
     elseif mod == "Control_L" or mod == "Control" or mod == "" or mod == " " then
       lvl = lvl + octal["Control_L"]
-    elseif mod == "Alt_R" or mod == "" or mod == " " then
+    elseif mod == "Alt_R" or mod == "ISO_Level3_Shift" or mod == "" or mod == " " then
       lvl = lvl + octal["Alt_R"]
     elseif mod == "Control_R" or mod == "" or mod == " " then
       lvl = lvl + octal["Control_R"]
@@ -100,7 +100,7 @@ function kbvwr.fn.keys.lvl_dict(modifiers, octal)
         lvl = lvl + octal["Alt_L"]
       elseif mod == "Control_L" or mod == "Control" or mod == "" or mod == " " then
         lvl = lvl + octal["Control_L"]
-      elseif mod == "Alt_R" or mod == "" or mod == " " then
+      elseif mod == "Alt_R" or mod == "ISO_Level3_Shift" or mod == "" or mod == " " then
         lvl = lvl + octal["Alt_R"]
       elseif mod == "Control_R" or mod == "" or mod == " " then
         lvl = lvl + octal["Control_R"]
