@@ -6,19 +6,9 @@ local kbvwr  = {}
 -- package config =====================================================
 kbvwr.config = {}
 
-
 kbvwr.config.font             = "Cousine Nerd Font"
 kbvwr.config.fontsize         = "12"
 kbvwr.config.fontsize_symbols = "20"
-
-kbvwr.config.groupcolors = {}
-kbvwr.config.groupcolors["launch"]   = x.color2
-kbvwr.config.groupcolors["apps"]     = x.color3
-kbvwr.config.groupcolors["media"]    = x.color4
-kbvwr.config.groupcolors["client"]   = x.color5
-kbvwr.config.groupcolors["layout"]   = x.color6
-kbvwr.config.groupcolors["awesome"]  = x.color7
-kbvwr.config.groupcolors["tools"]    = x.color8
 
 kbvwr.config.default_key_bg       = x.color0
 kbvwr.config.default_key_fg       = x.foreground
@@ -26,6 +16,16 @@ kbvwr.config.modifier_key_bg	  = x.color8
 kbvwr.config.modifier_key_fg	  = x.color0
 kbvwr.config.active_key_bg        = x.color12
 kbvwr.config.active_key_fg        = x.color0
+
+kbvwr.config.groupcolors = {}
+kbvwr.config.groupcolors["modifier"] = kbvwr.config.modifier_key_bg
+kbvwr.config.groupcolors["launch"]   = x.color2
+kbvwr.config.groupcolors["apps"]     = x.color3
+kbvwr.config.groupcolors["media"]    = x.color4
+kbvwr.config.groupcolors["client"]   = x.color5
+kbvwr.config.groupcolors["layout"]   = x.color6
+kbvwr.config.groupcolors["awesome"]  = x.color7
+kbvwr.config.groupcolors["tools"]    = x.color8
 
 kbvwr.config.bg = beautiful.exit_screen_bg or beautiful.wibar_bg or "#111111"
 kbvwr.config.fg = beautiful.exit_screen_fg or beautiful.wibar_fg or "#FEFEFE"
