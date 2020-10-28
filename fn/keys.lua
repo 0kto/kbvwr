@@ -8,7 +8,9 @@ local kbvwr   = {}
 kbvwr.config  = require("kbvwr.config")
 -- package keys / keys.fn =============================================
 kbvwr.fn = {}
+kbvwr.fn      = require("kbvwr.fn")
 kbvwr.fn.keys = {}
+
 -- define octal numbers for modifiers =================================
 -- should be called from kbvwr or rc.lua
 function kbvwr.fn.keys.genOctalList(keys)
@@ -120,8 +122,12 @@ function kbvwr.fn.keys.bind(kbvwr, modifiers, key, symbol, group, description, i
   end
   -- register symbol and description in key.symbol and key.description
   local lvl = kbvwr.fn.keys.lvl_array(modifiers, kbvwr.bind.octal)
-  if kbvwr.keys[key].symbol[lvl] ~= nil then
+  if kbvwr.keys[key].symbol[lvl] ~= nil and kbvwr.keys[key].symbol[lvl] ~= "" then
     naughty.notify({text = "lvl "..lvl.." + "..key.." is already defined"})
+  end
+  if lvl == 1 then
+    kbvwr.keys[key].w.text.markup = "<span font='".. kbvwr.config.fontsize_symbols .."'>".. symbol:gsub("icon:", "") .."</span>"
+    kbvwr.keys[key].w.bg = kbvwr.config.groupcolors[group] or kbvwr.config.default_key_bg
   end
   kbvwr.keys[key].symbol[lvl]      = symbol
   kbvwr.keys[key].description[lvl] = description

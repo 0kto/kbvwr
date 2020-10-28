@@ -235,7 +235,7 @@ function keyboard_viewer_show()
                     kbvwr.keys[key].w.fg = kbvwr.config.active_key_fg
                     keyboard_viewer:get_children_by_id("description_textbox")[1].markup = kbvwr.keys[key].description[kbvwr.lvl] or ""
                 elseif event == "release" then
-                    kbvwr.keys[key].w.bg = kbvwr.config.default_key_bg
+                    kbvwr.keys[key].w.bg = kbvwr.config.groupcolors[kbvwr.keys[key].group[kbvwr.lvl]] or kbvwr.config.default_key_bg
                     kbvwr.keys[key].w.fg = kbvwr.config.default_key_fg
                     keyboard_viewer:get_children_by_id("description_textbox")[1].markup = ""
                 end
