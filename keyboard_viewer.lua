@@ -20,10 +20,17 @@ kbvwr.active_modifiers = {}
 for key,val in pairs(kbvwr.bind.octal) do
     kbvwr.active_modifiers[key] = false
 end
+for key,values in pairs(kbvwr.keys) do
+    if values.isModifier then
+        lvl = kbvwr.fn.keys.lvl_array({ key }, kbvwr.bind.octal)
+        values.description[lvl] = values.description[1]
+        values.description[1]   = nil
+    end
+end
 
 -- Create and configure the widget
 -- ====================================================================
-keyboard_viewer = wibox({visible = false, ontop = true, type = "dock", screen = screen.primary})
+keyboard_viewer = wibox({visible = false, ontop = true, kbvwr.keystype = "dock", screen = screen.primary})
 keyboard_viewer.bg = kbvwr.config.bg
 keyboard_viewer.fg = kbvwr.config.fg
 awful.placement.maximize(keyboard_viewer)
@@ -172,13 +179,6 @@ function keyboard_viewer_hide()
 end
 
 function keyboard_viewer_show()
-    -- Fix cursor sometimes turning into "hand1" right after showing the keyboard_viewer
-    -- Sigh... This fix does not always work
-    local w = mouse.current_wibox
-    if w then
-        w.cursor = original_cursor
-    end
-    -- naughty.notify({text = "starting the keygrabber"})
     keyboard_viewer_hide_grabber = awful.keygrabber.run(
         function(mod, key, event)
             --[[ currently missing: TODO
@@ -190,7 +190,7 @@ function keyboard_viewer_show()
             if kbvwr.keys[key] == nil then
                 naughty.notify({title = "kbvwr: missing key!", text = "\""..key.."\" is not defined!"})
             end
-            if event == "press" and key == 'XF86Tools' then
+            if event == "press" and (key == "XF86Tools" or key == "q") then
                 keyboard_viewer_hide()
             elseif kbvwr.keys[key].isModifier == true then
                 if event == "press" then
@@ -201,7 +201,6 @@ function keyboard_viewer_show()
                     kbvwr.active_modifiers[key] = true
                     -- calculate current lvl
                     kbvwr.lvl = kbvwr.fn.keys.lvl_dict(kbvwr.active_modifiers, kbvwr.bind.octal)
-                    naughty.notify({text = "current lvl is: "..kbvwr.lvl})
                     -- update description
                     keyboard_viewer:get_children_by_id("description_textbox")[1].markup = kbvwr.keys[key].description[kbvwr.lvl] or ""
                     -- update symbol and key color for all normal keys
@@ -209,7 +208,6 @@ function keyboard_viewer_show()
                         if val.isModifier == false then
                             kbvwr.keys[key].w.text.markup = kbvwr.fn.formatIcon(kbvwr.keys[key].symbol[kbvwr.lvl]) or ""
                             kbvwr.keys[key].w.bg = kbvwr.config.groupcolors[val.group[kbvwr.lvl]] or kbvwr.config.default_key_bg
-                            -- kbvwr.keys[key].w.fg = kbvwr.config.active_key_fg
                         end
                     end
                 elseif event == "release" then
