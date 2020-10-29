@@ -107,37 +107,37 @@ keyboard_viewer:setup {
                     -- row 2
                       layout  = wibox.layout.fixed.horizontal,
                       spacing = kbvwr.config.keys.gap["default"],
-                      kbvwr.keys['`'].w, kbvwr.keys['1'].w, kbvwr.keys['2'].w, kbvwr.keys['3'].w, kbvwr.keys['4'].w, kbvwr.keys['5'].w, kbvwr.keys['6'].w, kbvwr.keys['7'].w, kbvwr.keys['8'].w, kbvwr.keys['9'].w,
-                      kbvwr.keys['0'].w, kbvwr.keys['-'].w, kbvwr.keys['='].w, kbvwr.keys['BackSpace'].w, 
+                      kbvwr.keys["`"].w, kbvwr.keys["1"].w, kbvwr.keys["2"].w, kbvwr.keys["3"].w, kbvwr.keys["4"].w, kbvwr.keys["5"].w, kbvwr.keys["6"].w, kbvwr.keys["7"].w, kbvwr.keys["8"].w, kbvwr.keys["9"].w,
+                      kbvwr.keys["0"].w, kbvwr.keys["-"].w, kbvwr.keys["="].w, kbvwr.keys["BackSpace"].w, 
                    },
                     {
                     -- row 3
                       layout  = wibox.layout.fixed.horizontal,
                       spacing = kbvwr.config.keys.gap["default"],
-                      kbvwr.keys['Tab'].w, kbvwr.keys['q'].w, kbvwr.keys['w'].w, kbvwr.keys['e'].w, kbvwr.keys['r'].w, kbvwr.keys['t'].w, kbvwr.keys['y'].w, kbvwr.keys['u'].w, kbvwr.keys['i'].w, kbvwr.keys['o'].w,
-                      kbvwr.keys['p'].w, kbvwr.keys['['].w, kbvwr.keys[']'].w, 
-                      -- kbvwr.keys['Return1'].w, 
+                      kbvwr.keys["Tab"].w, kbvwr.keys["q"].w, kbvwr.keys["w"].w, kbvwr.keys["e"].w, kbvwr.keys["r"].w, kbvwr.keys["t"].w, kbvwr.keys["y"].w, kbvwr.keys["u"].w, kbvwr.keys["i"].w, kbvwr.keys["o"].w,
+                      kbvwr.keys["p"].w, kbvwr.keys["["].w, kbvwr.keys["]"].w, 
+                      -- kbvwr.keys["Return1"].w, 
                     },
                     {
                     -- row 4
                       layout  = wibox.layout.fixed.horizontal,
                       spacing = kbvwr.config.keys.gap["default"],
-                      kbvwr.keys['Caps_Lock'].w, kbvwr.keys['a'].w, kbvwr.keys['s'].w, kbvwr.keys['d'].w, kbvwr.keys['f'].w, kbvwr.keys['g'].w, kbvwr.keys['h'].w, kbvwr.keys['j'].w, kbvwr.keys['k'].w,
-                      kbvwr.keys['l'].w, kbvwr.keys[';'].w, kbvwr.keys['\''].w, kbvwr.keys['\\'].w, kbvwr.keys['Return'].w, 
+                      kbvwr.keys["Caps_Lock"].w, kbvwr.keys["a"].w, kbvwr.keys["s"].w, kbvwr.keys["d"].w, kbvwr.keys["f"].w, kbvwr.keys["g"].w, kbvwr.keys["h"].w, kbvwr.keys["j"].w, kbvwr.keys["k"].w,
+                      kbvwr.keys["l"].w, kbvwr.keys[";"].w, kbvwr.keys["\""].w, kbvwr.keys["\\"].w, kbvwr.keys["Return"].w, 
                     },
                     {
                     -- row 5
                       layout  = wibox.layout.fixed.horizontal,
                       spacing = kbvwr.config.keys.gap["default"],
-                      kbvwr.keys['Shift_L'].w, kbvwr.keys['<'].w, kbvwr.keys['z'].w, kbvwr.keys['x'].w, kbvwr.keys['c'].w, kbvwr.keys['v'].w, kbvwr.keys['b'].w, kbvwr.keys['n'].w, kbvwr.keys['m'].w,
-                      kbvwr.keys[','].w, kbvwr.keys['.'].w, kbvwr.keys['/'].w, kbvwr.keys['Shift_R'].w, 
+                      kbvwr.keys["Shift_L"].w, kbvwr.keys["<"].w, kbvwr.keys["z"].w, kbvwr.keys["x"].w, kbvwr.keys["c"].w, kbvwr.keys["v"].w, kbvwr.keys["b"].w, kbvwr.keys["n"].w, kbvwr.keys["m"].w,
+                      kbvwr.keys[","].w, kbvwr.keys["."].w, kbvwr.keys["/"].w, kbvwr.keys["Shift_R"].w, 
                     },
                     {
                     -- row 6
                       layout  = wibox.layout.fixed.horizontal,
                       spacing = kbvwr.config.keys.gap["default"],
-                      kbvwr.keys['Fn'].w, kbvwr.keys['Control_L'].w, kbvwr.keys['Super_L'].w, kbvwr.keys['Alt_L'].w, kbvwr.keys[' '].w, kbvwr.keys['Alt_R'].w,
-                      kbvwr.keys['Print'].w, kbvwr.keys['Control_R'].w, kbvwr.keys['Prior'].w, kbvwr.keys['Up'].w, kbvwr.keys['Next'].w, 
+                      kbvwr.keys["Fn"].w, kbvwr.keys["Control_L"].w, kbvwr.keys["Super_L"].w, kbvwr.keys["Alt_L"].w, kbvwr.keys["space"].w, kbvwr.keys["Alt_R"].w,
+                      kbvwr.keys["Print"].w, kbvwr.keys["Control_R"].w, kbvwr.keys["Prior"].w, kbvwr.keys["Up"].w, kbvwr.keys["Next"].w, 
                     },
                 },
             },
