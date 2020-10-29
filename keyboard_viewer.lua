@@ -181,14 +181,14 @@ function keyboard_viewer_show()
     -- naughty.notify({text = "starting the keygrabber"})
     keyboard_viewer_hide_grabber = awful.keygrabber.run(
         function(mod, key, event)
-            if key ==  "ISO_Level3_Shift" then key = "Alt_R" end
+            --[[ currently missing: TODO
+            * Scrol(l)_Lock
+            * XF86WLAN
+            --]]
+            -- take care of possible Aliases (capitalized letters)
+            key = kbvwr.config.keys.aliases[key] or key
             if kbvwr.keys[key] == nil then
-                naughty.notify({title = "kbvwr: missing key!", text = "'"..key.."' is not defined!"})
-                --[[ currently missing: TODO
-                * Scrol(l)_Lock
-                * XF86WLAN
-                * Capitalized letters (why?)
-                --]]
+                naughty.notify({title = "kbvwr: missing key!", text = "\""..key.."\" is not defined!"})
             end
             if event == "press" and key == 'XF86Tools' then
                 keyboard_viewer_hide()

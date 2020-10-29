@@ -25,8 +25,6 @@ function kbvwr.fn.keys.genOctalList(keys)
     -- test if key is a Modifier
     -- use ID as this is is the same for "Enter1"/"Enter2"
     -- or "Shift_L" and "Shift_R"
-    -- if key ~= "Shift_L" or key ~= "Shift_R" then
-      -- nothing ("Shift" is already taken care of)
     if val.isModifier and gears.table.hasitem(octal, val.id) == nil then
       ii = ii + 1
       octal[key] = 2^ii
