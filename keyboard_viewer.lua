@@ -30,7 +30,7 @@ end
 
 -- Create and configure the widget
 -- ====================================================================
-keyboard_viewer = wibox({visible = false, ontop = true, kbvwr.keystype = "dock", screen = screen.primary})
+keyboard_viewer = wibox({visible = false, ontop = true, type = "dock", screen = screen.primary})
 keyboard_viewer.bg = kbvwr.config.bg
 keyboard_viewer.fg = kbvwr.config.fg
 awful.placement.maximize(keyboard_viewer)
