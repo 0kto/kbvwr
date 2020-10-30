@@ -6,11 +6,12 @@ local helpers = require("helpers")
 
 -- needed kbvwr stuff =================================================
 local kbvwr   = {}
-kbvwr.fn  = require("kbvwr.fn")
+kbvwr.fn      = require("kbvwr.fn")
 kbvwr.config  = require("kbvwr.config")
 -- package keys =======================================================
 kbvwr.keys    = {}
--- private functions ==================================================
+
+-- private function ===================================================
 local function genkey(id, symbol, isModifier, description, geometry)
   key = {}
   key.id           = id
@@ -34,7 +35,7 @@ local function genkey(id, symbol, isModifier, description, geometry)
     {
       id = "text",
       widget = wibox.widget.textbox(),
-      markup = symbol[1]:gsub("[^%s]+", kbvwr.fn.formatIcon ),
+      markup = symbol[1]:gsub("[^%s]+", kbvwr.fn.markupFromString ),
       font   = font,
       align  = "center",
       valign = "center",

@@ -10,7 +10,6 @@ local helpers = require("helpers")
 local kbvwr       = {}
 kbvwr.config      = require("kbvwr.config")
 kbvwr.fn          = require("kbvwr.fn")
-kbvwr.fn.keys     = require("kbvwr.fn.keys")
 kbvwr.keys        = require("kbvwr.keys")
 kbvwr.bind        = require("kbvwr.bind")
 -- kbvwr variables ====================================================
@@ -22,12 +21,11 @@ for key,val in pairs(kbvwr.bind.octal) do
 end
 for key,values in pairs(kbvwr.keys) do
     if values.isModifier then
-        lvl = kbvwr.fn.keys.lvl_array({ key }, kbvwr.bind.octal)
+        lvl = kbvwr.fn.lvl_array({ key }, kbvwr.bind.octal)
         values.description[lvl] = values.description[1]
         values.description[1]   = nil
     end
 end
-
 -- Create and configure the widget
 -- ====================================================================
 keyboard_viewer = wibox({visible = false, ontop = true, type = "dock", screen = screen.primary})
@@ -200,13 +198,13 @@ function keyboard_viewer_show()
                     -- set modifier active
                     kbvwr.active_modifiers[key] = true
                     -- calculate current lvl
-                    kbvwr.lvl = kbvwr.fn.keys.lvl_dict(kbvwr.active_modifiers, kbvwr.bind.octal)
+                    kbvwr.lvl = kbvwr.fn.lvl_dict(kbvwr.active_modifiers, kbvwr.bind.octal)
                     -- update description
                     keyboard_viewer:get_children_by_id("description_textbox")[1].markup = kbvwr.keys[key].description[kbvwr.lvl] or ""
                     -- update symbol and key color for all normal keys
                     for key,val in pairs(kbvwr.keys) do
                         if val.isModifier == false then
-                            kbvwr.keys[key].w.text.markup = kbvwr.fn.formatIcon(kbvwr.keys[key].symbol[kbvwr.lvl]) or ""
+                            kbvwr.keys[key].w.text.markup = kbvwr.fn.markupFromString(kbvwr.keys[key].symbol[kbvwr.lvl]) or ""
                             kbvwr.keys[key].w.bg = kbvwr.config.groupcolors[val.group[kbvwr.lvl]] or kbvwr.config.default_key_bg
                         end
                     end
@@ -217,13 +215,13 @@ function keyboard_viewer_show()
                     -- set modifier in-active
                     kbvwr.active_modifiers[key] = false
                     -- calculate current lvl
-                    kbvwr.lvl = kbvwr.fn.keys.lvl_dict(kbvwr.active_modifiers, kbvwr.bind.octal)
+                    kbvwr.lvl = kbvwr.fn.lvl_dict(kbvwr.active_modifiers, kbvwr.bind.octal)
                     -- update description
                     keyboard_viewer:get_children_by_id("description_textbox")[1].markup = kbvwr.keys[key].description[kbvwr.lvl] or ""
                     -- update symbol and key color for all normal keys
                     for key,val in pairs(kbvwr.keys) do
                         if val.isModifier == false then
-                            kbvwr.keys[key].w.text.markup = kbvwr.fn.formatIcon(kbvwr.keys[key].symbol[kbvwr.lvl]) or ""
+                            kbvwr.keys[key].w.text.markup = kbvwr.fn.markupFromString(kbvwr.keys[key].symbol[kbvwr.lvl]) or ""
                             kbvwr.keys[key].w.bg = kbvwr.config.groupcolors[val.group[kbvwr.lvl]] or kbvwr.config.default_key_bg
                         end
                     end

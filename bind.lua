@@ -10,11 +10,10 @@ local helpers = require("helpers")
 local kbvwr   = {}
 kbvwr.config  = require("kbvwr.config")
 kbvwr.keys    = require("kbvwr.keys")
-kbvwr.fn      = {}
-kbvwr.fn.keys = require("kbvwr.fn.keys")
+kbvwr.fn      = require("kbvwr.fn")
 -- package bind =======================================================
 kbvwr.bind                   = {}
-kbvwr.bind.octal             = kbvwr.fn.keys.genOctalList(kbvwr.keys)
+kbvwr.bind.octal             = kbvwr.fn.genOctalList(kbvwr.keys)
 kbvwr.bind.globalkeybindings = {}
 kbvwr.bind.clientkeybindings = {}
 
