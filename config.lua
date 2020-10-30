@@ -8,13 +8,13 @@ kbvwr.config = {}
 
 kbvwr.config.font             = "Cousine Nerd Font"
 kbvwr.config.fontsize         = "12"
-kbvwr.config.fontsize_symbols = "20"
+kbvwr.config.fontsize_symbols = "15"
 
 kbvwr.config.default_key_bg       = x.color0
 kbvwr.config.default_key_fg       = x.foreground
 kbvwr.config.modifier_key_bg	  = x.color8
 kbvwr.config.modifier_key_fg	  = x.color0
-kbvwr.config.active_key_bg        = x.color12
+kbvwr.config.active_key_bg        = x.color9
 kbvwr.config.active_key_fg        = x.color0
 
 kbvwr.config.groupcolors = {}
@@ -26,6 +26,7 @@ kbvwr.config.groupcolors["client"]   = x.color5
 kbvwr.config.groupcolors["layout"]   = x.color6
 kbvwr.config.groupcolors["awesome"]  = x.color7
 kbvwr.config.groupcolors["tools"]    = x.color8
+kbvwr.config.groupcolors["tags"]     = x.color13
 
 kbvwr.config.bg = beautiful.exit_screen_bg or beautiful.wibar_bg or "#111111"
 kbvwr.config.fg = beautiful.exit_screen_fg or beautiful.wibar_fg or "#FEFEFE"
@@ -69,7 +70,6 @@ kbvwr.config.keys.width["Arrow"]     = (kbvwr.config.keys.width["Shift_R"] - 2 *
 kbvwr.config.keys.aliases = {}
 kbvwr.config.keys.aliases["ISO_Level3_Shift"] = "Alt_R"
 kbvwr.config.keys.aliases[" "]  = "space"
--- kbvwr.config.keys.aliases["space"] = "Space"
 kbvwr.config.keys.aliases["~"]  = "`"
 kbvwr.config.keys.aliases["!"]  = "1"
 kbvwr.config.keys.aliases["@"]  = "2"
@@ -95,6 +95,8 @@ kbvwr.config.keys.aliases["O"]  = "o"
 kbvwr.config.keys.aliases["P"]  = "p"
 kbvwr.config.keys.aliases["{"]  = "["
 kbvwr.config.keys.aliases["}"]  = "]"
+kbvwr.config.keys.aliases["bracketleft"]  = "["
+kbvwr.config.keys.aliases["bracketright"]  = "]"
 kbvwr.config.keys.aliases["A"]  = "a"
 kbvwr.config.keys.aliases["S"]  = "s"
 kbvwr.config.keys.aliases["D"]  = "d"
@@ -115,8 +117,10 @@ kbvwr.config.keys.aliases["V"]  = "v"
 kbvwr.config.keys.aliases["B"]  = "b"
 kbvwr.config.keys.aliases["N"]  = "n"
 kbvwr.config.keys.aliases["M"]  = "m"
-kbvwr.config.keys.aliases["<"]  = ","
-kbvwr.config.keys.aliases[">"]  = "."
+kbvwr.config.keys.aliases["XF86WakeUp"] = "Fn"
+
+-- kbvwr.config.keys.aliases["<"]  = ","
+-- kbvwr.config.keys.aliases[">"]  = "."
 kbvwr.config.keys.aliases["?"]  = "/"
 
 

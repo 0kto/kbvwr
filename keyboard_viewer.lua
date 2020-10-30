@@ -47,14 +47,7 @@ local function set_visibility(v)
         s.keyboard_viewer.visible = v
     end
 end
-
-keyboard_viewer:buttons(gears.table.join(
-    -- Middle click - Hide keyboard_viewer
-    awful.button({ }, 2, function ()
-        keyboard_viewer_hide()
-    end)
-))
--- Item placement
+-- Widget layouot and setup ===========================================
 keyboard_viewer:setup {
     -- Center boxes vertically
     layout = wibox.layout.align.vertical,
@@ -128,7 +121,7 @@ keyboard_viewer:setup {
                       layout  = wibox.layout.fixed.horizontal,
                       spacing = kbvwr.config.keys.gap["default"],
                       kbvwr.keys["Caps_Lock"].w, kbvwr.keys["a"].w, kbvwr.keys["s"].w, kbvwr.keys["d"].w, kbvwr.keys["f"].w, kbvwr.keys["g"].w, kbvwr.keys["h"].w, kbvwr.keys["j"].w, kbvwr.keys["k"].w,
-                      kbvwr.keys["l"].w, kbvwr.keys[";"].w, kbvwr.keys["\""].w, kbvwr.keys["\\"].w, kbvwr.keys["Return"].w, 
+                      kbvwr.keys["l"].w, kbvwr.keys[";"].w, kbvwr.keys["'"].w, kbvwr.keys["\\"].w, kbvwr.keys["Return"].w, 
                     },
                     {
                     -- row 5
@@ -167,15 +160,17 @@ keyboard_viewer:setup {
     },
     nil,
 }
-
--- keyboard_viewer show and hide functions, keygrabber
+-- Mousebindings for widget ===========================================
+keyboard_viewer:buttons(
+    -- Middle click: Hide keyboard_viewer
+    awful.button({ }, 2, function () keyboard_viewer_hide() end)
+    )
+-- keyboard_viewer show and hide functions, keygrabber ================
 local keyboard_viewer_grabber
-
 function keyboard_viewer_hide()
     awful.keygrabber.stop(keyboard_viewer_grabber)
     set_visibility(false)
 end
-
 function keyboard_viewer_show()
     keyboard_viewer_hide_grabber = awful.keygrabber.run(
         function(mod, key, event)
@@ -242,4 +237,5 @@ function keyboard_viewer_show()
     )
     set_visibility(true)
 end
+-- return package =====================================================
 return kbvwr

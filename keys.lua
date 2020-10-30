@@ -60,10 +60,10 @@ end
   arrays, with a _very_ high number of elements; however, these usually
   hold the value "nil" and thus space should not be an issue in lua.
   Similar to the "chmod" tool, the elements of these arrays are 
-  addressed by octal digits + 1, derived by adding up the bits with values
-  of 2^0 .. 2^n, where the values are specified by the dictionary 
-  kbvwr.keys.octal below. The +1 takes into account, that lua starts 
-  counting at 1 rather than 0.
+  addressed by lvl = octal digits + 1, derived by adding up the bits 
+  with values of 2^0 .. 2^n, where the values are specified by the 
+  dictionary kbvwr.keys.octal below. The +1 takes into account, that 
+  lua starts counting at 1 rather than 0.
 --]]
 -- shorthands
 local w  = kbvwr.config.keys.width
@@ -127,7 +127,7 @@ kbvwr.keys["j"]         = genkey("j",         {"j", "J"},              false, { 
 kbvwr.keys["k"]         = genkey("k",         {"k", "K"},              false, { }, {wd, hd} )
 kbvwr.keys["l"]         = genkey("l",         {"l", "L"},              false, { }, {wd, hd} )
 kbvwr.keys[";"]         = genkey(";",         {";", ":"},              false, { }, {wd, hd} )
-kbvwr.keys["\""]        = genkey("\"",        {"'", "\""},              false, { }, {wd, hd} )
+kbvwr.keys["'"]         = genkey("'",        {"'", "\""},              false, { }, {wd, hd} )
 kbvwr.keys["\\"]        = genkey("\\",        {"\\", "|"},             false, { }, {wd, hd} )
 kbvwr.keys["Return"]    = genkey("Return",    {" icon: "," icon: "}, false, { }, {w["Return2"], hd} )
 kbvwr.keys["Shift_L"]   = genkey("Shift",     {" icon: "},            true , { }, {w["Shift_L"], hd} )
@@ -158,7 +158,8 @@ kbvwr.keys["Left"]      = genkey("Left",      {" icon: "," icon: "}, false
 kbvwr.keys["Down"]      = genkey("Down",      {" icon: "," icon: "}, false, { }, {w["Arrow"], hd} )
 kbvwr.keys["Right"]     = genkey("Right",     {" icon: "," icon: "}, false, { }, {w["Arrow"], hd} )
 
--- special keys
+-- special keys =======================================================
+kbvwr.keys["XF86WLAN"]              = genkey("XF86WLAN",              { nil }, false, { }, {w["Fx"], h["Fx"]} )
 kbvwr.keys["XF86AudioMute"]         = genkey("XF86AudioMute",         { nil }, false, { }, {w["Fx"], h["Fx"]} )
 kbvwr.keys["XF86AudioLowerVolume"]  = genkey("XF86AudioLowerVolume",  { nil }, false, { }, {w["Fx"], h["Fx"]} )
 kbvwr.keys["XF86AudioRaiseVolume"]  = genkey("XF86AudioRaiseVolume",  { nil }, false, { }, {w["Fx"], h["Fx"]} )
