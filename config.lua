@@ -1,6 +1,5 @@
 -- awesomeWM lua packages =============================================
 local beautiful = require("beautiful")
-
 -- needed kbvwr stuff =================================================
 local kbvwr  = {}
 -- package config =====================================================
@@ -40,31 +39,31 @@ kbvwr.config.box_gap    = dpi(   6)
 -- Key geometry is defined here.
 kbvwr.config.keys        = {}
 kbvwr.config.keys.gap    = {}
-kbvwr.config.keys.gap["default"]     = 6
-kbvwr.config.keys.gap["Fx"]          = kbvwr.config.keys.gap["default"] / 2
+kbvwr.config.keys.gap["default"]     =  6
+kbvwr.config.keys.gap["Fx"]          =  kbvwr.config.keys.gap["default"] / 2
 kbvwr.config.keys.height = {} 
 kbvwr.config.keys.height["default"]  = 65
-kbvwr.config.keys.height["Fx"]       = kbvwr.config.keys.height["default"] * 0.75
-kbvwr.config.keys.width  = {} 
+kbvwr.config.keys.height["Fx"]       =  kbvwr.config.keys.height["default"] * 0.75
+kbvwr.config.keys.width  = {}  
 kbvwr.config.keys.width["default"]   = 65
-kbvwr.config.keys.width["Escape"]    = kbvwr.config.keys.width["default"] * 1.3
-kbvwr.config.keys.width["Delete"]    = kbvwr.config.keys.width["Escape"]
-kbvwr.config.keys.width["Fx"]        = kbvwr.config.keys.width["default"] * 0.85
-kbvwr.config.keys.width["BackSpace"] = kbvwr.config.keys.width["default"] * 2
-kbvwr.config.keys.width["Tab"]       = kbvwr.config.keys.width["default"] * 1.5
-kbvwr.config.keys.width["Return1"]   = kbvwr.config.keys.width["default"] * 1.5
-kbvwr.config.keys.width["Caps_Lock"] = kbvwr.config.keys.width["default"] * 1.8
-kbvwr.config.keys.width["Return2"]   = kbvwr.config.keys.width["default"] * 1.2
-kbvwr.config.keys.width["Shift_L"]   = kbvwr.config.keys.width["default"] * 1.25
-kbvwr.config.keys.width["Shift_R"]   = kbvwr.config.keys.width["default"] * 2.85
-kbvwr.config.keys.width["Fn"]        = kbvwr.config.keys.width["default"]
-kbvwr.config.keys.width["Control_L"] = kbvwr.config.keys.width["default"] * 1.25
-kbvwr.config.keys.width["Super_L"]   = kbvwr.config.keys.width["default"]
-kbvwr.config.keys.width["Alt_L"]     = kbvwr.config.keys.width["default"]
-kbvwr.config.keys.width["Space"]     = kbvwr.config.keys.width["default"] * 5 + kbvwr.config.keys.gap["default"] * 4
-kbvwr.config.keys.width["Alt_R"]     = kbvwr.config.keys.width["default"]
-kbvwr.config.keys.width["Print"]     = kbvwr.config.keys.width["default"]
-kbvwr.config.keys.width["Control_R"] = kbvwr.config.keys.width["default"]
+kbvwr.config.keys.width["Escape"]    =  kbvwr.config.keys.width["default"] * 1.3
+kbvwr.config.keys.width["Delete"]    =  kbvwr.config.keys.width["Escape"]
+kbvwr.config.keys.width["Fx"]        =  kbvwr.config.keys.width["default"] * 0.85
+kbvwr.config.keys.width["BackSpace"] =  kbvwr.config.keys.width["default"] * 2
+kbvwr.config.keys.width["Tab"]       =  kbvwr.config.keys.width["default"] * 1.5
+kbvwr.config.keys.width["Return1"]   =  kbvwr.config.keys.width["default"] * 1.5
+kbvwr.config.keys.width["Caps_Lock"] =  kbvwr.config.keys.width["default"] * 1.8
+kbvwr.config.keys.width["Return2"]   =  kbvwr.config.keys.width["default"] * 1.2
+kbvwr.config.keys.width["Shift_L"]   =  kbvwr.config.keys.width["default"] * 1.25
+kbvwr.config.keys.width["Shift_R"]   =  kbvwr.config.keys.width["default"] * 2.85
+kbvwr.config.keys.width["Fn"]        =  kbvwr.config.keys.width["default"]
+kbvwr.config.keys.width["Control_L"] =  kbvwr.config.keys.width["default"] * 1.25
+kbvwr.config.keys.width["Super_L"]   =  kbvwr.config.keys.width["default"]
+kbvwr.config.keys.width["Alt_L"]     =  kbvwr.config.keys.width["default"]
+kbvwr.config.keys.width["Space"]     =  kbvwr.config.keys.width["default"] * 5 + kbvwr.config.keys.gap["default"] * 4
+kbvwr.config.keys.width["Alt_R"]     =  kbvwr.config.keys.width["default"]
+kbvwr.config.keys.width["Print"]     =  kbvwr.config.keys.width["default"]
+kbvwr.config.keys.width["Control_R"] =  kbvwr.config.keys.width["default"]
 kbvwr.config.keys.width["Arrow"]     = (kbvwr.config.keys.width["Shift_R"] - 2 * kbvwr.config.keys.gap["default"]) / 3
 
 kbvwr.config.keys.aliases = {}
@@ -118,10 +117,9 @@ kbvwr.config.keys.aliases["B"]  = "b"
 kbvwr.config.keys.aliases["N"]  = "n"
 kbvwr.config.keys.aliases["M"]  = "m"
 kbvwr.config.keys.aliases["XF86WakeUp"] = "Fn"
-
+kbvwr.config.keys.aliases["?"]  = "/"
 -- kbvwr.config.keys.aliases["<"]  = ","
 -- kbvwr.config.keys.aliases[">"]  = "."
-kbvwr.config.keys.aliases["?"]  = "/"
 
 
 return kbvwr.config

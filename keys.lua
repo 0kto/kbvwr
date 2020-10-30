@@ -1,13 +1,11 @@
 -- awesomeWM lua packages =============================================
 local gears = require("gears")
 local wibox = require("wibox")
--- elenapan-awesome (to be eliminated) ================================
-local helpers = require("helpers")
-
 -- needed kbvwr stuff =================================================
 local kbvwr   = {}
 kbvwr.fn      = require("kbvwr.fn")
 kbvwr.config  = require("kbvwr.config")
+kbvwr.helpers = require("kbvwr.helpers")
 -- package keys =======================================================
 kbvwr.keys    = {}
 
@@ -47,7 +45,7 @@ local function genkey(id, symbol, isModifier, description, geometry)
       fg            = key.fg,
       forced_width  = dpi(geometry[1]),
       forced_height = dpi(geometry[2]),
-      shape         = helpers.rrect(dpi(4)),
+      shape         = kbvwr.helpers.rrect(dpi(4)),
     }
   }
   return key

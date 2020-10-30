@@ -5,10 +5,10 @@ local awful = require("awful")
 local naughty = require("naughty")
 -- elenepan stuff =====================================================
 local apps    = require("apps")
-local helpers = require("helpers")
 -- needed kbvwr stuff =================================================
 local kbvwr   = {}
 kbvwr.config  = require("kbvwr.config")
+kbvwr.helpers = require("kbvwr.helpers")
 kbvwr.keys    = require("kbvwr.keys")
 kbvwr.fn      = require("kbvwr.fn")
 -- package bind =======================================================
@@ -32,9 +32,9 @@ end
          : Alt_L             : Alt_R
 --]]
 -- globalkeybindings ==================================================
-bindkey( none, "XF86AudioMute",         " icon:ﱝ ", "media",  "mute sound",      global, function () helpers.volume_control(0) end)
-bindkey( none, "XF86AudioLowerVolume",  " icon:ﱜ ", "media",  "decrease volume", global, function () helpers.volume_control(-5) end)
-bindkey( none, "XF86AudioRaiseVolume",  " icon:ﱛ ", "media",  "increase volume", global, function () helpers.volume_control(5) end)
+bindkey( none, "XF86AudioMute",         " icon:ﱝ ", "media",  "mute sound",      global, function () kbvwr.helpers.volume_control(0) end)
+bindkey( none, "XF86AudioLowerVolume",  " icon:ﱜ ", "media",  "decrease volume", global, function () kbvwr.helpers.volume_control(-5) end)
+bindkey( none, "XF86AudioRaiseVolume",  " icon:ﱛ ", "media",  "increase volume", global, function () kbvwr.helpers.volume_control(5) end)
 bindkey( none, "XF86AudioMicMute",      " icon: ", "media",  "mute microphone", global,
         function() awful.spawn.with_shell("amixer -D pulse sset Capture toggle &> /dev/null") end)
 bindkey( none, "XF86Display",           " icon: ", "tools",  "configure display layout", global, function () awful.spawn("arandr") end)
@@ -67,9 +67,9 @@ bindkey( { " ", " " }, "h", " icon:ﰂ ",        "layout",  "increase numb
 bindkey( { " ", " " }, "j", " icon:吝 ",        "layout",  "lower number of columns", global, function() awful.tag.incncol(-1, nil, true) end)
 bindkey( { " ", " " }, "k", " icon:溺 ",        "layout",  "increase number of columns", global, function() awful.tag.incncol(1, nil, true) end)
 bindkey( { " ", " " }, "l", " icon:ﯰ ",        "layout",  "lower number of clients", global, function() awful.tag.incnmaster(-1, nil, true)  end)
-bindkey( { " ", " " }, "h", "   ",           "layout",  "move border left", global, function() helpers.resize_dwim(client.focus, "left") end)
-bindkey( { " ", " " }, "j", "  \r  ",        "layout",  "move border down", global, function() helpers.resize_dwim(client.focus, "down") end)
-bindkey( { " ", " " }, "k", "  \r  ",        "layout",  "move border up", global, function() helpers.resize_dwim(client.focus, "up") end)
+bindkey( { " ", " " }, "h", "   ",           "layout",  "move border left", global, function() kbvwr.helpers.resize_dwim(client.focus, "left") end)
+bindkey( { " ", " " }, "j", "  \r  ",        "layout",  "move border down", global, function() kbvwr.helpers.resize_dwim(client.focus, "down") end)
+bindkey( { " ", " " }, "k", "  \r  ",        "layout",  "move border up", global, function() kbvwr.helpers.resize_dwim(client.focus, "up") end)
 bindkey( { " ", " " }, "l", "   ",           "layout",  "move border left", global, function() awful.client.focus.bydirection("right") end)
 bindkey( { " ", " " }, "-", " icon: icon: ", "layout",  "decrease gap", global, function() awful.tag.incgap(5, nil) end)
 bindkey( { " ", " " }, "=", " icon: icon: ", "layout",  "increase gap", global, function() awful.tag.incgap(-5, nil) end)
@@ -175,9 +175,9 @@ bindkey( { " ", " " }, "]", "icon: +",        "client", "increase clien
 bindkey( { " ", " "},  "c", " icon: ",        "client", "close client", client, function (c) c:kill() end)
 
 -- Fn keys ============================================================
-bindkey( { "Fn" }, "F1",  " icon:ﱝ ", "media",  "mute sound",      global, function () helpers.volume_control(0) end)
-bindkey( { "Fn" }, "F2",  " icon:ﱜ ", "media",  "decrease volume", global, function () helpers.volume_control(-5) end)
-bindkey( { "Fn" }, "F3",  " icon:ﱛ ", "media",  "increase volume", global, function () helpers.volume_control(5) end)
+bindkey( { "Fn" }, "F1",  " icon:ﱝ ", "media",  "mute sound",      global, function () kbvwr.helpers.volume_control(0) end)
+bindkey( { "Fn" }, "F2",  " icon:ﱜ ", "media",  "decrease volume", global, function () kbvwr.helpers.volume_control(-5) end)
+bindkey( { "Fn" }, "F3",  " icon:ﱛ ", "media",  "increase volume", global, function () kbvwr.helpers.volume_control(5) end)
 bindkey( { "Fn" }, "F4",  " icon: ", "media",  "mute microphone", global,
         function() awful.spawn.with_shell("amixer -D pulse sset Capture toggle &> /dev/null") end)
 bindkey( { "Fn" }, "F5",  " icon: ", "launch", "decrease laptop brightness", global, function () awful.spawn.with_shell("light -U 10") end)

@@ -4,11 +4,10 @@ local gears     = require("gears")
 local wibox     = require("wibox")
 local beautiful = require("beautiful")
 local naughty   = require("naughty")
--- elenapan-awesome (to be eliminated) ================================
-local helpers = require("helpers")
 -- needed kbvwr stuff =================================================
 local kbvwr       = {}
 kbvwr.config      = require("kbvwr.config")
+kbvwr.helpers     = require("kbvwr.helpers")
 kbvwr.fn          = require("kbvwr.fn")
 kbvwr.keys        = require("kbvwr.keys")
 kbvwr.bind        = require("kbvwr.bind")
@@ -38,7 +37,7 @@ for s in screen do
     if s == screen.primary then
         s.keyboard_viewer = keyboard_viewer
     else
-        s.keyboard_viewer = helpers.screen_mask(s, keyboard_viewer.bg)
+        s.keyboard_viewer = kbvwr.helpers.screen_mask(s, keyboard_viewer.bg)
     end
 end
 
@@ -66,7 +65,7 @@ keyboard_viewer:setup {
                 -- background keyboard
                 widget = wibox.container.background(),
                 bg = kbvwr.config.bg,
-                shape = helpers.rrect(dpi(4)),
+                shape = kbvwr.helpers.rrect(dpi(4)),
                 {
                     -- keyboard
                     layout = wibox.layout.fixed.vertical,
@@ -143,7 +142,7 @@ keyboard_viewer:setup {
                 widget = wibox.widget {
                     bg = kbvwr.config.bg,
                     forced_height = dpi(65),
-                    shape = helpers.rrect(dpi(4)),
+                    shape = kbvwr.helpers.rrect(dpi(4)),
                     widget = wibox.container.background()
                 },
                 {

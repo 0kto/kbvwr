@@ -3,9 +3,6 @@ local awful     = require("awful")
 local gears     = require("gears")
 local naughty   = require("naughty")
 local wibox     = require("wibox")
--- elenapan-awesome (to be eliminated) ================================
-local helpers   = require("helpers")
-
 -- needed kbvwr stuff =================================================
 local kbvwr   = {}
 kbvwr.config  = require("kbvwr.config")
